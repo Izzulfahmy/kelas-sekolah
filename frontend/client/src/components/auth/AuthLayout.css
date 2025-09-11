@@ -1,0 +1,104 @@
+.auth-layout-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+  font-family: sans-serif;
+  /* --- Perbaikan 1: Tambahkan padding agar tidak menempel di tepi layar --- */
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.auth-container {
+  padding: 2rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.auth-form h2 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #333; /* Warna teks lebih lembut */
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600; /* Teks label lebih tebal */
+  color: #555;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* Efek focus pada input */
+.form-group input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.auth-form button {
+  width: 100%;
+  padding: 0.85rem;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: bold; /* Teks tombol lebih tebal */
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.auth-form button:hover {
+  background-color: #0056b3;
+}
+
+.auth-form button:disabled {
+  background-color: #a0cffc;
+  cursor: not-allowed;
+}
+
+.auth-form p {
+  text-align: center;
+  margin-top: 1rem;
+  color: #555;
+}
+
+.auth-form p a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.auth-form p a:hover {
+  text-decoration: underline;
+}
+
+/* --- Perbaikan 2: Media Query untuk layar kecil --- */
+@media (max-width: 480px) {
+  .auth-container {
+    /* Kurangi padding di layar kecil agar tidak terlalu sempit */
+    padding: 1.5rem;
+    /* Hilangkan bayangan agar terlihat lebih flat dan modern di mobile */
+    box-shadow: none;
+    border: 1px solid #e0e0e0;
+  }
+}

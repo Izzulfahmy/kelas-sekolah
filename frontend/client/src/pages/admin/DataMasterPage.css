@@ -1,0 +1,396 @@
+/* --- Container Utama --- */
+.data-master-container {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+.data-master-container h1 {
+    margin-top: 0;
+}
+
+/* --- Tampilan Tab Modern --- */
+.tabs-container {
+    margin-top: 2rem;
+}
+.tabs-header {
+    display: flex;
+    border-bottom: 2px solid #dee2e6;
+}
+.tabs-header button {
+    padding: 1rem 1.5rem;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #6c757d;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: color 0.2s, border-color 0.2s;
+}
+.tabs-header button:hover {
+    color: #007bff;
+}
+.tabs-header button.active {
+    color: #007bff;
+    font-weight: 600;
+    border-bottom-color: #007bff;
+}
+.tabs-body {
+    padding-top: 1.5rem;
+}
+.tab-content {
+    animation: fadeIn 0.5s;
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Dropdown untuk Mobile */
+.tabs-dropdown-container {
+    display: none;
+    position: relative;
+}
+.tabs-dropdown {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: #fff;
+}
+.dropdown-arrow {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+    pointer-events: none;
+}
+
+/* --- Tabel Master Data Modern --- */
+.crud-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+.crud-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+.master-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.master-table th, .master-table td {
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid #dee2e6;
+    text-align: left;
+}
+.master-table tbody tr:last-child td {
+    border-bottom: none;
+}
+.master-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+.master-table tbody tr:hover {
+    background-color: #f1f3f5;
+}
+
+/* Tombol Aksi */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+.action-buttons button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+.btn-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font-size: 0.9rem; /* Ukuran default ikon */
+}
+.btn-edit {
+    background-color: #007bff;
+}
+.btn-edit:hover {
+    background-color: #0056b3;
+}
+.btn-delete {
+    background-color: #dc3545;
+}
+.btn-delete:hover {
+    background-color: #c82333;
+}
+
+/* --- RESPONSIVE (MEDIA QUERY) --- */
+@media (max-width: 768px) {
+    /* Sembunyikan tab header, tampilkan dropdown */
+    .tabs-header {
+        display: none;
+    }
+    .tabs-dropdown-container {
+        display: block;
+    }
+
+    /* --- PERBAIKAN UTAMA TAMPILAN MOBILE --- */
+    
+    .crud-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    .crud-header .btn-add {
+        width: 100%;
+    }
+    
+    .master-table {
+        border: none;
+        box-shadow: none;
+        background-color: transparent;
+        border-radius: 0;
+    }
+    .master-table thead {
+        display: none;
+    }
+    .master-table tbody {
+        display: block;
+        width: 100%;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        background-color: #fff;
+    }
+    
+    .master-table tr {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid #dee2e6;
+    }
+    .master-table tbody tr:last-child {
+        border-bottom: none;
+    }
+
+    .master-table td {
+        display: flex;
+        align-items: center;
+        border: none;
+        padding: 0;
+        background-color: transparent !important;
+    }
+    .master-table td:first-child {
+        display: none;
+    }
+    
+    .master-table td:nth-child(2) {
+        flex-grow: 1;
+        font-weight: 500;
+        color: #212529;
+        text-align: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding-right: 1rem;
+        font-size: 0.95rem; /* Sedikit perkecil ukuran teks nama data */
+    }
+    
+    .master-table td:last-child {
+        flex-shrink: 0;
+        padding-left: 0;
+    }
+    
+    /* --- PERBAIKAN UKURAN IKON DI MOBILE --- */
+    .action-buttons .btn-icon {
+        width: 32px; /* Kembalikan ukuran lebar default */
+        height: 32px; /* Kembalikan ukuran tinggi default */
+        font-size: 1.1rem; /* Perbesar ukuran font ikon */
+    }
+}
+
+/* --- Modal Styles --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    animation: zoomIn 0.3s ease-out;
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: #333;
+    font-size: 1.8rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #555;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn-cancel {
+    background-color: #6c757d;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s;
+}
+.btn-cancel:hover {
+    background-color: #5a6268;
+}
+
+.btn-save {
+    background-color: #007bff;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s;
+}
+.btn-save:hover {
+    background-color: #0056b3;
+}
+
+.modal-close-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #999;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.modal-close-button:hover {
+    color: #333;
+}
+
+/* --- Style khusus untuk modal konfirmasi --- */
+.modal-content.modal-confirm {
+    text-align: center;
+    padding: 2rem 2.5rem;
+    max-width: 400px; /* Lebih kecil untuk konfirmasi */
+}
+
+.modal-content.modal-confirm h2 {
+    font-size: 1.5rem;
+    color: #dc3545; /* Warna merah untuk judul konfirmasi hapus */
+    margin-bottom: 1rem;
+}
+
+.modal-content.modal-confirm p {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 2rem;
+    line-height: 1.5;
+}
+
+.modal-content.modal-confirm .modal-actions {
+    justify-content: center; /* Tombol di tengah */
+    margin-top: 1rem;
+}
+
+.modal-content.modal-confirm .btn-delete {
+    background-color: #dc3545; /* Pastikan tombol hapus merah */
+}
+.modal-content.modal-confirm .btn-delete:hover {
+    background-color: #c82333;
+}
+
+
+/* --- Animasi Modal --- */
+@keyframes zoomIn {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}

@@ -1,0 +1,137 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* --- Layout Siswa --- */
+.student-layout {
+    display: flex;
+    height: 100vh; /* Ganti min-height jadi height */
+    background-color: #f8f9fa;
+    position: relative; /* diperlukan untuk overlay */
+    overflow: hidden; /* Sembunyikan scroll utama */
+}
+
+/* --- Sidebar Siswa Baru --- */
+.sidebar-student {
+    width: 280px;
+    flex-shrink: 0;
+    background-color: #198754; /* Hijau tua yang lebih pekat */
+    color: #d1e7dd; /* Teks hijau muda lembut */
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease-in-out; /* animasi slide */
+    border-right: 1px solid #dee2e6;
+}
+
+/* Header Sidebar */
+.sidebar-student .sidebar-header {
+    height: 65px; /* tinggi konsisten */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    border-bottom: 1px solid #146c43;
+    flex-shrink: 0;
+}
+
+.sidebar-student .sidebar-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #ffffff;
+}
+
+/* --- Menu Scrollable --- */
+.sidebar-student .sidebar-menu {
+    list-style: none;
+    padding: 1rem;
+    margin: 0;
+    flex-grow: 1;
+    overflow-y: auto; /* biar scrollable kalau kepanjangan */
+}
+
+/* --- Item Menu --- */
+.sidebar-student .sidebar-menu li {
+    margin-bottom: 0.5rem;
+}
+
+.sidebar-student .sidebar-menu li a {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    color: #d1e7dd;
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
+    border-radius: 6px;
+    font-size: 0.95rem;
+}
+
+.sidebar-student .sidebar-menu li a:hover {
+    background-color: #146c43;
+    color: #ffffff;
+}
+
+/* --- Aktif dengan gaya "pil" --- */
+.sidebar-student .sidebar-menu li a.active {
+    background-color: #28a745; /* Hijau cerah */
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.sidebar-student .sidebar-menu li a svg {
+    margin-right: 15px;
+    font-size: 1.1rem;
+    width: 20px;
+}
+
+/* --- Tombol Hamburger & Overlay untuk Mobile --- */
+.hamburger-btn {
+    display: none; /* default: sembunyikan di desktop */
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #146c43; /* hijau gelap biar selaras */
+}
+
+.overlay {
+    display: none; /* default: sembunyikan */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1040;
+}
+
+/* --- Responsif (Mobile) --- */
+@media (max-width: 768px) {
+    .sidebar-student {
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100%;
+        transform: translateX(-100%); /* sembunyikan sidebar */
+        z-index: 1050;
+    }
+
+    .sidebar-student.open {
+        transform: translateX(0); /* tampilkan saat open */
+    }
+
+    .main-content {
+        width: 100%;
+    }
+
+    .header {
+        justify-content: space-between;
+    }
+
+    .hamburger-btn {
+        display: block; /* tampilkan di mobile */
+    }
+    
+    .overlay {
+        display: block; /* dikontrol via JS */
+    }
+}
