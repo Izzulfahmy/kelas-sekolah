@@ -67,7 +67,6 @@ const SchoolProfilePage = () => {
         return <p>Memuat profil sekolah...</p>;
     }
 
-    // --- PERBAIKAN UTAMA: Satukan semua field dalam satu array ---
     const fields = [
         { name: 'nama_sekolah', label: 'Nama Sekolah', required: true },
         { name: 'npsn', label: 'NPSN' },
@@ -78,7 +77,8 @@ const SchoolProfilePage = () => {
             options: educationLevels.map(level => ({ value: level.id, label: level.nama_jenjang })) 
         },
         { name: 'naungan', label: 'Naungan' },
-        { name: 'kepala_sekolah', label: 'Kepala Sekolah' },
+        // --- PERUBAHAN DI SINI ---
+        { name: 'kepala_sekolah', label: 'Kepala Sekolah', readOnly: true }, // Tambahkan properti readOnly
         { name: 'telepon', label: 'Telepon' },
         { name: 'email', label: 'Email' },
         { name: 'website', label: 'Website' },
@@ -103,7 +103,6 @@ const SchoolProfilePage = () => {
 
             <form onSubmit={handleUpdate}>
                 <div className="profile-form">
-                    {/* --- PERBAIKAN UTAMA: Loop semua field dalam satu proses --- */}
                     {fields.map(field => (
                         <div key={field.name} className={`form-group-profile ${field.fullWidth ? 'full-width' : ''}`}>
                             <label htmlFor={field.name}>{field.label}</label>
@@ -135,11 +134,12 @@ const SchoolProfilePage = () => {
                                         value={formData[field.name] || ''}
                                         onChange={handleFormChange}
                                         required={field.required}
+                                        // --- PERUBAHAN DI SINI ---
+                                        readOnly={field.readOnly} // Terapkan properti readOnly ke input
                                     />
                                 )
                             ) : (
                                 <div className="view-box">
-                                    {/* Tampilkan nama jenjang di view mode */}
                                     {field.name === 'jenjang_id' ? (profile.jenjang?.nama_jenjang || '-') : (profile[field.name] || '-')}
                                 </div>
                             )}

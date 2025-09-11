@@ -35,7 +35,7 @@
 .form-group-profile label {
     font-size: 1rem; 
     color: #555;
-    margin-bottom: 0.8rem; /* lebih pas dibanding 1rem */
+    margin-bottom: 0.8rem;
     font-weight: 600;
     display: block;
 }
@@ -89,6 +89,22 @@
     border-color: #007bff;
     box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
 }
+
+/* --- PENAMBAHAN STYLE BARU DI SINI --- */
+/* Style untuk input yang tidak bisa di-edit (read-only) */
+.form-group-profile input[readOnly] {
+    background-color: #f0f0f0; /* Sedikit lebih gelap dari view-box */
+    cursor: not-allowed;
+    color: #555;
+    border-color: #e0e0e0;
+}
+
+/* Hilangkan efek focus pada input read-only */
+.form-group-profile input[readOnly]:focus {
+    box-shadow: none;
+    border-color: #e0e0e0;
+}
+
 
 .form-group-profile textarea {
     resize: vertical;
