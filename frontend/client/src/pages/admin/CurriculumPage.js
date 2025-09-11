@@ -2,13 +2,15 @@ import React, { useState, useEffect, useCallback } from 'react';
 import api from '../../api';
 import toast from 'react-hot-toast';
 import { FaPencilAlt, FaTrash } from 'react-icons/fa';
-import './CurriculumPage.css'; // Kita akan buat file CSS ini
+import './CurriculumPage.css';
 
 const CurriculumPage = () => {
     const [curriculums, setCurriculums] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingData, setEditingData] = useState(null);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [deletingData, setDeletingData] = useState(null);
     const [formData, setFormData] = useState({ nama_kurikulum: '', deskripsi: '' });
 
     const fetchCurriculums = useCallback(async () => {
@@ -32,7 +34,7 @@ const CurriculumPage = () => {
 
     const openModal = (data = null) => {
         setEditingData(data);
-        setFormData(data ? { nama_kurikulum: data.nama_kurikulum, deskripsi: data.deskripsi } : { nama_kurikulum: '', deskripsi: '' });
+        setFormData(data ? { nama_kurikulum: data.nama_kurikulum, deskripsi: data.deskripsi || '' } : { nama_kurikulum: '', deskripsi: '' });
         setIsModalOpen(true);
     };
 
@@ -40,6 +42,16 @@ const CurriculumPage = () => {
         setIsModalOpen(false);
         setEditingData(null);
         setFormData({ nama_kurikulum: '', deskripsi: '' });
+    };
+
+    const openDeleteModal = (data) => {
+        setDeletingData(data);
+        setIsDeleteModalOpen(true);
+    };
+
+    const closeDeleteModal = () => {
+        setIsDeleteModalOpen(false);
+        setDeletingData(null);
     };
 
     const handleFormChange = (e) => {
@@ -60,18 +72,18 @@ const CurriculumPage = () => {
         closeModal();
     };
 
-    const handleDelete = (id) => {
-        if (!window.confirm("Apakah Anda yakin ingin menghapus kurikulum ini?")) return;
-
-        const promise = api.delete(`/api/curriculums/${id}`, {
+    const confirmDelete = async () => {
+        if (!deletingData) return;
+        const promise = api.delete(`/api/curriculums/${deletingData.id}`, {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }).then(() => fetchCurriculums());
 
         toast.promise(promise, {
-            loading: 'Menghapus...',
+            loading: `Menghapus ${deletingData.nama_kurikulum}...`,
             success: 'Kurikulum berhasil dihapus!',
             error: 'Gagal menghapus data.',
         });
+        closeDeleteModal();
     };
 
     return (
@@ -93,7 +105,7 @@ const CurriculumPage = () => {
                     </thead>
                     <tbody>
                         {isLoading ? (
-                            <tr><td colSpan="4">Memuat data...</td></tr>
+                            <tr><td colSpan="4" style={{ textAlign: 'center' }}>Memuat data...</td></tr>
                         ) : curriculums.length > 0 ? (
                             curriculums.map((curr, index) => (
                                 <tr key={curr.id}>
@@ -103,13 +115,13 @@ const CurriculumPage = () => {
                                     <td data-label="Aksi" className="actions-cell">
                                         <div className="action-buttons">
                                             <button className="btn-edit btn-icon" title="Edit" onClick={() => openModal(curr)}><FaPencilAlt /></button>
-                                            <button className="btn-delete btn-icon" title="Delete" onClick={() => handleDelete(curr.id)}><FaTrash /></button>
+                                            <button className="btn-delete btn-icon" title="Delete" onClick={() => openDeleteModal(curr)}><FaTrash /></button>
                                         </div>
                                     </td>
                                 </tr>
                             ))
                         ) : (
-                            <tr><td colSpan="4">Tidak ada data.</td></tr>
+                            <tr><td colSpan="4" style={{ textAlign: 'center' }}>Tidak ada data.</td></tr>
                         )}
                     </tbody>
                 </table>
@@ -127,13 +139,27 @@ const CurriculumPage = () => {
                             </div>
                             <div className="form-group">
                                 <label>Deskripsi</label>
-                                <textarea name="deskripsi" value={formData.deskripsi} onChange={handleFormChange}></textarea>
+                                <textarea name="deskripsi" value={formData.deskripsi || ''} onChange={handleFormChange}></textarea>
                             </div>
                             <div className="modal-actions">
                                 <button type="button" className="btn-cancel" onClick={closeModal}>Batal</button>
                                 <button type="submit" className="btn-save">Simpan</button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            )}
+
+            {isDeleteModalOpen && (
+                 <div className="modal-overlay">
+                    <div className="modal-content modal-confirm">
+                        <button className="modal-close-button" onClick={closeDeleteModal}>&times;</button>
+                        <h2>Konfirmasi Hapus</h2>
+                        <p>Apakah Anda yakin ingin menghapus kurikulum: <strong>{deletingData?.nama_kurikulum}</strong>?</p>
+                        <div className="modal-actions">
+                            <button type="button" className="btn-cancel" onClick={closeDeleteModal}>Batal</button>
+                            <button type="button" className="btn-confirm-delete" onClick={confirmDelete}>Ya, Hapus</button>
+                        </div>
                     </div>
                 </div>
             )}
