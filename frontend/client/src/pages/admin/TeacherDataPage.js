@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import api from '../../api';
 import toast from 'react-hot-toast';
+import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 import './TeacherDataPage.css';
 
 const formatDateForInput = (dateString) => {
@@ -10,7 +11,7 @@ const formatDateForInput = (dateString) => {
 
 const TeacherDataPage = () => {
     const [teachers, setTeachers] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingTeacher, setEditingTeacher] = useState(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -38,20 +39,22 @@ const TeacherDataPage = () => {
         username: '',
         password: '',
     };
+
     const [formData, setFormData] = useState(initialFormState);
 
+    // --- Ambil data guru ---
     const fetchTeachers = useCallback(async () => {
-        setLoading(true);
+        setIsLoading(true);
         try {
             const token = localStorage.getItem('token');
             const response = await api.get('/api/teachers', {
-                headers: { 'Authorization': `Bearer ${token}` }
+                headers: { Authorization: `Bearer ${token}` }
             });
             setTeachers(response.data || []);
         } catch (error) {
             toast.error("Gagal mengambil data guru.");
         } finally {
-            setLoading(false);
+            setIsLoading(false);
         }
     }, []);
 
@@ -59,10 +62,14 @@ const TeacherDataPage = () => {
         fetchTeachers();
     }, [fetchTeachers]);
 
+    // --- Modal Tambah/Edit ---
     const openModal = (teacher = null) => {
         if (teacher) {
             setEditingTeacher(teacher);
-            setFormData({ ...teacher, tanggal_lahir: formatDateForInput(teacher.tanggal_lahir) });
+            setFormData({
+                ...teacher,
+                tanggal_lahir: formatDateForInput(teacher.tanggal_lahir),
+            });
         } else {
             setEditingTeacher(null);
             setFormData(initialFormState);
@@ -72,8 +79,11 @@ const TeacherDataPage = () => {
 
     const closeModal = () => {
         setIsModalOpen(false);
+        setEditingTeacher(null);
+        setFormData(initialFormState);
     };
 
+    // --- Form Handling ---
     const handleFormChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -86,21 +96,25 @@ const TeacherDataPage = () => {
             delete payload.password;
         }
 
-        const apiCall = editingTeacher
-            ? api.put(`/api/teachers/${editingTeacher.id}`, payload, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } })
-            : api.post('/api/teachers', { ...formData, sekolah_id: 1 }, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
+        try {
+            const token = localStorage.getItem('token');
+            const config = { headers: { Authorization: `Bearer ${token}` } };
+            const promise = editingTeacher
+                ? api.put(`/api/teachers/${editingTeacher.id}`, payload, config)
+                : api.post('/api/teachers', { ...formData, sekolah_id: 1 }, config);
 
-        toast.promise(
-            apiCall.then(() => fetchTeachers()),
-            {
+            await toast.promise(promise.then(() => fetchTeachers()), {
                 loading: 'Menyimpan data...',
                 success: `Data guru berhasil ${editingTeacher ? 'diperbarui' : 'ditambahkan'}!`,
                 error: (err) => `Error: ${err.response?.data?.error || 'Terjadi kesalahan'}`,
-            }
-        );
-        closeModal();
+            });
+            closeModal();
+        } catch (err) {
+            toast.error('Terjadi kesalahan saat menyimpan.');
+        }
     };
 
+    // --- Modal Delete ---
     const openDeleteModal = (teacher) => {
         setDeletingTeacher(teacher);
         setIsDeleteModalOpen(true);
@@ -112,23 +126,25 @@ const TeacherDataPage = () => {
     };
 
     const confirmDelete = async () => {
-        const deletePromise = async () => {
+        if (!deletingTeacher) return;
+        try {
             const token = localStorage.getItem('token');
-            await api.delete(`/api/teachers/${deletingTeacher.id}`, {
-                headers: { 'Authorization': `Bearer ${token}` }
+            const promise = api.delete(`/api/teachers/${deletingTeacher.id}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            }).then(() => fetchTeachers());
+
+            await toast.promise(promise, {
+                loading: `Menghapus ${deletingTeacher.nama_lengkap}...`,
+                success: 'Data guru berhasil dihapus!',
+                error: 'Gagal menghapus data.',
             });
-            await fetchTeachers();
-        };
-
-        toast.promise(deletePromise(), {
-            loading: `Menghapus ${deletingTeacher.nama_lengkap}...`,
-            success: `Data guru berhasil dihapus!`,
-            error: (err) => `Error: ${err.response?.data?.error || 'Terjadi kesalahan'}`,
-        });
-
-        closeDeleteModal();
+            closeDeleteModal();
+        } catch (err) {
+            toast.error('Gagal menghapus data.');
+        }
     };
 
+    // --- Form Fields ---
     const formFields = [
         { name: 'nama_lengkap', label: 'Nama Lengkap', required: true },
         { name: 'nama_panggilan', label: 'Nama Panggilan' },
@@ -154,9 +170,9 @@ const TeacherDataPage = () => {
     ];
 
     return (
-        <div className="data-page-container">
+        <div className="teacher-page data-page-container">
             <div className="page-header">
-                <h1>Data Guru</h1>
+                <h1>Manajemen Data Guru</h1>
                 <button className="btn-add" onClick={() => openModal()}>+ Tambah Guru</button>
             </div>
 
@@ -171,9 +187,9 @@ const TeacherDataPage = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {loading ? (
-                            <tr><td colSpan="4">Memuat data...</td></tr>
-                        ) : (
+                        {isLoading ? (
+                            <tr><td colSpan="4" style={{ textAlign: 'center' }}>Memuat data...</td></tr>
+                        ) : teachers.length > 0 ? (
                             teachers.map((teacher, index) => (
                                 <tr key={teacher.id}>
                                     <td data-label="No">{index + 1}</td>
@@ -185,37 +201,38 @@ const TeacherDataPage = () => {
                                     </td>
                                     <td data-label="Aksi" className="actions-cell">
                                         <div className="action-buttons">
-                                            <button className="btn-edit" onClick={() => openModal(teacher)}>Edit</button>
-                                            <button className="btn-delete" onClick={() => openDeleteModal(teacher)}>Delete</button>
+                                            <button
+                                                type="button"
+                                                className="btn-edit btn-icon"
+                                                title="Edit"
+                                                onClick={() => openModal(teacher)}
+                                            >
+                                                <FaPencilAlt />
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className="btn-delete btn-icon"
+                                                title="Delete"
+                                                onClick={() => openDeleteModal(teacher)}
+                                            >
+                                                <FaTrash />
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
                             ))
+                        ) : (
+                            <tr><td colSpan="4" style={{ textAlign: 'center' }}>Tidak ada data guru.</td></tr>
                         )}
                     </tbody>
                 </table>
             </div>
 
-            {/* Modal Hapus */}
-            {isDeleteModalOpen && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <h2>Konfirmasi Hapus</h2>
-                        <p>Apakah Anda yakin ingin menghapus data guru: <strong>{deletingTeacher?.nama_lengkap}</strong>?</p>
-                        <p style={{ fontSize: '0.9rem', color: '#6c757d' }}>Tindakan ini tidak dapat dibatalkan.</p>
-                        <div className="modal-actions">
-                            <button type="button" className="btn-cancel" onClick={closeDeleteModal}>Batal</button>
-                            <button type="button" className="btn-confirm-delete" onClick={confirmDelete}>Ya, Hapus Permanen</button>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* Modal Tambah/Edit Guru */}
+            {/* Modal Tambah/Edit */}
             {isModalOpen && (
                 <div className="modal-overlay">
                     <div className="modal-content large">
-                        <button className="modal-close-button" onClick={closeModal}>&times;</button>
+                        <button className="modal-close-button" onClick={closeModal} aria-label="Tutup">&times;</button>
                         <h2>{editingTeacher ? 'Edit Data Guru' : 'Tambah Guru Baru'}</h2>
                         <form onSubmit={handleSubmit} className="data-form">
                             <fieldset>
@@ -228,8 +245,15 @@ const TeacherDataPage = () => {
                                                 {field.required && <span className="required-asterisk">*</span>}
                                             </label>
                                             {field.type === 'select' ? (
-                                                <select name={field.name} value={formData[field.name] || ''} onChange={handleFormChange} required={field.required}>
-                                                    {field.options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                                                <select
+                                                    name={field.name}
+                                                    value={formData[field.name] || ''}
+                                                    onChange={handleFormChange}
+                                                    required={field.required}
+                                                >
+                                                    {field.options.map(opt => (
+                                                        <option key={opt} value={opt}>{opt}</option>
+                                                    ))}
                                                 </select>
                                             ) : (
                                                 <input
@@ -245,8 +269,25 @@ const TeacherDataPage = () => {
                                     ))}
                                     {!editingTeacher && (
                                         <>
-                                            <div className="form-group"><label>Username<span className="required-asterisk">*</span></label><input name="username" value={formData.username || ''} onChange={handleFormChange} required /></div>
-                                            <div className="form-group"><label>Password<span className="required-asterisk">*</span></label><input type="password" name="password" value={formData.password || ''} onChange={handleFormChange} required /></div>
+                                            <div className="form-group">
+                                                <label>Username<span className="required-asterisk">*</span></label>
+                                                <input
+                                                    name="username"
+                                                    value={formData.username || ''}
+                                                    onChange={handleFormChange}
+                                                    required
+                                                />
+                                            </div>
+                                            <div className="form-group">
+                                                <label>Password<span className="required-asterisk">*</span></label>
+                                                <input
+                                                    type="password"
+                                                    name="password"
+                                                    value={formData.password || ''}
+                                                    onChange={handleFormChange}
+                                                    required
+                                                />
+                                            </div>
                                         </>
                                     )}
                                 </div>
@@ -255,10 +296,17 @@ const TeacherDataPage = () => {
                                 <legend>Alamat</legend>
                                 <div className="form-grid">
                                     {addressFields.map(field => (
-                                        <div className={`form-group ${field.fullWidth ? 'full-width' : ''}`} key={field.name}>
+                                        <div
+                                            className={`form-group ${field.fullWidth ? 'full-width' : ''}`}
+                                            key={field.name}
+                                        >
                                             <label>{field.label}</label>
                                             {field.type === 'textarea' ? (
-                                                <textarea name={field.name} value={formData[field.name] || ''} onChange={handleFormChange} />
+                                                <textarea
+                                                    name={field.name}
+                                                    value={formData[field.name] || ''}
+                                                    onChange={handleFormChange}
+                                                />
                                             ) : (
                                                 <input
                                                     type={field.type || 'text'}
@@ -277,6 +325,21 @@ const TeacherDataPage = () => {
                                 <button type="submit" className="btn-save">Simpan</button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Modal Delete */}
+            {isDeleteModalOpen && (
+                <div className="modal-overlay">
+                    <div className="modal-content modal-confirm">
+                        <button className="modal-close-button" onClick={closeDeleteModal} aria-label="Tutup">&times;</button>
+                        <h2>Konfirmasi Hapus</h2>
+                        <p>Apakah Anda yakin ingin menghapus data guru: <strong>{deletingTeacher?.nama_lengkap}</strong>?</p>
+                        <div className="modal-actions">
+                            <button type="button" className="btn-cancel" onClick={closeDeleteModal}>Batal</button>
+                            <button type="button" className="btn-confirm-delete" onClick={confirmDelete}>Ya, Hapus</button>
+                        </div>
                     </div>
                 </div>
             )}

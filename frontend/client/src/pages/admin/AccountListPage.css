@@ -1,0 +1,220 @@
+.account-page {
+  padding: 1.5rem;
+}
+
+/* --- Header --- */
+.account-page .page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+.account-page .page-header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: #343a40;
+}
+
+/* --- Table Container --- */
+.account-page .table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* --- Tabel --- */
+.account-page .data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.account-page .data-table th,
+.account-page .data-table td {
+  padding: 1rem 1.2rem;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+.account-page .data-table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #6c757d;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+}
+.account-page .data-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+/* --- Tombol Aksi --- */
+.account-page .action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+.account-page .btn-icon {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #fff; /* Ikon jadi putih */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+.account-page .btn-edit {
+  background-color: #007bff;
+}
+.account-page .btn-edit:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+/* --- Modal Overlay --- */
+.account-page .modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex; justify-content: center; align-items: center;
+  z-index: 1000; padding: 1rem;
+}
+.account-page .modal-content {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  width: 100%; max-width: 500px;
+  animation: fadeIn 0.3s ease-out;
+  max-height: 90vh; overflow-y: auto;
+  position: relative;
+}
+.account-page .modal-close-button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: #adb5bd;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.account-page .modal-close-button:hover {
+  color: #495057;
+}
+.account-page .modal-content h2 {
+  margin-top: 0; margin-bottom: 1.5rem;
+  font-size: 1.5rem; color: #343a40;
+  text-align: center;
+}
+
+/* --- Form dalam Modal --- */
+.account-page .data-form .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.2rem;
+}
+.account-page .data-form .form-group label {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #495057;
+}
+.account-page .data-form .form-group input,
+.account-page .data-form .form-group select {
+  padding: 0.8rem 1rem;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 1rem;
+  width: 100%;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.account-page .data-form .form-group input:focus,
+.account-page .data-form .form-group select:focus {
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* --- Tombol Modal --- */
+.account-page .modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 1.5rem;
+}
+.account-page .modal-actions button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+.account-page .btn-cancel {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+.account-page .btn-cancel:hover {
+  background-color: #5a6268;
+}
+.account-page .btn-save {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+.account-page .btn-save:hover {
+  background-color: #0056b3;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .account-page { padding: 1rem; }
+  .account-page .page-header { flex-direction: column; align-items: flex-start; }
+  .account-page .table-responsive { box-shadow: none; background-color: transparent; }
+
+  .account-page .data-table,
+  .account-page .data-table tbody,
+  .account-page .data-table tr,
+  .account-page .data-table td {
+    display: block;
+    width: 100%;
+  }
+  .account-page .data-table thead { display: none; }
+  .account-page .data-table tr {
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 1rem;
+    border-bottom: none;
+  }
+  .account-page .data-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0.5rem;
+    border-bottom: 1px solid #f0f0f0;
+    text-align: right;
+  }
+  .account-page .data-table td:last-child { border-bottom: none; }
+  .account-page .data-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #6c757d;
+    text-align: left;
+    margin-right: 1rem;
+  }
+  .account-page .aksi-header { display: none; }
+  .account-page .actions-cell::before { display: none; }
+  .account-page .actions-cell { padding: 0.5rem; }
+  .account-page .actions-cell .action-buttons {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}

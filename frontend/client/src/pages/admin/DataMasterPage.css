@@ -10,14 +10,14 @@
 }
 
 /* --- Tampilan Tab Modern --- */
-.tabs-container {
+.data-master-container .tabs-container {
     margin-top: 2rem;
 }
-.tabs-header {
+.data-master-container .tabs-header {
     display: flex;
     border-bottom: 2px solid #dee2e6;
 }
-.tabs-header button {
+.data-master-container .tabs-header button {
     padding: 1rem 1.5rem;
     border: none;
     background-color: transparent;
@@ -29,18 +29,18 @@
     margin-bottom: -2px;
     transition: color 0.2s, border-color 0.2s;
 }
-.tabs-header button:hover {
+.data-master-container .tabs-header button:hover {
     color: #007bff;
 }
-.tabs-header button.active {
+.data-master-container .tabs-header button.active {
     color: #007bff;
     font-weight: 600;
     border-bottom-color: #007bff;
 }
-.tabs-body {
+.data-master-container .tabs-body {
     padding-top: 1.5rem;
 }
-.tab-content {
+.data-master-container .tab-content {
     animation: fadeIn 0.5s;
 }
 @keyframes fadeIn {
@@ -49,11 +49,11 @@
 }
 
 /* Dropdown untuk Mobile */
-.tabs-dropdown-container {
+.data-master-container .tabs-dropdown-container {
     display: none;
     position: relative;
 }
-.tabs-dropdown {
+.data-master-container .tabs-dropdown {
     width: 100%;
     padding: 1rem;
     font-size: 1rem;
@@ -65,7 +65,7 @@
     appearance: none;
     background-color: #fff;
 }
-.dropdown-arrow {
+.data-master-container .dropdown-arrow {
     position: absolute;
     right: 1rem;
     top: 50%;
@@ -75,109 +75,107 @@
 }
 
 /* --- Tabel Master Data Modern --- */
-.crud-header {
+.data-master-container .crud-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.5rem;
 }
-.crud-header h3 {
+.data-master-container .crud-header h3 {
     margin: 0;
     font-size: 1.5rem;
 }
-.master-table {
+.data-master-container .master-table {
     width: 100%;
     border-collapse: collapse;
     border: 1px solid #dee2e6;
     border-radius: 8px;
     overflow: hidden;
 }
-.master-table th, .master-table td {
+.data-master-container .master-table th, 
+.data-master-container .master-table td {
     padding: 0.8rem 1rem;
     border-bottom: 1px solid #dee2e6;
     text-align: left;
 }
-.master-table tbody tr:last-child td {
+.data-master-container .master-table tbody tr:last-child td {
     border-bottom: none;
 }
-.master-table th {
+.data-master-container .master-table th {
     background-color: #f8f9fa;
     font-weight: 600;
     font-size: 0.8rem;
     text-transform: uppercase;
 }
-.master-table tbody tr:hover {
+.data-master-container .master-table tbody tr:hover {
     background-color: #f1f3f5;
 }
 
 /* Tombol Aksi */
-.action-buttons {
+.data-master-container .action-buttons {
     display: flex;
     gap: 0.5rem;
     justify-content: flex-end;
 }
-.action-buttons button {
+.data-master-container .action-buttons button {
     padding: 6px 12px;
     border: none;
-    border-radius: 4px;
+    border-radius: 4px; /* Sudut membulat biasa, bukan lingkaran */
     cursor: pointer;
     color: white;
     font-size: 0.85rem;
     font-weight: 500;
 }
-.btn-icon {
+.data-master-container .btn-icon {
     width: 32px;
     height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 0;
-    font-size: 0.9rem; /* Ukuran default ikon */
+    font-size: 0.9rem;
 }
-.btn-edit {
+.data-master-container .btn-edit {
     background-color: #007bff;
 }
-.btn-edit:hover {
+.data-master-container .btn-edit:hover {
     background-color: #0056b3;
 }
-.btn-delete {
+.data-master-container .btn-delete {
     background-color: #dc3545;
 }
-.btn-delete:hover {
+.data-master-container .btn-delete:hover {
     background-color: #c82333;
 }
 
 /* --- RESPONSIVE (MEDIA QUERY) --- */
 @media (max-width: 768px) {
-    /* Sembunyikan tab header, tampilkan dropdown */
-    .tabs-header {
+    .data-master-container .tabs-header {
         display: none;
     }
-    .tabs-dropdown-container {
+    .data-master-container .tabs-dropdown-container {
         display: block;
     }
 
-    /* --- PERBAIKAN UTAMA TAMPILAN MOBILE --- */
-    
-    .crud-header {
+    .data-master-container .crud-header {
         flex-direction: column;
         align-items: flex-start;
         gap: 1rem;
     }
-    .crud-header .btn-add {
+    .data-master-container .crud-header .btn-add {
         width: 100%;
     }
     
-    .master-table {
+    .data-master-container .master-table {
         border: none;
         box-shadow: none;
         background-color: transparent;
         border-radius: 0;
     }
-    .master-table thead {
+    .data-master-container .master-table thead {
         display: none;
     }
-    .master-table tbody {
+    .data-master-container .master-table tbody {
         display: block;
         width: 100%;
         border: 1px solid #dee2e6;
@@ -185,7 +183,7 @@
         background-color: #fff;
     }
     
-    .master-table tr {
+    .data-master-container .master-table tr {
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -193,22 +191,22 @@
         padding: 0.75rem 1rem;
         border-bottom: 1px solid #dee2e6;
     }
-    .master-table tbody tr:last-child {
+    .data-master-container .master-table tbody tr:last-child {
         border-bottom: none;
     }
 
-    .master-table td {
+    .data-master-container .master-table td {
         display: flex;
         align-items: center;
         border: none;
         padding: 0;
         background-color: transparent !important;
     }
-    .master-table td:first-child {
+    .data-master-container .master-table td:first-child {
         display: none;
     }
     
-    .master-table td:nth-child(2) {
+    .data-master-container .master-table td:nth-child(2) {
         flex-grow: 1;
         font-weight: 500;
         color: #212529;
@@ -217,24 +215,23 @@
         overflow: hidden;
         text-overflow: ellipsis;
         padding-right: 1rem;
-        font-size: 0.95rem; /* Sedikit perkecil ukuran teks nama data */
+        font-size: 0.95rem;
     }
     
-    .master-table td:last-child {
+    .data-master-container .master-table td:last-child {
         flex-shrink: 0;
         padding-left: 0;
     }
     
-    /* --- PERBAIKAN UKURAN IKON DI MOBILE --- */
-    .action-buttons .btn-icon {
-        width: 32px; /* Kembalikan ukuran lebar default */
-        height: 32px; /* Kembalikan ukuran tinggi default */
-        font-size: 1.1rem; /* Perbesar ukuran font ikon */
+    .data-master-container .action-buttons .btn-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 1.1rem;
     }
 }
 
 /* --- Modal Styles --- */
-.modal-overlay {
+.data-master-container .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -247,7 +244,7 @@
     z-index: 1000;
 }
 
-.modal-content {
+.data-master-container .modal-content {
     background-color: #fff;
     padding: 2rem;
     border-radius: 10px;
@@ -258,27 +255,27 @@
     animation: zoomIn 0.3s ease-out;
 }
 
-.modal-content h2 {
+.data-master-container .modal-content h2 {
     margin-top: 0;
     margin-bottom: 1.5rem;
     color: #333;
     font-size: 1.8rem;
 }
 
-.form-group {
+.data-master-container .form-group {
     margin-bottom: 1.5rem;
 }
 
-.form-group label {
+.data-master-container .form-group label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 600;
     color: #555;
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea {
+.data-master-container .form-group input,
+.data-master-container .form-group select,
+.data-master-container .form-group textarea {
     width: 100%;
     padding: 0.75rem;
     border: 1px solid #ced4da;
@@ -287,22 +284,22 @@
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
+.data-master-container .form-group input:focus,
+.data-master-container .form-group select:focus,
+.data-master-container .form-group textarea:focus {
     border-color: #80bdff;
     outline: 0;
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
-.modal-actions {
+.data-master-container .modal-actions {
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
     margin-top: 2rem;
 }
 
-.btn-cancel {
+.data-master-container .btn-cancel {
     background-color: #6c757d;
     color: white;
     padding: 0.75rem 1.5rem;
@@ -312,11 +309,11 @@
     font-size: 1rem;
     transition: background-color 0.2s;
 }
-.btn-cancel:hover {
+.data-master-container .btn-cancel:hover {
     background-color: #5a6268;
 }
 
-.btn-save {
+.data-master-container .btn-save {
     background-color: #007bff;
     color: white;
     padding: 0.75rem 1.5rem;
@@ -326,11 +323,11 @@
     font-size: 1rem;
     transition: background-color 0.2s;
 }
-.btn-save:hover {
+.data-master-container .btn-save:hover {
     background-color: #0056b3;
 }
 
-.modal-close-button {
+.data-master-container .modal-close-button {
     position: absolute;
     top: 15px;
     right: 15px;
@@ -341,39 +338,39 @@
     cursor: pointer;
     transition: color 0.2s;
 }
-.modal-close-button:hover {
+.data-master-container .modal-close-button:hover {
     color: #333;
 }
 
 /* --- Style khusus untuk modal konfirmasi --- */
-.modal-content.modal-confirm {
+.data-master-container .modal-content.modal-confirm {
     text-align: center;
     padding: 2rem 2.5rem;
-    max-width: 400px; /* Lebih kecil untuk konfirmasi */
+    max-width: 400px;
 }
 
-.modal-content.modal-confirm h2 {
+.data-master-container .modal-content.modal-confirm h2 {
     font-size: 1.5rem;
-    color: #dc3545; /* Warna merah untuk judul konfirmasi hapus */
+    color: #dc3545;
     margin-bottom: 1rem;
 }
 
-.modal-content.modal-confirm p {
+.data-master-container .modal-content.modal-confirm p {
     font-size: 1rem;
     color: #555;
     margin-bottom: 2rem;
     line-height: 1.5;
 }
 
-.modal-content.modal-confirm .modal-actions {
-    justify-content: center; /* Tombol di tengah */
+.data-master-container .modal-content.modal-confirm .modal-actions {
+    justify-content: center;
     margin-top: 1rem;
 }
 
-.modal-content.modal-confirm .btn-delete {
-    background-color: #dc3545; /* Pastikan tombol hapus merah */
+.data-master-container .modal-content.modal-confirm .btn-delete {
+    background-color: #dc3545;
 }
-.modal-content.modal-confirm .btn-delete:hover {
+.data-master-container .modal-content.modal-confirm .btn-delete:hover {
     background-color: #c82333;
 }
 
@@ -388,9 +385,4 @@
         transform: scale(1);
         opacity: 1;
     }
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
 }

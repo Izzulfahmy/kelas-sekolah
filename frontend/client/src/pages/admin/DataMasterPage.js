@@ -2,11 +2,19 @@ import React, { useState } from 'react';
 import './DataMasterPage.css';
 import JenjangPendidikanTab from './tabs/JenjangPendidikanTab';
 import JabatanTab from './tabs/JabatanTab';
-import { FaChevronDown } from 'react-icons/fa'; // Import ikon
+import { FaChevronDown } from 'react-icons/fa';
 
 const TabPanel = ({ children, value, index }) => {
+    const panelId = `tabpanel-${index}`;
+    const tabId = `tab-${index}`;
     return (
-        <div hidden={value !== index}>
+        <div
+            role="tabpanel"
+            id={panelId}
+            aria-labelledby={tabId}
+            hidden={value !== index}
+            aria-hidden={value !== index}
+        >
             {value === index && <div className="tab-content">{children}</div>}
         </div>
     );
@@ -15,7 +23,6 @@ const TabPanel = ({ children, value, index }) => {
 const DataMasterPage = () => {
     const [activeTab, setActiveTab] = useState(0);
 
-    // Daftar tab untuk memudahkan pengelolaan
     const tabs = [
         { label: 'Jenjang Pendidikan', component: <JenjangPendidikanTab /> },
         { label: 'Jabatan', component: <JabatanTab /> },
@@ -38,11 +45,16 @@ const DataMasterPage = () => {
 
             <div className="tabs-container">
                 {/* Tampilan Tab untuk Desktop */}
-                <div className="tabs-header">
+                <div className="tabs-header" role="tablist" aria-label="Data master tabs">
                     {tabs.map((tab, index) => (
-                        <button 
+                        <button
                             key={index}
-                            className={activeTab === index ? 'active' : ''} 
+                            type="button"                               // penting: hindari submit default
+                            id={`tab-${index}`}
+                            role="tab"
+                            aria-selected={activeTab === index}
+                            aria-controls={`tabpanel-${index}`}
+                            className={activeTab === index ? 'active' : ''}
                             onClick={() => handleTabChange(index)}
                         >
                             {tab.label}
@@ -52,7 +64,12 @@ const DataMasterPage = () => {
 
                 {/* Tampilan Dropdown untuk Mobile */}
                 <div className="tabs-dropdown-container">
-                    <select className="tabs-dropdown" value={activeTab} onChange={handleDropdownChange}>
+                    <select
+                        className="tabs-dropdown"
+                        value={activeTab}
+                        onChange={handleDropdownChange}
+                        aria-label="Pilih tab"
+                    >
                         {tabs.map((tab, index) => (
                             <option key={index} value={index}>
                                 {tab.label}

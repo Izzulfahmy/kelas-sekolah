@@ -14,10 +14,8 @@ import SchoolProfilePage from '../../pages/admin/SchoolProfilePage';
 import TeacherDataPage from '../../pages/admin/TeacherDataPage';
 import StudentDataPage from '../../pages/admin/StudentDataPage';
 import DataMasterPage from '../../pages/admin/DataMasterPage';
-// --- TAMBAHKAN IMPORT YANG HILANG DI SINI ---
 import PlaceholderPage from '../../pages/admin/PlaceholderPage';
 
-// Import halaman baru untuk akademik
 import CurriculumPage from '../../pages/admin/CurriculumPage';
 import MataPelajaranPage from '../../pages/admin/MataPelajaranPage';
 import ExtracurricularPage from '../../pages/admin/ExtracurricularPage';
@@ -25,7 +23,6 @@ import ExtracurricularPage from '../../pages/admin/ExtracurricularPage';
 const AdminLayout = () => {
     const navigate = useNavigate();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    
     const [openSubmenus, setOpenSubmenus] = useState({});
 
     const handleLogout = () => {
@@ -161,7 +158,6 @@ const AdminLayout = () => {
                         <Route path="profil-sekolah" element={<SchoolProfilePage />} />
                         <Route path="tahun-pelajaran" element={<PlaceholderPage title="Tahun Pelajaran" />} />
                         
-                        {/* Ganti placeholder dengan komponen asli */}
                         <Route path="kurikulum" element={<CurriculumPage />} />
                         <Route path="mata-pelajaran" element={<MataPelajaranPage />} />
                         <Route path="ekstrakurikuler" element={<ExtracurricularPage />} />

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import api from '../../api';
 import toast from 'react-hot-toast';
-import './StudentDataPage.css'; // Gunakan CSS khusus siswa
+import { FaPencilAlt, FaTrash } from 'react-icons/fa';
+import './StudentDataPage.css';
 
 // Fungsi helper untuk format tanggal
 const formatDateForInput = (dateString) => {
@@ -17,7 +18,6 @@ const StudentDataPage = () => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [deletingStudent, setDeletingStudent] = useState(null);
 
-    // State awal yang lengkap untuk form siswa
     const initialFormState = {
         nama_lengkap: '',
         nama_panggilan: '',
@@ -43,6 +43,7 @@ const StudentDataPage = () => {
     };
     const [formData, setFormData] = useState(initialFormState);
 
+    // --- Ambil data siswa dari API
     const fetchStudents = useCallback(async () => {
         setLoading(true);
         try {
@@ -62,6 +63,7 @@ const StudentDataPage = () => {
         fetchStudents();
     }, [fetchStudents]);
 
+    // --- Modal Tambah/Edit
     const openModal = (student = null) => {
         if (student) {
             setEditingStudent(student);
@@ -75,8 +77,10 @@ const StudentDataPage = () => {
 
     const closeModal = () => {
         setIsModalOpen(false);
+        setEditingStudent(null);
     };
 
+    // --- Form
     const handleFormChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -104,6 +108,7 @@ const StudentDataPage = () => {
         closeModal();
     };
 
+    // --- Modal Delete
     const openDeleteModal = (student) => {
         setDeletingStudent(student);
         setIsDeleteModalOpen(true);
@@ -133,7 +138,7 @@ const StudentDataPage = () => {
     };
     
     return (
-        <div className="data-page-container">
+        <div className="student-page data-page-container">
             <div className="page-header">
                 <h1>Data Siswa</h1>
                 <button className="btn-add" onClick={() => openModal()}>+ Tambah Siswa</button>
@@ -152,27 +157,48 @@ const StudentDataPage = () => {
                     </thead>
                     <tbody>
                         {loading ? (
-                            <tr><td colSpan="5">Memuat data...</td></tr>
-                        ) : (
+                            <tr><td colSpan="5" style={{ textAlign: 'center' }}>Memuat data...</td></tr>
+                        ) : students.length > 0 ? (
                             students.map((student, index) => (
                                 <tr key={student.id}>
                                     <td data-label="No">{index + 1}</td>
                                     <td data-label="Nama Siswa">{student.nama_lengkap}</td>
                                     <td data-label="NISN">{student.nisn}</td>
-                                    <td data-label="Status"><span className={`status ${student.status_siswa.toLowerCase()}`}>{student.status_siswa}</span></td>
+                                    <td data-label="Status">
+                                        <span className={`status ${student.status_siswa.toLowerCase()}`}>
+                                            {student.status_siswa}
+                                        </span>
+                                    </td>
                                     <td data-label="Aksi" className="actions-cell">
                                         <div className="action-buttons">
-                                            <button className="btn-edit" onClick={() => openModal(student)}>Edit</button>
-                                            <button className="btn-delete" onClick={() => openDeleteModal(student)}>Delete</button>
+                                            <button
+                                                type="button"
+                                                className="btn-edit btn-icon"
+                                                title="Edit"
+                                                onClick={() => openModal(student)}
+                                            >
+                                                <FaPencilAlt />
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className="btn-delete btn-icon"
+                                                title="Delete"
+                                                onClick={() => openDeleteModal(student)}
+                                            >
+                                                <FaTrash />
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
                             ))
+                        ) : (
+                            <tr><td colSpan="5" style={{ textAlign: 'center' }}>Tidak ada data siswa.</td></tr>
                         )}
                     </tbody>
                 </table>
             </div>
 
+            {/* Modal Form */}
             {isModalOpen && (
                 <div className="modal-overlay">
                     <div className="modal-content large">
@@ -182,11 +208,20 @@ const StudentDataPage = () => {
                             <fieldset>
                                 <legend>Data Pribadi & Akun</legend>
                                 <div className="form-grid">
-                                    <div className="form-group"><label>Nama Lengkap<span className="required-asterisk">*</span></label><input name="nama_lengkap" value={formData.nama_lengkap || ''} onChange={handleFormChange} required /></div>
+                                    <div className="form-group">
+                                        <label>Nama Lengkap<span className="required-asterisk">*</span></label>
+                                        <input name="nama_lengkap" value={formData.nama_lengkap || ''} onChange={handleFormChange} required />
+                                    </div>
                                     {!editingStudent && (
                                         <>
-                                            <div className="form-group"><label>Username<span className="required-asterisk">*</span></label><input name="username" value={formData.username || ''} onChange={handleFormChange} required /></div>
-                                            <div className="form-group"><label>Password<span className="required-asterisk">*</span></label><input type="password" name="password" value={formData.password || ''} onChange={handleFormChange} required /></div>
+                                            <div className="form-group">
+                                                <label>Username<span className="required-asterisk">*</span></label>
+                                                <input name="username" value={formData.username || ''} onChange={handleFormChange} required />
+                                            </div>
+                                            <div className="form-group">
+                                                <label>Password<span className="required-asterisk">*</span></label>
+                                                <input type="password" name="password" value={formData.password || ''} onChange={handleFormChange} required />
+                                            </div>
                                         </>
                                     )}
                                     <div className="form-group"><label>Nama Panggilan</label><input name="nama_panggilan" value={formData.nama_panggilan || ''} onChange={handleFormChange} /></div>
@@ -228,9 +263,10 @@ const StudentDataPage = () => {
                 </div>
             )}
 
+            {/* Modal Delete */}
             {isDeleteModalOpen && (
-                 <div className="modal-overlay">
-                    <div className="modal-content">
+                <div className="modal-overlay">
+                    <div className="modal-content modal-confirm">
                         <button className="modal-close-button" onClick={closeDeleteModal}>&times;</button>
                         <h2>Konfirmasi Hapus</h2>
                         <p>Apakah Anda yakin ingin menghapus data dan akun siswa: <strong>{deletingStudent?.nama_lengkap}</strong>?</p>
