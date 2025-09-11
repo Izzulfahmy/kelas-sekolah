@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"kelas-sekolah/backend/config"
+	"kelas-sekolah/backend/internal/academicyear"
 	"kelas-sekolah/backend/internal/auth"
 	"kelas-sekolah/backend/internal/curriculum"
 	"kelas-sekolah/backend/internal/educationlevel"
@@ -34,6 +35,7 @@ func main() {
 	curriculumRepository := curriculum.NewRepository(db)
 	matapelajaranRepository := matapelajaran.NewRepository(db)
 	extracurricularRepository := extracurricular.NewRepository(db)
+	academicYearRepository := academicyear.NewRepository(db) // <-- Repo baru
 
 	// Inisialisasi Service
 	authService := auth.NewService(userRepository, teacherRepository, studentRepository)
@@ -47,6 +49,7 @@ func main() {
 	curriculumHandler := curriculum.NewHandler(curriculumRepository)
 	matapelajaranHandler := matapelajaran.NewHandler(matapelajaranRepository)
 	extracurricularHandler := extracurricular.NewHandler(extracurricularRepository)
+	academicYearHandler := academicyear.NewHandler(academicYearRepository) // <-- Handler baru
 	authHandler := auth.NewHandler(authService)
 	profileHandler := profile.NewHandler(userRepository)
 	schoolHandler := school.NewHandler(schoolRepository)
@@ -131,6 +134,12 @@ func main() {
 		adminApi.POST("/extracurriculars", extracurricularHandler.CreateExtracurricular)
 		adminApi.PUT("/extracurriculars/:id", extracurricularHandler.UpdateExtracurricular)
 		adminApi.DELETE("/extracurriculars/:id", extracurricularHandler.DeleteExtracurricular)
+
+		// Tahun Ajaran (Academic Year) <-- Rute baru
+		adminApi.GET("/academic-years", academicYearHandler.GetAllAcademicYears)
+		adminApi.POST("/academic-years", academicYearHandler.CreateAcademicYear)
+		adminApi.PUT("/academic-years/:id", academicYearHandler.UpdateAcademicYear)
+		adminApi.DELETE("/academic-years/:id", academicYearHandler.DeleteAcademicYear)
 	}
 
 	// Buat admin default jika belum ada

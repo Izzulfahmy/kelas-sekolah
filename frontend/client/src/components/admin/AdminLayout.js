@@ -20,6 +20,9 @@ import CurriculumPage from '../../pages/admin/CurriculumPage';
 import MataPelajaranPage from '../../pages/admin/MataPelajaranPage';
 import ExtracurricularPage from '../../pages/admin/ExtracurricularPage';
 
+// --- Import Halaman Baru ---
+import AcademicYearPage from '../../pages/admin/AcademicYearPage';
+
 const AdminLayout = () => {
     const navigate = useNavigate();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -156,7 +159,8 @@ const AdminLayout = () => {
                     <Routes>
                         <Route path="/" element={<AdminDashboardPage />} />
                         <Route path="profil-sekolah" element={<SchoolProfilePage />} />
-                        <Route path="tahun-pelajaran" element={<PlaceholderPage title="Tahun Pelajaran" />} />
+                        {/* --- GANTI PLACEHOLDER DENGAN HALAMAN TAHUN PELAJARAN --- */}
+                        <Route path="tahun-pelajaran" element={<AcademicYearPage />} />
                         
                         <Route path="kurikulum" element={<CurriculumPage />} />
                         <Route path="mata-pelajaran" element={<MataPelajaranPage />} />
