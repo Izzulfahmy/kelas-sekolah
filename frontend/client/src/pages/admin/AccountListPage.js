@@ -134,7 +134,7 @@ const AccountListPage = ({ role }) => {
                         <button className="modal-close-button" onClick={closeResetModal} aria-label="Tutup">
                             &times;
                         </button>
-                        <h2>Edit Akun: {resettingUser?.username}</h2>
+                        <h2>Edit Akun</h2>
                         <form onSubmit={handleResetPassword} className="data-form">
                             <div className="form-group">
                                 <label>Username</label>
