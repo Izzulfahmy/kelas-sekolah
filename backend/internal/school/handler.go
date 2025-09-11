@@ -1,7 +1,9 @@
+// kelas-sekolah/backend/internal/school/handler.go
+
 package school
 
 import (
-	"kelas-sekolah/backend/internal/educationlevel" // Pastikan import ini ada
+	"kelas-sekolah/backend/internal/educationlevel"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -15,12 +17,12 @@ func NewHandler(repository Repository) *handler {
 	return &handler{repository}
 }
 
+// Struct input ini tidak lagi mengandung 'KepalaSekolah'
 type UpdateProfileInput struct {
 	NamaSekolah   string `json:"nama_sekolah"`
 	NPSN          string `json:"npsn"`
 	JenjangID     *uint  `json:"jenjang_id"`
 	Naungan       string `json:"naungan"`
-	KepalaSekolah string `json:"kepala_sekolah"`
 	Alamat        string `json:"alamat"`
 	Kelurahan     string `json:"kelurahan"`
 	Kecamatan     string `json:"kecamatan"`
@@ -54,11 +56,11 @@ func (h *handler) UpdateSchoolProfile(c *gin.Context) {
 		return
 	}
 
+	// Update field dari input, KECUALI kepala sekolah
 	existingProfile.NamaSekolah = input.NamaSekolah
 	existingProfile.NPSN = input.NPSN
 	existingProfile.JenjangID = input.JenjangID
 	existingProfile.Naungan = input.Naungan
-	existingProfile.KepalaSekolah = input.KepalaSekolah
 	existingProfile.Alamat = input.Alamat
 	existingProfile.Kelurahan = input.Kelurahan
 	existingProfile.Kecamatan = input.Kecamatan
@@ -69,9 +71,7 @@ func (h *handler) UpdateSchoolProfile(c *gin.Context) {
 	existingProfile.Email = input.Email
 	existingProfile.Website = input.Website
 
-	// --- PERBAIKAN UTAMA DI SINI ---
-	// Kosongkan data relasi Jenjang sebelum menyimpan.
-	// Ini memaksa GORM untuk hanya menggunakan JenjangID yang baru.
+	// Kosongkan relasi Jenjang untuk memastikan GORM menggunakan JenjangID
 	existingProfile.Jenjang = educationlevel.EducationLevel{}
 
 	updatedProfile, err := h.repository.UpdateProfile(existingProfile)
