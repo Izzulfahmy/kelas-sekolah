@@ -111,29 +111,28 @@
     background-color: #f1f3f5;
 }
 
-/* Tombol Aksi */
+/* --- Tombol Aksi --- */
 .data-master-container .action-buttons {
     display: flex;
     gap: 0.5rem;
     justify-content: flex-end;
 }
-.data-master-container .action-buttons button {
-    padding: 6px 12px;
-    border: none;
-    border-radius: 4px; /* Sudut membulat biasa, bukan lingkaran */
-    cursor: pointer;
-    color: white;
-    font-size: 0.85rem;
-    font-weight: 500;
-}
 .data-master-container .btn-icon {
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 0;
-    font-size: 0.9rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #fff;
+    transition: background-color 0.2s, transform 0.1s;
+}
+.data-master-container .btn-icon:hover {
+    transform: translateY(-2px);
 }
 .data-master-container .btn-edit {
     background-color: #007bff;
@@ -224,9 +223,9 @@
     }
     
     .data-master-container .action-buttons .btn-icon {
-        width: 32px;
-        height: 32px;
-        font-size: 1.1rem;
+        width: 34px;
+        height: 34px;
+        font-size: 1rem;
     }
 }
 
@@ -243,7 +242,6 @@
     align-items: center;
     z-index: 1000;
 }
-
 .data-master-container .modal-content {
     background-color: #fff;
     padding: 2rem;
@@ -254,25 +252,21 @@
     position: relative;
     animation: zoomIn 0.3s ease-out;
 }
-
 .data-master-container .modal-content h2 {
     margin-top: 0;
     margin-bottom: 1.5rem;
     color: #333;
     font-size: 1.8rem;
 }
-
 .data-master-container .form-group {
     margin-bottom: 1.5rem;
 }
-
 .data-master-container .form-group label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 600;
     color: #555;
 }
-
 .data-master-container .form-group input,
 .data-master-container .form-group select,
 .data-master-container .form-group textarea {
@@ -283,7 +277,6 @@
     font-size: 1rem;
     transition: border-color 0.2s, box-shadow 0.2s;
 }
-
 .data-master-container .form-group input:focus,
 .data-master-container .form-group select:focus,
 .data-master-container .form-group textarea:focus {
@@ -291,14 +284,12 @@
     outline: 0;
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
-
 .data-master-container .modal-actions {
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
     margin-top: 2rem;
 }
-
 .data-master-container .btn-cancel {
     background-color: #6c757d;
     color: white;
@@ -312,7 +303,6 @@
 .data-master-container .btn-cancel:hover {
     background-color: #5a6268;
 }
-
 .data-master-container .btn-save {
     background-color: #007bff;
     color: white;
@@ -326,7 +316,6 @@
 .data-master-container .btn-save:hover {
     background-color: #0056b3;
 }
-
 .data-master-container .modal-close-button {
     position: absolute;
     top: 15px;
@@ -348,25 +337,21 @@
     padding: 2rem 2.5rem;
     max-width: 400px;
 }
-
 .data-master-container .modal-content.modal-confirm h2 {
     font-size: 1.5rem;
     color: #dc3545;
     margin-bottom: 1rem;
 }
-
 .data-master-container .modal-content.modal-confirm p {
     font-size: 1rem;
     color: #555;
     margin-bottom: 2rem;
     line-height: 1.5;
 }
-
 .data-master-container .modal-content.modal-confirm .modal-actions {
     justify-content: center;
     margin-top: 1rem;
 }
-
 .data-master-container .modal-content.modal-confirm .btn-delete {
     background-color: #dc3545;
 }
@@ -374,15 +359,8 @@
     background-color: #c82333;
 }
 
-
 /* --- Animasi Modal --- */
 @keyframes zoomIn {
-    from {
-        transform: scale(0.9);
-        opacity: 0;
-    }
-    to {
-        transform: scale(1);
-        opacity: 1;
-    }
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
 }
