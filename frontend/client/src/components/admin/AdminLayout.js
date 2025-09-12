@@ -20,17 +20,14 @@ import PlaceholderPage from '../../pages/admin/PlaceholderPage';
 import CurriculumPage from '../../pages/admin/CurriculumPage';
 import MataPelajaranPage from '../../pages/admin/MataPelajaranPage';
 import ExtracurricularPage from '../../pages/admin/ExtracurricularPage';
-
-// --- Import Halaman Baru ---
 import AcademicYearPage from '../../pages/admin/AcademicYearPage';
 
 const AdminLayout = () => {
     const navigate = useNavigate();
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Diubah kembali ke false
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [openSubmenus, setOpenSubmenus] = useState({});
-    const [isAccountMenuOpen, setAccountMenuOpen] = useState(false);
+    const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
     const accountMenuRef = useRef(null);
-
 
     const handleLogout = () => {
         localStorage.removeItem('token');
@@ -39,24 +36,21 @@ const AdminLayout = () => {
     };
 
     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+    const toggleAccountMenu = () => setIsAccountMenuOpen(!isAccountMenuOpen);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (accountMenuRef.current && !accountMenuRef.current.contains(event.target)) {
+                setIsAccountMenuOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
     const toggleSubmenu = (menuName) => {
         setOpenSubmenus(prev => ({ ...prev, [menuName]: !prev[menuName] }));
     };
-
-    // Menutup dropdown menu akun jika klik di luar area
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (accountMenuRef.current && !accountMenuRef.current.contains(event.target)) {
-                setAccountMenuOpen(false);
-            }
-        };
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, []);
-
 
     const SubmenuNavLink = ({ to, icon, text }) => (
         <li><NavLink to={to}>{icon}<span>{text}</span></NavLink></li>
@@ -71,8 +65,10 @@ const AdminLayout = () => {
             </div>
 
             <div className="content-wrapper">
+                {isSidebarOpen && <div className="overlay" onClick={toggleSidebar}></div>}
+
                 <aside className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
-                    <div className="sidebar-header"><h2>Admin Panel</h2></div>
+                    <div className="sidebar-header"><h2>Menu Admin</h2></div>
                     <ul className="sidebar-menu">
                         <li><NavLink to="/admin" end><FaTachometerAlt /><span>Dashboard</span></NavLink></li>
                         
@@ -173,10 +169,10 @@ const AdminLayout = () => {
 
                 <main className="main-content">
                     <header className="header">
-                        <button className="hamburger-btn mobile-hamburger" onClick={toggleSidebar}><FaBars /></button>
+                         <button className="hamburger-btn mobile-hamburger" onClick={toggleSidebar}><FaBars /></button>
                         <div className="header-right">
-                            <div className="account-menu" ref={accountMenuRef}>
-                                <button className="account-menu-button" onClick={() => setAccountMenuOpen(!isAccountMenuOpen)}>
+                           <div className="account-menu" ref={accountMenuRef}>
+                                <button onClick={toggleAccountMenu} className="account-menu-button">
                                     <FaUserCircle />
                                 </button>
                                 {isAccountMenuOpen && (
@@ -221,7 +217,6 @@ const AdminLayout = () => {
                     </div>
                 </main>
             </div>
-             {isSidebarOpen && <div className="overlay" onClick={toggleSidebar}></div>}
         </div>
     );
 };

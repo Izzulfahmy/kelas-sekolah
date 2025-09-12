@@ -56,14 +56,18 @@
     height: 56px; /* Tinggi disesuaikan */
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start; /* Diubah menjadi rata kiri */
     padding: 0 20px;
     /* border-bottom: 1px solid #343a40; Dihapus */
     flex-shrink: 0;
     background-color: #181a1b; /* Warna diubah menjadi lebih gelap */
 }
 .admin-layout .sidebar-header h2 {
-    display: none; /* Judul disembunyikan */
+    /* display: none; Judul ditampilkan kembali */
+    margin: 0;
+    font-size: 1.3rem; 
+    color: #ffffff;
+    font-weight: 600;
 }
 .admin-layout .sidebar-menu {
     list-style: none;
