@@ -20,12 +20,12 @@ import CurriculumPage from '../../pages/admin/CurriculumPage';
 import MataPelajaranPage from '../../pages/admin/MataPelajaranPage';
 import ExtracurricularPage from '../../pages/admin/ExtracurricularPage';
 
-// --- Import Halaman Baru ---
 import AcademicYearPage from '../../pages/admin/AcademicYearPage';
 
 const AdminLayout = () => {
     const navigate = useNavigate();
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    // Set sidebar to be open by default on desktop
+    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [openSubmenus, setOpenSubmenus] = useState({});
 
     const handleLogout = () => {
@@ -46,144 +46,153 @@ const AdminLayout = () => {
 
     return (
         <div className="admin-layout">
-            {isSidebarOpen && <div className="overlay" onClick={toggleSidebar}></div>}
+            {isSidebarOpen && window.innerWidth < 768 && <div className="overlay" onClick={toggleSidebar}></div>}
 
-            <aside className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
-                <div className="sidebar-header"><h2>Admin Panel</h2></div>
-                <ul className="sidebar-menu">
-                    <li><NavLink to="/admin" end><FaTachometerAlt /><span>Dashboard</span></NavLink></li>
-                    
-                    <li>
-                        <button onClick={() => toggleSubmenu('sekolah')} className="submenu-toggle">
-                            <span className="menu-item-group"><FaSchool /><span>Manajemen Sekolah</span></span>
-                            <FaChevronDown className={`arrow ${openSubmenus['sekolah'] ? 'open' : ''}`} />
-                        </button>
-                        {openSubmenus['sekolah'] && (
-                            <ul className="submenu">
-                                <SubmenuNavLink to="/admin/profil-sekolah" icon={<FaSchool />} text="Profil Sekolah" />
-                                <SubmenuNavLink to="/admin/tahun-pelajaran" icon={<FaCalendarAlt />} text="Tahun Pelajaran" />
-                            </ul>
-                        )}
-                    </li>
+            <div className="icon-bar">
+                <button className="hamburger-btn icon-bar-btn" onClick={toggleSidebar}>
+                    <FaBars />
+                </button>
+                {/* Other icons can be placed here in the future */}
+            </div>
 
-                    <li>
-                        <button onClick={() => toggleSubmenu('akademik')} className="submenu-toggle">
-                            <span className="menu-item-group"><FaBook /><span>Manajemen Akademik</span></span>
-                            <FaChevronDown className={`arrow ${openSubmenus['akademik'] ? 'open' : ''}`} />
-                        </button>
-                        {openSubmenus['akademik'] && (
-                            <ul className="submenu">
-                                <SubmenuNavLink to="/admin/kurikulum" icon={<FaBook />} text="Kurikulum" />
-                                <SubmenuNavLink to="/admin/mata-pelajaran" icon={<FaClipboardList />} text="Mata Pelajaran" />
-                                <SubmenuNavLink to="/admin/manajemen-kelas" icon={<FaUsersCog />} text="Manajemen Kelas" />
-                                <SubmenuNavLink to="/admin/ekstrakurikuler" icon={<FaFutbol />} text="Ekstrakurikuler" />
-                                <SubmenuNavLink to="/admin/skema-penilaian" icon={<FaCheckDouble />} text="Skema Penilaian" />
-                            </ul>
-                        )}
-                    </li>
-
-                    <li>
-                        <button onClick={() => toggleSubmenu('pengguna')} className="submenu-toggle">
-                            <span className="menu-item-group"><FaUsers /><span>Manajemen Pengguna</span></span>
-                            <FaChevronDown className={`arrow ${openSubmenus['pengguna'] ? 'open' : ''}`} />
-                        </button>
-                        {openSubmenus['pengguna'] && (
-                            <ul className="submenu">
-                                <SubmenuNavLink to="/admin/data-guru" icon={<FaUserTie />} text="Data Guru" />
-                                <SubmenuNavLink to="/admin/data-siswa" icon={<FaUserGraduate />} text="Data Siswa" />
-                                <li>
-                                    <button onClick={() => toggleSubmenu('akun')} className="submenu-toggle nested">
-                                        <span className="menu-item-group"><FaUserShield/><span>Akun Pengguna</span></span>
-                                        <FaChevronDown className={`arrow ${openSubmenus['akun'] ? 'open' : ''}`} />
-                                    </button>
-                                    {openSubmenus['akun'] && (
-                                        <ul className="submenu nested-submenu">
-                                            <SubmenuNavLink to="/admin/akun/admin" icon={<FaUserShield />} text="Admin" />
-                                            <SubmenuNavLink to="/admin/akun/guru" icon={<FaChalkboardTeacher />} text="Guru" />
-                                            <SubmenuNavLink to="/admin/akun/siswa" icon={<FaUserGraduate />} text="Siswa" />
-                                        </ul>
-                                    )}
-                                </li>
-                            </ul>
-                        )}
-                    </li>
-                    
-                    <li>
-                        <button onClick={() => toggleSubmenu('aktivitas')} className="submenu-toggle">
-                            <span className="menu-item-group"><FaTasks /><span>Aktivitas & Penilaian</span></span>
-                            <FaChevronDown className={`arrow ${openSubmenus['aktivitas'] ? 'open' : ''}`} />
-                        </button>
-                        {openSubmenus['aktivitas'] && (
-                            <ul className="submenu">
-                                <li>
-                                    <button onClick={() => toggleSubmenu('kehadiran')} className="submenu-toggle nested">
-                                        <span className="menu-item-group"><FaUserCheck /><span>Kehadiran</span></span>
-                                        <FaChevronDown className={`arrow ${openSubmenus['kehadiran'] ? 'open' : ''}`} />
-                                    </button>
-                                    {openSubmenus['kehadiran'] && (
-                                        <ul className="submenu nested-submenu">
-                                            <SubmenuNavLink to="/admin/kehadiran/siswa" text="Siswa" />
-                                            <SubmenuNavLink to="/admin/kehadiran/guru" text="Guru" />
-                                        </ul>
-                                    )}
-                                </li>
-                                <SubmenuNavLink to="/admin/pembiayaan" icon={<FaFileInvoiceDollar />} text="Pembiayaan" />
-                                <SubmenuNavLink to="/admin/cbt" icon={<FaLaptopCode />} text="CBT" />
-                                <SubmenuNavLink to="/admin/raport" icon={<FaPrint />} text="Raport" />
-                            </ul>
-                        )}
-                    </li>
-
-                    <li>
-                        <button onClick={() => toggleSubmenu('pengaturan')} className="submenu-toggle">
-                            <span className="menu-item-group"><FaCog /><span>Pengaturan Lanjutan</span></span>
-                            <FaChevronDown className={`arrow ${openSubmenus['pengaturan'] ? 'open' : ''}`} />
-                        </button>
-                        {openSubmenus['pengaturan'] && (
-                            <ul className="submenu">
-                                <SubmenuNavLink to="/admin/pengaturan/data-master" icon={<FaDatabase />} text="Data Master" />
-                            </ul>
-                        )}
-                    </li>
-                </ul>
-            </aside>
-
-            <main className="main-content">
-                <header className="header">
-                    <button className="hamburger-btn" onClick={toggleSidebar}><FaBars /></button>
-                    <div className="header-right">
-                        <button onClick={handleLogout} className="logout-button"><FaSignOutAlt /><span>Logout</span></button>
-                    </div>
-                </header>
-                <div className="content-area">
-                    <Routes>
-                        <Route path="/" element={<AdminDashboardPage />} />
-                        <Route path="profil-sekolah" element={<SchoolProfilePage />} />
-                        {/* --- GANTI PLACEHOLDER DENGAN HALAMAN TAHUN PELAJARAN --- */}
-                        <Route path="tahun-pelajaran" element={<AcademicYearPage />} />
+            {/* ======= Wrapper Baru untuk Sidebar dan Konten Utama ======= */}
+            <div className="content-wrapper">
+                <aside className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
+                    <div className="sidebar-header"><h2>Admin Panel</h2></div>
+                    <ul className="sidebar-menu">
+                        <li><NavLink to="/admin" end><FaTachometerAlt /><span>Dashboard</span></NavLink></li>
                         
-                        <Route path="kurikulum" element={<CurriculumPage />} />
-                        <Route path="mata-pelajaran" element={<MataPelajaranPage />} />
-                        <Route path="ekstrakurikuler" element={<ExtracurricularPage />} />
+                        <li>
+                            <button onClick={() => toggleSubmenu('sekolah')} className="submenu-toggle">
+                                <span className="menu-item-group"><FaSchool /><span>Manajemen Sekolah</span></span>
+                                <FaChevronDown className={`arrow ${openSubmenus['sekolah'] ? 'open' : ''}`} />
+                            </button>
+                            {openSubmenus['sekolah'] && (
+                                <ul className="submenu">
+                                    <SubmenuNavLink to="/admin/profil-sekolah" icon={<FaSchool />} text="Profil Sekolah" />
+                                    <SubmenuNavLink to="/admin/tahun-pelajaran" icon={<FaCalendarAlt />} text="Tahun Pelajaran" />
+                                </ul>
+                            )}
+                        </li>
 
-                        <Route path="manajemen-kelas" element={<PlaceholderPage title="Manajemen Kelas" />} />
-                        <Route path="skema-penilaian" element={<PlaceholderPage title="Skema Penilaian" />} />
-                        <Route path="data-guru" element={<TeacherDataPage />} />
-                        <Route path="data-siswa" element={<StudentDataPage />} />
-                        <Route path="akun/admin" element={<AccountListPage role="admin" />} />
-                        <Route path="akun/guru" element={<AccountListPage role="guru" />} />
-                        <Route path="akun/siswa" element={<AccountListPage role="siswa" />} />
-                        <Route path="kehadiran/siswa" element={<PlaceholderPage title="Kehadiran Siswa" />} />
-                        <Route path="kehadiran/guru" element={<PlaceholderPage title="Kehadiran Guru" />} />
-                        <Route path="pembiayaan" element={<PlaceholderPage title="Pembiayaan" />} />
-                        <Route path="cbt" element={<PlaceholderPage title="CBT (Computer-Based Test)" />} />
-                        <Route path="raport" element={<PlaceholderPage title="Raport" />} />
-                        <Route path="pengaturan/data-master" element={<DataMasterPage />} />
-                    </Routes>
-                </div>
-            </main>
+                        <li>
+                            <button onClick={() => toggleSubmenu('akademik')} className="submenu-toggle">
+                                <span className="menu-item-group"><FaBook /><span>Manajemen Akademik</span></span>
+                                <FaChevronDown className={`arrow ${openSubmenus['akademik'] ? 'open' : ''}`} />
+                            </button>
+                            {openSubmenus['akademik'] && (
+                                <ul className="submenu">
+                                    <SubmenuNavLink to="/admin/kurikulum" icon={<FaBook />} text="Kurikulum" />
+                                    <SubmenuNavLink to="/admin/mata-pelajaran" icon={<FaClipboardList />} text="Mata Pelajaran" />
+                                    <SubmenuNavLink to="/admin/manajemen-kelas" icon={<FaUsersCog />} text="Manajemen Kelas" />
+                                    <SubmenuNavLink to="/admin/ekstrakurikuler" icon={<FaFutbol />} text="Ekstrakurikuler" />
+                                    <SubmenuNavLink to="/admin/skema-penilaian" icon={<FaCheckDouble />} text="Skema Penilaian" />
+                                </ul>
+                            )}
+                        </li>
+
+                        <li>
+                            <button onClick={() => toggleSubmenu('pengguna')} className="submenu-toggle">
+                                <span className="menu-item-group"><FaUsers /><span>Manajemen Pengguna</span></span>
+                                <FaChevronDown className={`arrow ${openSubmenus['pengguna'] ? 'open' : ''}`} />
+                            </button>
+                            {openSubmenus['pengguna'] && (
+                                <ul className="submenu">
+                                    <SubmenuNavLink to="/admin/data-guru" icon={<FaUserTie />} text="Data Guru" />
+                                    <SubmenuNavLink to="/admin/data-siswa" icon={<FaUserGraduate />} text="Data Siswa" />
+                                    <li>
+                                        <button onClick={() => toggleSubmenu('akun')} className="submenu-toggle nested">
+                                            <span className="menu-item-group"><FaUserShield/><span>Akun Pengguna</span></span>
+                                            <FaChevronDown className={`arrow ${openSubmenus['akun'] ? 'open' : ''}`} />
+                                        </button>
+                                        {openSubmenus['akun'] && (
+                                            <ul className="submenu nested-submenu">
+                                                <SubmenuNavLink to="/admin/akun/admin" icon={<FaUserShield />} text="Admin" />
+                                                <SubmenuNavLink to="/admin/akun/guru" icon={<FaChalkboardTeacher />} text="Guru" />
+                                                <SubmenuNavLink to="/admin/akun/siswa" icon={<FaUserGraduate />} text="Siswa" />
+                                            </ul>
+                                        )}
+                                    </li>
+                                </ul>
+                            )}
+                        </li>
+                        
+                        <li>
+                            <button onClick={() => toggleSubmenu('aktivitas')} className="submenu-toggle">
+                                <span className="menu-item-group"><FaTasks /><span>Aktivitas & Penilaian</span></span>
+                                <FaChevronDown className={`arrow ${openSubmenus['aktivitas'] ? 'open' : ''}`} />
+                            </button>
+                            {openSubmenus['aktivitas'] && (
+                                <ul className="submenu">
+                                    <li>
+                                        <button onClick={() => toggleSubmenu('kehadiran')} className="submenu-toggle nested">
+                                            <span className="menu-item-group"><FaUserCheck /><span>Kehadiran</span></span>
+                                            <FaChevronDown className={`arrow ${openSubmenus['kehadiran'] ? 'open' : ''}`} />
+                                        </button>
+                                        {openSubmenus['kehadiran'] && (
+                                            <ul className="submenu nested-submenu">
+                                                <SubmenuNavLink to="/admin/kehadiran/siswa" text="Siswa" />
+                                                <SubmenuNavLink to="/admin/kehadiran/guru" text="Guru" />
+                                            </ul>
+                                        )}
+                                    </li>
+                                    <SubmenuNavLink to="/admin/pembiayaan" icon={<FaFileInvoiceDollar />} text="Pembiayaan" />
+                                    <SubmenuNavLink to="/admin/cbt" icon={<FaLaptopCode />} text="CBT" />
+                                    <SubmenuNavLink to="/admin/raport" icon={<FaPrint />} text="Raport" />
+                                </ul>
+                            )}
+                        </li>
+
+                        <li>
+                            <button onClick={() => toggleSubmenu('pengaturan')} className="submenu-toggle">
+                                <span className="menu-item-group"><FaCog /><span>Pengaturan Lanjutan</span></span>
+                                <FaChevronDown className={`arrow ${openSubmenus['pengaturan'] ? 'open' : ''}`} />
+                            </button>
+                            {openSubmenus['pengaturan'] && (
+                                <ul className="submenu">
+                                    <SubmenuNavLink to="/admin/pengaturan/data-master" icon={<FaDatabase />} text="Data Master" />
+                                </ul>
+                            )}
+                        </li>
+                    </ul>
+                </aside>
+
+                <main className="main-content">
+                    <header className="header">
+                        {/* Tombol hamburger untuk mobile, tetap di sini */}
+                        <button className="hamburger-btn mobile-hamburger" onClick={toggleSidebar}><FaBars /></button>
+                        <div className="header-right">
+                            <button onClick={handleLogout} className="logout-button"><FaSignOutAlt /><span>Logout</span></button>
+                        </div>
+                    </header>
+                    <div className="content-area">
+                        <Routes>
+                            <Route path="/" element={<AdminDashboardPage />} />
+                            <Route path="profil-sekolah" element={<SchoolProfilePage />} />
+                            <Route path="tahun-pelajaran" element={<AcademicYearPage />} />
+                            <Route path="kurikulum" element={<CurriculumPage />} />
+                            <Route path="mata-pelajaran" element={<MataPelajaranPage />} />
+                            <Route path="ekstrakurikuler" element={<ExtracurricularPage />} />
+                            <Route path="manajemen-kelas" element={<PlaceholderPage title="Manajemen Kelas" />} />
+                            <Route path="skema-penilaian" element={<PlaceholderPage title="Skema Penilaian" />} />
+                            <Route path="data-guru" element={<TeacherDataPage />} />
+                            <Route path="data-siswa" element={<StudentDataPage />} />
+                            <Route path="akun/admin" element={<AccountListPage role="admin" />} />
+                            <Route path="akun/guru" element={<AccountListPage role="guru" />} />
+                            <Route path="akun/siswa" element={<AccountListPage role="siswa" />} />
+                            <Route path="kehadiran/siswa" element={<PlaceholderPage title="Kehadiran Siswa" />} />
+                            <Route path="kehadiran/guru" element={<PlaceholderPage title="Kehadiran Guru" />} />
+                            <Route path="pembiayaan" element={<PlaceholderPage title="Pembiayaan" />} />
+                            <Route path="cbt" element={<PlaceholderPage title="CBT (Computer-Based Test)" />} />
+                            <Route path="raport" element={<PlaceholderPage title="Raport" />} />
+                            <Route path="pengaturan/data-master" element={<DataMasterPage />} />
+                        </Routes>
+                    </div>
+                </main>
+            </div> {/* Penutup content-wrapper */}
         </div>
     );
 };
 
 export default AdminLayout;
+

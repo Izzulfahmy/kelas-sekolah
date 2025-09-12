@@ -12,6 +12,30 @@
     overflow: hidden;
 }
 
+/* === Bar Vertikal Ikon === */
+.icon-bar {
+    width: 60px;
+    flex-shrink: 0;
+    background-color: #1c1f23;
+    height: 100%;
+    border-right: 1px solid #343a40;
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 20; 
+}
+
+/* === Wrapper untuk Sidebar dan Konten === */
+.content-wrapper {
+    display: flex;
+    flex-grow: 1;
+    width: 100%;
+    overflow: hidden; /* Mencegah konten meluber */
+}
+
+
 /* --- Sidebar Styling --- */
 .sidebar {
     width: 280px;
@@ -20,9 +44,14 @@
     color: #adb5bd;
     display: flex;
     flex-direction: column;
-    transition: transform 0.3s ease-in-out;
-    border-right: 1px solid #dee2e6;
+    transition: margin-left 0.3s ease-in-out;
+    margin-left: 0;
 }
+
+.sidebar:not(.open) {
+    margin-left: -280px;
+}
+
 .sidebar-header {
     height: 65px;
     display: flex;
@@ -119,9 +148,17 @@
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     display: flex;
     align-items: center;
+    justify-content: space-between;
     flex-shrink: 0;
     border-bottom: 1px solid #dee2e6;
 }
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
 .logout-button {
     background: none;
     border: none;
@@ -338,15 +375,33 @@
     color: white;
 }
 
-/* --- Responsive --- */
+/* --- Responsive & Tombol Hamburger --- */
 .hamburger-btn {
-    display: none;
     background: none;
     border: none;
     font-size: 1.5rem;
     cursor: pointer;
-    color: #2c3e50;
+    padding: 8px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
+
+.icon-bar .hamburger-btn {
+    color: #ffffff; /* Warna putih agar kontras */
+}
+
+.icon-bar .hamburger-btn:hover {
+    background-color: #343a40;
+}
+
+.mobile-hamburger {
+    display: none;
+}
+
+.icon-bar-btn {
+    display: block;
+}
+
 .overlay {
     display: none;
     position: fixed;
@@ -355,19 +410,47 @@
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 1040;
 }
+
 @media (max-width: 768px) {
+    .icon-bar {
+        display: none;
+    }
+
+    .content-wrapper {
+        width: 100%;
+        /* Hapus flexbox di mobile agar konten utama mengisi penuh */
+        display: block; 
+    }
+    
     .sidebar {
         position: fixed;
         left: 0; top: 0;
         height: 100%;
         transform: translateX(-100%);
         z-index: 1050;
+        border-right: 1px solid #dee2e6;
+        margin-left: 0;
+        transition: transform 0.3s ease-in-out;
+        width: 280px; /* Pastikan lebar tetap */
     }
-    .sidebar.open { transform: translateX(0); }
-    .main-content { width: 100%; }
-    .header { justify-content: space-between; }
-    .hamburger-btn { display: block; }
-    .overlay { display: block; }
+    
+    .sidebar.open { 
+        transform: translateX(0);
+    }
+
+    /* Hapus .sidebar:not(.open) di mobile karena sudah dihandle transform */
+    
+    .main-content { 
+        width: 100%;
+    }
+    
+    .mobile-hamburger {
+        display: block;
+    }
+    
+    .overlay { 
+        display: block; 
+    }
 
     .page-header {
         flex-direction: column;
@@ -418,3 +501,24 @@
         justify-content: flex-end;
     }
 }
+
+/* =========================================== */
+/* Aturan Tambahan Untuk Memaksa Ikon Terlihat */
+/* =========================================== */
+
+.icon-bar .icon-bar-btn {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+}
+
+.icon-bar .hamburger-btn svg {
+    color: #ffffff !important;
+    fill: currentColor !important; /* Gunakan warna dari parent */
+    width: 24px !important;
+    height: 24px !important;
+    display: block !important;
+}
+
