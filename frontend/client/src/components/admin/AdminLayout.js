@@ -6,7 +6,7 @@ import {
     FaSignOutAlt, FaChevronDown, FaBars, FaSchool, FaCalendarAlt, FaBook, 
     FaClipboardList, FaUsersCog, FaCheckDouble, FaUserCheck, FaFutbol, 
     FaFileInvoiceDollar, FaLaptopCode, FaPrint, FaUserTie, FaCog, FaDatabase, FaTasks,
-    FaUserCircle // <-- Ikon ini sudah ada
+    FaUserCircle
 } from 'react-icons/fa';
 
 import AdminDashboardPage from '../../pages/admin/AdminDashboardPage';
@@ -21,26 +21,15 @@ import CurriculumPage from '../../pages/admin/CurriculumPage';
 import MataPelajaranPage from '../../pages/admin/MataPelajaranPage';
 import ExtracurricularPage from '../../pages/admin/ExtracurricularPage';
 
+// --- Import Halaman Baru ---
 import AcademicYearPage from '../../pages/admin/AcademicYearPage';
 
 const AdminLayout = () => {
     const navigate = useNavigate();
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Diubah kembali ke false
     const [openSubmenus, setOpenSubmenus] = useState({});
-    const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false); 
-    const accountMenuRef = useRef(null); 
-
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (accountMenuRef.current && !accountMenuRef.current.contains(event.target)) {
-                setIsAccountMenuOpen(false);
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [accountMenuRef]);
+    const [isAccountMenuOpen, setAccountMenuOpen] = useState(false);
+    const accountMenuRef = useRef(null);
 
 
     const handleLogout = () => {
@@ -55,20 +44,32 @@ const AdminLayout = () => {
         setOpenSubmenus(prev => ({ ...prev, [menuName]: !prev[menuName] }));
     };
 
+    // Menutup dropdown menu akun jika klik di luar area
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (accountMenuRef.current && !accountMenuRef.current.contains(event.target)) {
+                setAccountMenuOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
+
     const SubmenuNavLink = ({ to, icon, text }) => (
         <li><NavLink to={to}>{icon}<span>{text}</span></NavLink></li>
     );
 
     return (
         <div className="admin-layout">
-            {isSidebarOpen && window.innerWidth < 768 && <div className="overlay" onClick={toggleSidebar}></div>}
-
             <div className="icon-bar">
                 <button className="hamburger-btn icon-bar-btn" onClick={toggleSidebar}>
                     <FaBars />
                 </button>
             </div>
-            
+
             <div className="content-wrapper">
                 <aside className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
                     <div className="sidebar-header"><h2>Admin Panel</h2></div>
@@ -175,14 +176,14 @@ const AdminLayout = () => {
                         <button className="hamburger-btn mobile-hamburger" onClick={toggleSidebar}><FaBars /></button>
                         <div className="header-right">
                             <div className="account-menu" ref={accountMenuRef}>
-                                <button onClick={() => setIsAccountMenuOpen(!isAccountMenuOpen)} className="account-menu-button">
+                                <button className="account-menu-button" onClick={() => setAccountMenuOpen(!isAccountMenuOpen)}>
                                     <FaUserCircle />
                                 </button>
                                 {isAccountMenuOpen && (
                                     <div className="account-dropdown">
                                         <div className="dropdown-profile-info">
-                                            <strong>Admin</strong>
-                                            <small>Lihat Profil</small>
+                                            <strong>Nama Pengguna</strong>
+                                            <small>admin@example.com</small>
                                         </div>
                                         <button onClick={handleLogout} className="logout-button-dropdown">
                                             <FaSignOutAlt />
@@ -198,9 +199,11 @@ const AdminLayout = () => {
                             <Route path="/" element={<AdminDashboardPage />} />
                             <Route path="profil-sekolah" element={<SchoolProfilePage />} />
                             <Route path="tahun-pelajaran" element={<AcademicYearPage />} />
+                            
                             <Route path="kurikulum" element={<CurriculumPage />} />
                             <Route path="mata-pelajaran" element={<MataPelajaranPage />} />
                             <Route path="ekstrakurikuler" element={<ExtracurricularPage />} />
+
                             <Route path="manajemen-kelas" element={<PlaceholderPage title="Manajemen Kelas" />} />
                             <Route path="skema-penilaian" element={<PlaceholderPage title="Skema Penilaian" />} />
                             <Route path="data-guru" element={<TeacherDataPage />} />
@@ -218,6 +221,7 @@ const AdminLayout = () => {
                     </div>
                 </main>
             </div>
+             {isSidebarOpen && <div className="overlay" onClick={toggleSidebar}></div>}
         </div>
     );
 };
