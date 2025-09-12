@@ -6,9 +6,9 @@ import "kelas-sekolah/backend/internal/fase"
 type Curriculum struct {
 	ID            uint        `gorm:"primaryKey" json:"id"`
 	SekolahID     int         `gorm:"column:sekolah_id" json:"sekolah_id"`
-	NamaKurikulum string      `gorm:"column:nama_kurikulum;unique;not null" json:"nama_kurikulum"`
+	NamaKurikulum string      `gorm:"column:nama_kurikulum;not null" json:"nama_kurikulum"`
 	Deskripsi     string      `gorm:"column:deskripsi" json:"deskripsi"`
-	Fases         []fase.Fase `gorm:"foreignKey:KurikulumID" json:"fases,omitempty"` // Tambahkan ini
+	Fases         []fase.Fase `gorm:"foreignKey:KurikulumID" json:"fases"` // Relasi Has Many
 }
 
 // TableName specifies the table name for the Curriculum model.

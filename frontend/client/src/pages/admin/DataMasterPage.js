@@ -2,37 +2,25 @@ import React, { useState } from 'react';
 import './DataMasterPage.css';
 import JenjangPendidikanTab from './tabs/JenjangPendidikanTab';
 import JabatanTab from './tabs/JabatanTab';
-import { FaChevronDown } from 'react-icons/fa';
+import TingkatanTab from './tabs/TingkatanTab'; // <-- Impor Tab Baru
+import { FaChevronDown, FaGraduationCap, FaUserTie, FaLayerGroup } from 'react-icons/fa';
 
 const TabPanel = ({ children, value, index }) => {
-    const panelId = `tabpanel-${index}`;
-    const tabId = `tab-${index}`;
     return (
-        <div
-            role="tabpanel"
-            id={panelId}
-            aria-labelledby={tabId}
-            hidden={value !== index}
-            aria-hidden={value !== index}
-        >
+        <div hidden={value !== index}>
             {value === index && <div className="tab-content">{children}</div>}
         </div>
     );
 };
 
 const DataMasterPage = () => {
-    const [activeTab, setActiveTab] = useState(0);
+    const [activeTab, setActiveTab] = useState(0); // Default ke Tingkatan
 
     const tabs = [
-        { label: 'Jenjang Pendidikan', component: <JenjangPendidikanTab /> },
-        { label: 'Jabatan', component: <JabatanTab /> },
-        { label: 'Daftar Agama', component: <div><h3>Manajemen Daftar Agama</h3><p>Fitur ini sedang dalam pengembangan.</p></div> },
-        { label: 'Kewarganegaraan', component: <div><h3>Manajemen Kewarganegaraan</h3><p>Fitur ini sedang dalam pengembangan.</p></div> },
+        { label: 'Tingkatan Kelas', component: <TingkatanTab />, icon: <FaLayerGroup /> },
+        { label: 'Jabatan', component: <JabatanTab />, icon: <FaUserTie /> },
+        { label: 'Jenjang Pendidikan', component: <JenjangPendidikanTab />, icon: <FaGraduationCap /> },
     ];
-
-    const handleTabChange = (index) => {
-        setActiveTab(index);
-    };
 
     const handleDropdownChange = (event) => {
         setActiveTab(parseInt(event.target.value, 10));
@@ -44,31 +32,24 @@ const DataMasterPage = () => {
             <p>Kelola data referensi statis yang digunakan di seluruh sistem.</p>
 
             <div className="tabs-container">
-                {/* Tampilan Tab untuk Desktop */}
-                <div className="tabs-header" role="tablist" aria-label="Data master tabs">
+                <div className="tabs-header">
                     {tabs.map((tab, index) => (
                         <button
                             key={index}
-                            type="button"                               // penting: hindari submit default
-                            id={`tab-${index}`}
-                            role="tab"
-                            aria-selected={activeTab === index}
-                            aria-controls={`tabpanel-${index}`}
                             className={activeTab === index ? 'active' : ''}
-                            onClick={() => handleTabChange(index)}
+                            onClick={() => setActiveTab(index)}
                         >
-                            {tab.label}
+                            {tab.icon}
+                            <span>{tab.label}</span>
                         </button>
                     ))}
                 </div>
 
-                {/* Tampilan Dropdown untuk Mobile */}
                 <div className="tabs-dropdown-container">
                     <select
                         className="tabs-dropdown"
                         value={activeTab}
                         onChange={handleDropdownChange}
-                        aria-label="Pilih tab"
                     >
                         {tabs.map((tab, index) => (
                             <option key={index} value={index}>
@@ -79,7 +60,6 @@ const DataMasterPage = () => {
                     <FaChevronDown className="dropdown-arrow" />
                 </div>
 
-                {/* Konten Tab */}
                 <div className="tabs-body">
                     {tabs.map((tab, index) => (
                         <TabPanel key={index} value={activeTab} index={index}>
@@ -93,3 +73,4 @@ const DataMasterPage = () => {
 };
 
 export default DataMasterPage;
+

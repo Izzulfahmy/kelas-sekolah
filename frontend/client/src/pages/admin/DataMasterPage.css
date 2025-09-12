@@ -1,4 +1,4 @@
-/* --- Container Utama --- */
+/* === Container Halaman Utama === */
 .data-master-container {
     background-color: #fff;
     padding: 2rem;
@@ -8,16 +8,21 @@
 .data-master-container h1 {
     margin-top: 0;
 }
+.data-master-container p {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    color: #6b7280;
+}
 
-/* --- Tampilan Tab Modern --- */
-.data-master-container .tabs-container {
+/* === Tampilan Tab Modern === */
+.tabs-container {
     margin-top: 2rem;
 }
-.data-master-container .tabs-header {
+.tabs-header {
     display: flex;
     border-bottom: 2px solid #dee2e6;
 }
-.data-master-container .tabs-header button {
+.tabs-header button {
     padding: 1rem 1.5rem;
     border: none;
     background-color: transparent;
@@ -28,19 +33,22 @@
     border-bottom: 3px solid transparent;
     margin-bottom: -2px;
     transition: color 0.2s, border-color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
-.data-master-container .tabs-header button:hover {
+.tabs-header button:hover {
     color: #007bff;
 }
-.data-master-container .tabs-header button.active {
+.tabs-header button.active {
     color: #007bff;
     font-weight: 600;
     border-bottom-color: #007bff;
 }
-.data-master-container .tabs-body {
+.tabs-body {
     padding-top: 1.5rem;
 }
-.data-master-container .tab-content {
+.tab-content {
     animation: fadeIn 0.5s;
 }
 @keyframes fadeIn {
@@ -49,11 +57,12 @@
 }
 
 /* Dropdown untuk Mobile */
-.data-master-container .tabs-dropdown-container {
+.tabs-dropdown-container {
     display: none;
     position: relative;
+    margin-bottom: 1rem;
 }
-.data-master-container .tabs-dropdown {
+.tabs-dropdown {
     width: 100%;
     padding: 1rem;
     font-size: 1rem;
@@ -64,8 +73,9 @@
     -moz-appearance: none;
     appearance: none;
     background-color: #fff;
+    cursor: pointer;
 }
-.data-master-container .dropdown-arrow {
+.dropdown-arrow {
     position: absolute;
     right: 1rem;
     top: 50%;
@@ -74,293 +84,191 @@
     pointer-events: none;
 }
 
-/* --- Tabel Master Data Modern --- */
-.data-master-container .crud-header {
+/* === Style untuk Konten di dalam Tab (CRUD) === */
+.crud-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.5rem;
 }
-.data-master-container .crud-header h3 {
+.crud-header h3 {
     margin: 0;
     font-size: 1.5rem;
 }
-.data-master-container .master-table {
-    width: 100%;
-    border-collapse: collapse;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    overflow: hidden;
-}
-.data-master-container .master-table th, 
-.data-master-container .master-table td {
-    padding: 0.8rem 1rem;
-    border-bottom: 1px solid #dee2e6;
-    text-align: left;
-}
-.data-master-container .master-table tbody tr:last-child td {
-    border-bottom: none;
-}
-.data-master-container .master-table th {
-    background-color: #f8f9fa;
-    font-weight: 600;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-}
-.data-master-container .master-table tbody tr:hover {
-    background-color: #f1f3f5;
-}
-
-/* --- Tombol Aksi --- */
-.data-master-container .action-buttons {
-    display: flex;
-    gap: 0.5rem;
-    justify-content: flex-end;
-}
-.data-master-container .btn-icon {
-    width: 34px;
-    height: 34px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    font-size: 1rem;
+.btn-add {
+    background-color: #3b82f6;
+    color: white;
+    padding: 0.6rem 1.2rem;
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    color: #fff;
-    transition: background-color 0.2s, transform 0.1s;
-}
-.data-master-container .btn-icon:hover {
-    transform: translateY(-2px);
-}
-.data-master-container .btn-edit {
-    background-color: #007bff;
-}
-.data-master-container .btn-edit:hover {
-    background-color: #0056b3;
-}
-.data-master-container .btn-delete {
-    background-color: #dc3545;
-}
-.data-master-container .btn-delete:hover {
-    background-color: #c82333;
+    font-size: 0.9rem;
+    font-weight: 500;
 }
 
-/* --- RESPONSIVE (MEDIA QUERY) --- */
-@media (max-width: 768px) {
-    .data-master-container .tabs-header {
-        display: none;
-    }
-    .data-master-container .tabs-dropdown-container {
-        display: block;
-    }
-
-    .data-master-container .crud-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-    }
-    .data-master-container .crud-header .btn-add {
-        width: 100%;
-    }
-    
-    .data-master-container .master-table {
-        border: none;
-        box-shadow: none;
-        background-color: transparent;
-        border-radius: 0;
-    }
-    .data-master-container .master-table thead {
-        display: none;
-    }
-    .data-master-container .master-table tbody {
-        display: block;
-        width: 100%;
-        border: 1px solid #dee2e6;
-        border-radius: 8px;
-        background-color: #fff;
-    }
-    
-    .data-master-container .master-table tr {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
-        padding: 0.75rem 1rem;
-        border-bottom: 1px solid #dee2e6;
-    }
-    .data-master-container .master-table tbody tr:last-child {
-        border-bottom: none;
-    }
-
-    .data-master-container .master-table td {
-        display: flex;
-        align-items: center;
-        border: none;
-        padding: 0;
-        background-color: transparent !important;
-    }
-    .data-master-container .master-table td:first-child {
-        display: none;
-    }
-    
-    .data-master-container .master-table td:nth-child(2) {
-        flex-grow: 1;
-        font-weight: 500;
-        color: #212529;
-        text-align: left;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        padding-right: 1rem;
-        font-size: 0.95rem;
-    }
-    
-    .data-master-container .master-table td:last-child {
-        flex-shrink: 0;
-        padding-left: 0;
-    }
-    
-    .data-master-container .action-buttons .btn-icon {
-        width: 34px;
-        height: 34px;
-        font-size: 1rem;
-    }
-}
-
-/* --- Modal Styles --- */
-.data-master-container .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
+.master-table {
     width: 100%;
-    height: 100%;
+    border-collapse: collapse;
+}
+.master-table th, .master-table td {
+    padding: 0.8rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+.master-table th {
+    background-color: #f9fafb;
+    font-weight: 600;
+    color: #6b7280;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+.master-table tbody tr:hover {
+    background-color: #f1f3f5;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+.btn-icon {
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+.btn-edit { background-color: #f59e0b; }
+.btn-delete { background-color: #ef4444; }
+
+
+/* === Modal Styles === */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
     background-color: rgba(0, 0, 0, 0.6);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    padding: 1rem;
 }
-.data-master-container .modal-content {
-    background-color: #fff;
+.modal-content {
+    background-color: white;
     padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-    width: 90%;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    width: 100%;
     max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
     position: relative;
-    animation: zoomIn 0.3s ease-out;
+    animation: slide-down 0.3s ease-out;
 }
-.data-master-container .modal-content h2 {
+@keyframes slide-down {
+    from { transform: translateY(-30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+.modal-close-button {
+    position: absolute;
+    top: 15px; right: 15px;
+    background: none; border: none;
+    font-size: 1.8rem; color: #adb5bd;
+    cursor: pointer;
+}
+.modal-content h2 {
+    text-align: center;
     margin-top: 0;
     margin-bottom: 1.5rem;
-    color: #333;
-    font-size: 1.8rem;
+    font-size: 1.5rem; color: #343a40;
 }
-.data-master-container .form-group {
-    margin-bottom: 1.5rem;
+.form-group {
+    margin-bottom: 1.2rem;
 }
-.data-master-container .form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-    color: #555;
+.form-group label {
+    display: block; margin-bottom: 0.5rem;
+    font-weight: 500; color: #495057;
 }
-.data-master-container .form-group input,
-.data-master-container .form-group select,
-.data-master-container .form-group textarea {
-    width: 100%;
-    padding: 0.75rem;
+.form-group input {
+    width: 100%; padding: 0.8rem 1rem;
     border: 1px solid #ced4da;
-    border-radius: 6px;
-    font-size: 1rem;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    border-radius: 6px; font-size: 1rem;
 }
-.data-master-container .form-group input:focus,
-.data-master-container .form-group select:focus,
-.data-master-container .form-group textarea:focus {
-    border-color: #80bdff;
-    outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+.modal-actions {
+    display: flex; justify-content: flex-end;
+    gap: 15px; margin-top: 2rem;
 }
-.data-master-container .modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1rem;
-    margin-top: 2rem;
+.btn-cancel, .btn-save, .modal-confirm .btn-delete {
+    padding: 10px 20px;
+    border: none; border-radius: 6px;
+    cursor: pointer; font-weight: 600;
 }
-.data-master-container .btn-cancel {
-    background-color: #6c757d;
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.2s;
+.btn-cancel {
+    background-color: #ecf0f1; color: #34495e;
 }
-.data-master-container .btn-cancel:hover {
-    background-color: #5a6268;
+.btn-save {
+    background-color: #2ecc71; color: white;
 }
-.data-master-container .btn-save {
-    background-color: #007bff;
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.2s;
+.modal-confirm .btn-delete {
+    background-color: #e74c3c; color: white;
 }
-.data-master-container .btn-save:hover {
-    background-color: #0056b3;
-}
-.data-master-container .modal-close-button {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    color: #999;
-    cursor: pointer;
-    transition: color 0.2s;
-}
-.data-master-container .modal-close-button:hover {
-    color: #333;
+.modal-confirm { text-align: center; }
+.modal-confirm p { font-size: 1.1rem; line-height: 1.6; color: #555; }
+.modal-confirm p strong { color: #34495e; }
+
+
+/* === RESPONSIVE (MEDIA QUERY) === */
+@media (max-width: 768px) {
+    .tabs-header { display: none; }
+    .tabs-dropdown-container { display: block; }
+
+    .crud-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    .crud-header .btn-add {
+        width: 100%;
+    }
+    
+    .master-table {
+        border: none;
+        box-shadow: none;
+        background-color: transparent;
+        border-radius: 0;
+    }
+    .master-table thead { display: none; }
+    .master-table tbody, .master-table tr {
+        display: block; width: 100%;
+    }
+    .master-table tr {
+        margin-bottom: 1rem;
+        border-radius: 8px;
+        background-color: #fff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        padding: 0.5rem 1rem;
+        border: 1px solid #e5e7eb;
+    }
+    .master-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 0;
+        text-align: right;
+        border-bottom: 1px solid #f1f3f5;
+    }
+    .master-table tr td:last-child {
+        border-bottom: none;
+    }
+    .master-table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #6b7280;
+        text-align: left;
+        margin-right: 1rem;
+    }
 }
 
-/* --- Style khusus untuk modal konfirmasi --- */
-.data-master-container .modal-content.modal-confirm {
-    text-align: center;
-    padding: 2rem 2.5rem;
-    max-width: 400px;
-}
-.data-master-container .modal-content.modal-confirm h2 {
-    font-size: 1.5rem;
-    color: #dc3545;
-    margin-bottom: 1rem;
-}
-.data-master-container .modal-content.modal-confirm p {
-    font-size: 1rem;
-    color: #555;
-    margin-bottom: 2rem;
-    line-height: 1.5;
-}
-.data-master-container .modal-content.modal-confirm .modal-actions {
-    justify-content: center;
-    margin-top: 1rem;
-}
-.data-master-container .modal-content.modal-confirm .btn-delete {
-    background-color: #dc3545;
-}
-.data-master-container .modal-content.modal-confirm .btn-delete:hover {
-    background-color: #c82333;
-}
-
-/* --- Animasi Modal --- */
-@keyframes zoomIn {
-    from { transform: scale(0.9); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}

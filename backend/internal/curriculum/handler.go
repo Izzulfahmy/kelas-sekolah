@@ -16,7 +16,8 @@ func NewHandler(repository Repository) *handler {
 }
 
 func (h *handler) GetAllCurriculums(c *gin.Context) {
-	curriculums, err := h.repository.FindAll()
+	// Panggil fungsi yang sudah diperbarui
+	curriculums, err := h.repository.GetAllCurriculums()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch curriculums"})
 		return
@@ -30,7 +31,7 @@ func (h *handler) CreateCurriculum(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
 		return
 	}
-	curr.SekolahID = 1 // Set default
+	curr.SekolahID = 1 // Set default, sesuaikan jika perlu
 	newCurr, err := h.repository.Create(curr)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create curriculum"})
@@ -49,7 +50,7 @@ func (h *handler) UpdateCurriculum(c *gin.Context) {
 	}
 
 	curr.ID = uint(id)
-	curr.SekolahID = 1
+	curr.SekolahID = 1 // Pastikan sekolah_id tidak berubah
 	updatedCurr, err := h.repository.Update(curr)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update curriculum"})

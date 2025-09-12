@@ -50,16 +50,8 @@
     flex-direction: column;
     overflow: hidden;
     transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
-    flex-basis: 50%; /* Ditambahkan: Memberi basis lebar yang sama */
-    flex-grow: 1; /* Ditambahkan: Memungkinkan keduanya membesar */
-}
-
-.master-panel {
-    /* flex: 0 0 340px; Dihapus */
-}
-
-.detail-panel {
-    /* flex-grow: 1; Dihapus */
+    flex-basis: 50%;
+    flex-grow: 1;
 }
 
 /* === PANEL HEADER === */
@@ -126,8 +118,18 @@
     border-color: #aed6f1;
 }
 
-.item-icon { margin-right: 0.8rem; color: var(--primary-color); font-size: 1.3rem; }
-.item-content { flex-grow: 1; display: flex; flex-direction: column; }
+.item-icon { 
+    margin-right: 0.8rem; 
+    color: var(--primary-color); 
+    font-size: 1.3rem; 
+    flex-shrink: 0; /* (DITAMBAHKAN) Mencegah ikon menyusut */
+}
+.item-content { 
+    flex-grow: 1; 
+    display: flex; 
+    flex-direction: column; 
+    min-width: 0; /* (DITAMBAHKAN) Memperbaiki masalah ellipsis pada flexbox */
+}
 .item-title { font-weight: 500; color: var(--text-dark); }
 .master-item.active .item-title { font-weight: 700; }
 .item-subtitle {
@@ -136,9 +138,9 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 250px; /* Diperpanjang agar lebih banyak teks termuat */
+    /* (DIPERBARUI) max-width dihapus agar lebih fleksibel */
 }
-.item-actions { display: flex; gap: 0.5rem; } /* Tombol selalu terlihat */
+.item-actions { display: flex; gap: 0.5rem; }
 .btn-action-icon { background: none; border: none; color: var(--text-light); cursor: pointer; padding: 0.25rem; font-size: 0.9rem; }
 .btn-action-icon:hover { color: var(--text-dark); }
 
@@ -160,6 +162,55 @@
 
 /* === MODAL STYLES === */
 .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background-color:rgba(0,0,0,.6);display:flex;justify-content:center;align-items:center;z-index:1000;padding:1rem}.modal-content{background-color:#fff;padding:1.8rem;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.2);width:100%;max-width:480px;max-height:90vh;overflow-y:auto;position:relative;animation:slide-down .3s ease-out}@keyframes slide-down{from{transform:translateY(-30px);opacity:0}to{transform:translateY(0);opacity:1}}.modal-close-button{position:absolute;top:10px;right:10px;background:0 0;border:none;font-size:1.8rem;color:#adb5bd;cursor:pointer;transition:color .2s}.modal-close-button:hover{color:#495057}.modal-content h2{margin-top:0;margin-bottom:.5rem;font-size:1.5rem;color:#343a40;text-align:center}.modal-subtitle{text-align:center;margin-top:0;margin-bottom:1.5rem;color:var(--text-light);font-size:.9rem}.data-form .form-group{margin-bottom:1.25rem}.data-form label{display:block;margin-bottom:.5rem;font-weight:500;color:#495057;font-size:.9rem}.data-form input,.data-form textarea{width:100%;padding:.7rem .9rem;border:1px solid #ced4da;border-radius:6px;font-size:.95rem;box-sizing:border-box}.modal-actions{display:flex;justify-content:flex-end;gap:.8rem;margin-top:1.8rem}.btn-cancel,.btn-confirm-delete,.btn-save{padding:.6rem 1.2rem;border-radius:6px;border:none;cursor:pointer;font-weight:500;font-size:.9rem}.btn-cancel{background-color:#6c757d;color:#fff}.btn-save{background-color:var(--primary-color);color:#fff}.btn-confirm-delete{background-color:var(--danger-color);color:#fff}.warning-text{color:var(--danger-color);text-align:center;font-size:.9rem;margin-top:1rem}.loading-text{text-align:center;padding:2rem;color:var(--text-light)}
+
+/* === (BARU) MODAL PEMETAAN === */
+.modal-mapping {
+    max-width: 700px;
+}
+.dual-list-box {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+.list-box {
+    flex: 1;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    display: flex;
+    flex-direction: column;
+}
+.list-box h3 {
+    padding: 0.8rem 1rem;
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-medium);
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--bg-light);
+}
+.list-items {
+    padding: 0.5rem;
+    overflow-y: auto;
+    height: 300px;
+}
+.list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+}
+.list-item:hover {
+    background-color: #f1f3f5;
+}
+.list-item svg {
+    color: var(--text-light);
+    font-size: 0.8rem;
+}
+
 
 /* === RESPONSIVE DESIGN === */
 .detail-panel-header-mobile, .panel-header-desktop {
@@ -192,7 +243,7 @@
         box-shadow: none;
         flex: 1 1 100%;
         will-change: transform;
-        flex-basis: 100%; /* Memastikan lebar penuh di mobile */
+        flex-basis: 100%;
     }
 
     .master-detail-layout.detail-visible .master-panel {
@@ -209,7 +260,7 @@
     .detail-panel-header-mobile {
         display: flex;
         align-items: center;
-        justify-content: space-between; /* Membuat item terpisah */
+        justify-content: space-between;
         padding: 0.8rem 1rem;
         border-bottom: 1px solid var(--border-color);
         flex-shrink: 0;
@@ -246,7 +297,6 @@
         padding: 0.5rem;
     }
 
-
     .panel-header-desktop {
         display: none;
     }
@@ -255,9 +305,15 @@
         padding: 1rem;
     }
 
-    /* Menghapus style tabel lama untuk fase */
-    .fase-table {
-        display: none;
+    /* (BARU) Style responsive untuk modal pemetaan */
+    .modal-mapping { 
+        max-width: 100%; 
+    }
+    .dual-list-box { 
+        flex-direction: column; 
+        gap: 1rem; 
+    }
+    .list-items { 
+        height: 150px; 
     }
 }
-
