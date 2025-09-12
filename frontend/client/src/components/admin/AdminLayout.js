@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, useNavigate, Routes, Route } from 'react-router-dom';
 import './AdminLayout.css';
 import { 
     FaTachometerAlt, FaUsers, FaUserShield, FaUserGraduate, FaChalkboardTeacher, 
     FaSignOutAlt, FaChevronDown, FaBars, FaSchool, FaCalendarAlt, FaBook, 
     FaClipboardList, FaUsersCog, FaCheckDouble, FaUserCheck, FaFutbol, 
-    FaFileInvoiceDollar, FaLaptopCode, FaPrint, FaUserTie, FaCog, FaDatabase, FaTasks
+    FaFileInvoiceDollar, FaLaptopCode, FaPrint, FaUserTie, FaCog, FaDatabase, FaTasks,
+    FaUserCircle // <-- Ikon ini sudah ada
 } from 'react-icons/fa';
 
 import AdminDashboardPage from '../../pages/admin/AdminDashboardPage';
@@ -24,9 +25,23 @@ import AcademicYearPage from '../../pages/admin/AcademicYearPage';
 
 const AdminLayout = () => {
     const navigate = useNavigate();
-    // Set sidebar to be open by default on desktop
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [openSubmenus, setOpenSubmenus] = useState({});
+    const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false); 
+    const accountMenuRef = useRef(null); 
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (accountMenuRef.current && !accountMenuRef.current.contains(event.target)) {
+                setIsAccountMenuOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [accountMenuRef]);
+
 
     const handleLogout = () => {
         localStorage.removeItem('token');
@@ -52,10 +67,8 @@ const AdminLayout = () => {
                 <button className="hamburger-btn icon-bar-btn" onClick={toggleSidebar}>
                     <FaBars />
                 </button>
-                {/* Other icons can be placed here in the future */}
             </div>
-
-            {/* ======= Wrapper Baru untuk Sidebar dan Konten Utama ======= */}
+            
             <div className="content-wrapper">
                 <aside className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
                     <div className="sidebar-header"><h2>Admin Panel</h2></div>
@@ -159,10 +172,25 @@ const AdminLayout = () => {
 
                 <main className="main-content">
                     <header className="header">
-                        {/* Tombol hamburger untuk mobile, tetap di sini */}
                         <button className="hamburger-btn mobile-hamburger" onClick={toggleSidebar}><FaBars /></button>
                         <div className="header-right">
-                            <button onClick={handleLogout} className="logout-button"><FaSignOutAlt /><span>Logout</span></button>
+                            <div className="account-menu" ref={accountMenuRef}>
+                                <button onClick={() => setIsAccountMenuOpen(!isAccountMenuOpen)} className="account-menu-button">
+                                    <FaUserCircle />
+                                </button>
+                                {isAccountMenuOpen && (
+                                    <div className="account-dropdown">
+                                        <div className="dropdown-profile-info">
+                                            <strong>Admin</strong>
+                                            <small>Lihat Profil</small>
+                                        </div>
+                                        <button onClick={handleLogout} className="logout-button-dropdown">
+                                            <FaSignOutAlt />
+                                            <span>Logout</span>
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </header>
                     <div className="content-area">
@@ -189,7 +217,7 @@ const AdminLayout = () => {
                         </Routes>
                     </div>
                 </main>
-            </div> {/* Penutup content-wrapper */}
+            </div>
         </div>
     );
 };
