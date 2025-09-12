@@ -1,224 +1,260 @@
-.curriculum-page {
-    padding: 1.5rem;
+/* === FONT, VARIABLES & GLOBAL SETUP === */
+:root {
+    --primary-color: #3498db;
+    --primary-hover: #2980b9;
+    --danger-color: #e74c3c;
+    --text-dark: #2c3e50;
+    --text-medium: #566573;
+    --text-light: #7f8c8d;
+    --bg-light: #f4f7f9;
+    --bg-white: #ffffff;
+    --border-color: #e9ecef;
+    --border-radius: 8px;
+    --shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
-/* --- Header --- */
-.curriculum-page .page-header {
+.curriculum-page {
+    font-family: 'Inter', sans-serif;
+    padding: 1.5rem;
+    background-color: var(--bg-light);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.page-header {
+    margin-bottom: 1.5rem;
+    flex-shrink: 0;
+}
+
+.page-header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+/* === MASTER-DETAIL LAYOUT === */
+.master-detail-layout {
+    display: flex;
+    gap: 1.5rem;
+    flex-grow: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.master-panel, .detail-panel {
+    background: var(--bg-white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+}
+
+.master-panel {
+    flex: 0 0 340px;
+}
+
+.detail-panel {
+    flex-grow: 1;
+}
+
+/* === PANEL HEADER === */
+.panel-header {
+    padding: 0.8rem 1.25rem;
+    border-bottom: 1px solid var(--border-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
-    gap: 1rem;
+    flex-shrink: 0;
 }
-.curriculum-page .page-header h1 {
+
+.panel-header h2 {
     margin: 0;
-    font-size: 1.8rem;
-    color: #343a40;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #34495e;
 }
-.curriculum-page .btn-add {
-    background-color: #007bff; /* biru */
+
+.btn-add-master, .btn-add-detail {
+    background-color: var(--primary-color);
     color: white;
-    padding: 0.75rem 1.5rem;
     border: none;
     border-radius: 6px;
-    cursor: pointer;
-    font-size: 1rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
     font-weight: 500;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
-}
-.curriculum-page .btn-add:hover {
-    background-color: #0056b3;
-    transform: translateY(-2px);
-}
-
-/* --- Table --- */
-.curriculum-page .table-responsive {
-    width: 100%;
-    overflow-x: auto;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-.curriculum-page .data-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-.curriculum-page .data-table th,
-.curriculum-page .data-table td {
-    padding: 1rem 1.2rem;
-    text-align: left;
-    border-bottom: 1px solid #e0e0e0;
-}
-.curriculum-page .data-table th {
-    background-color: #f8f9fa;
-    font-weight: 600;
-    color: #6c757d;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    letter-spacing: 0.5px;
-}
-.curriculum-page .data-table tbody tr:hover {
-    background-color: #f8f9fa;
-}
-
-/* --- Tombol Aksi (Edit & Delete) --- */
-.curriculum-page .action-buttons {
-    display: flex;
-    gap: 0.5rem;
-}
-.curriculum-page .btn-icon {
-    width: 34px;
-    height: 34px;
-    padding: 0;
-    border: none;
-    border-radius: 4px;
     cursor: pointer;
-    color: #fff;
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 0.95rem;
-    transition: background-color 0.2s ease, transform 0.1s ease;
-}
-.curriculum-page .btn-edit {
-    background-color: #007bff;
-}
-.curriculum-page .btn-edit:hover {
-    background-color: #0056b3;
-    transform: translateY(-2px);
-}
-.curriculum-page .btn-delete {
-    background-color: #dc3545;
-}
-.curriculum-page .btn-delete:hover {
-    background-color: #c82333;
-    transform: translateY(-2px);
+    gap: 0.4rem;
+    transition: background-color 0.2s ease;
 }
 
-/* --- Modal --- */
-.curriculum-page .modal-overlay {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-color: rgba(0, 0, 0, 0.6);
-    display: flex; justify-content: center; align-items: center;
-    z-index: 1000; padding: 1rem;
+.btn-add-master:hover, .btn-add-detail:hover {
+    background-color: var(--primary-hover);
 }
-.curriculum-page .modal-content {
-    background-color: white;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    width: 100%; max-width: 600px;
-    max-height: 90vh; overflow-y: auto;
-    position: relative;
+
+/* === MASTER & FASE LIST SHARED STYLES === */
+.master-list {
+    overflow-y: auto;
+    padding: 0.5rem;
+    flex-grow: 1;
 }
-.curriculum-page .modal-close-button {
-    position: absolute; top: 15px; right: 15px;
-    background: none; border: none;
-    font-size: 1.8rem; color: #adb5bd; cursor: pointer;
-    transition: color 0.2s;
-}
-.curriculum-page .modal-close-button:hover {
-    color: #495057;
-}
-.curriculum-page .modal-content h2 {
-    margin-top: 0; margin-bottom: 1.5rem;
-    font-size: 1.6rem; color: #343a40; text-align: center;
-}
-.curriculum-page .data-form .form-group {
+
+.master-item {
     display: flex;
-    flex-direction: column;
-    margin-bottom: 1rem;
-}
-.curriculum-page .data-form .form-group label {
+    align-items: center;
+    padding: 0.8rem;
     margin-bottom: 0.5rem;
-    font-weight: 500;
-    color: #495057;
-}
-.curriculum-page .data-form .form-group input,
-.curriculum-page .data-form .form-group textarea {
-    padding: 0.8rem 1rem;
-    border: 1px solid #ced4da;
-    border-radius: 6px;
-    font-size: 1rem;
-}
-.curriculum-page .modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1rem;
-    margin-top: 1.5rem;
-}
-.curriculum-page .btn-cancel {
-    background-color: #6c757d;
-    color: white;
-    border: none;
+    border-radius: var(--border-radius);
     cursor: pointer;
-    padding: 10px 20px;
-    border-radius: 6px;
-}
-.curriculum-page .btn-save {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-    padding: 10px 20px;
-    border-radius: 6px;
-}
-.curriculum-page .btn-confirm-delete {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    cursor: pointer;
-    padding: 10px 20px;
-    border-radius: 6px;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid transparent;
 }
 
-/* --- Responsive Card View --- */
+.master-item:hover {
+    background-color: #f8f9fa;
+    border-color: var(--border-color);
+}
+
+.master-item.active {
+    background-color: #eaf5ff;
+    border-color: #aed6f1;
+}
+
+.item-icon { margin-right: 0.8rem; color: var(--primary-color); font-size: 1.3rem; }
+.item-content { flex-grow: 1; display: flex; flex-direction: column; }
+.item-title { font-weight: 500; color: var(--text-dark); }
+.master-item.active .item-title { font-weight: 700; }
+.item-subtitle {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px; /* Disesuaikan agar pas */
+}
+.item-actions { display: flex; gap: 0.5rem; } /* Tombol selalu terlihat */
+.btn-action-icon { background: none; border: none; color: var(--text-light); cursor: pointer; padding: 0.25rem; font-size: 0.9rem; }
+.btn-action-icon:hover { color: var(--text-dark); }
+
+/* === DETAIL PANEL CONTENT === */
+.detail-content { padding: 1.25rem; overflow-y: auto; flex-grow: 1; }
+.detail-content h4 { font-size: 1.05rem; color: #34495e; margin-top: 0; margin-bottom: 0.5rem; }
+.detail-content p { color: var(--text-medium); line-height: 1.6; margin-bottom: 1.25rem; font-size: 0.95rem; }
+.detail-content hr { border: 0; border-top: 1px solid var(--border-color); margin: 1.25rem 0; }
+
+/* === EMPTY STATE === */
+.empty-state, .empty-state-full {
+    text-align: center; padding: 2rem; color: var(--text-light);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.empty-state-full { height: 100%; }
+.empty-state p, .empty-state-full p { margin: 0.5rem 0; font-size: 0.9rem; }
+.empty-state-full h2 { color: #34495e; font-size: 1.3rem; }
+.empty-state svg, .empty-state-full svg { margin-bottom: 1rem; }
+
+/* === MODAL STYLES === */
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background-color:rgba(0,0,0,.6);display:flex;justify-content:center;align-items:center;z-index:1000;padding:1rem}.modal-content{background-color:#fff;padding:1.8rem;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.2);width:100%;max-width:480px;max-height:90vh;overflow-y:auto;position:relative;animation:slide-down .3s ease-out}@keyframes slide-down{from{transform:translateY(-30px);opacity:0}to{transform:translateY(0);opacity:1}}.modal-close-button{position:absolute;top:10px;right:10px;background:0 0;border:none;font-size:1.8rem;color:#adb5bd;cursor:pointer;transition:color .2s}.modal-close-button:hover{color:#495057}.modal-content h2{margin-top:0;margin-bottom:.5rem;font-size:1.5rem;color:#343a40;text-align:center}.modal-subtitle{text-align:center;margin-top:0;margin-bottom:1.5rem;color:var(--text-light);font-size:.9rem}.data-form .form-group{margin-bottom:1.25rem}.data-form label{display:block;margin-bottom:.5rem;font-weight:500;color:#495057;font-size:.9rem}.data-form input,.data-form textarea{width:100%;padding:.7rem .9rem;border:1px solid #ced4da;border-radius:6px;font-size:.95rem;box-sizing:border-box}.modal-actions{display:flex;justify-content:flex-end;gap:.8rem;margin-top:1.8rem}.btn-cancel,.btn-confirm-delete,.btn-save{padding:.6rem 1.2rem;border-radius:6px;border:none;cursor:pointer;font-weight:500;font-size:.9rem}.btn-cancel{background-color:#6c757d;color:#fff}.btn-save{background-color:var(--primary-color);color:#fff}.btn-confirm-delete{background-color:var(--danger-color);color:#fff}.warning-text{color:var(--danger-color);text-align:center;font-size:.9rem;margin-top:1rem}.loading-text{text-align:center;padding:2rem;color:var(--text-light)}
+
+/* === RESPONSIVE DESIGN === */
+.detail-panel-header-mobile, .panel-header-desktop {
+    display: none;
+}
+
+@media (min-width: 769px) {
+    .panel-header-desktop {
+        display: flex;
+    }
+}
+
 @media (max-width: 768px) {
-    .curriculum-page { padding: 1rem; }
-    .curriculum-page .page-header { flex-direction: column; align-items: flex-start; }
-    .curriculum-page .btn-add { width: 100%; text-align: center; }
-    .curriculum-page .table-responsive { box-shadow: none; background-color: transparent; }
+    .curriculum-page { padding: 0; }
+    .page-header { padding: 1rem; padding-bottom: 0; }
+    .page-header h1 { font-size: 1.5rem; }
+    
+    .master-detail-layout {
+        gap: 0;
+        overflow-x: hidden;
+    }
 
-    .curriculum-page .data-table,
-    .curriculum-page .data-table tbody,
-    .curriculum-page .data-table tr,
-    .curriculum-page .data-table td {
-        display: block;
+    .master-panel, .detail-panel {
         width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        border-radius: 0;
+        box-shadow: none;
+        flex: 1 1 100%;
+        will-change: transform;
     }
-    .curriculum-page .data-table thead { display: none; }
-    .curriculum-page .data-table tr {
-        margin-bottom: 1rem;
-        border-radius: 8px;
-        background-color: #fff;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        padding: 1rem;
-        border-bottom: none;
+
+    .master-detail-layout.detail-visible .master-panel {
+        transform: translateX(-100%);
+        opacity: 0.5;
     }
-    .curriculum-page .data-table td {
+    .detail-panel {
+        transform: translateX(100%);
+    }
+    .master-detail-layout.detail-visible .detail-panel {
+        transform: translateX(0);
+    }
+
+    .detail-panel-header-mobile {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        padding: 0.6rem 0;
-        border-bottom: 1px solid #f0f0f0;
-        text-align: right;
+        justify-content: space-between; /* Membuat item terpisah */
+        padding: 0.8rem 1rem;
+        border-bottom: 1px solid var(--border-color);
+        flex-shrink: 0;
     }
-    .curriculum-page .data-table td:last-child { border-bottom: none; }
-    .curriculum-page .data-table td::before {
-        content: attr(data-label);
+
+    .btn-back-mobile {
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        color: var(--text-medium);
+        cursor: pointer;
+        padding: 0.5rem;
+    }
+
+    .detail-panel-header-mobile h2 {
+        margin: 0;
+        font-size: 1.1rem;
         font-weight: 600;
-        color: #6c757d;
-        text-align: left;
-        margin-right: 1rem;
-        flex: 1;
+        color: var(--text-dark);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
     }
-    .curriculum-page .aksi-header { display: none; }
-    .curriculum-page .actions-cell::before { display: none; }
-    .curriculum-page .actions-cell {
-        display: flex;
-        justify-content: flex-end;
-        padding-top: 0.8rem;
+    
+    .btn-add-fase-header-mobile {
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        color: var(--primary-color);
+        cursor: pointer;
+        padding: 0.5rem;
+    }
+
+
+    .panel-header-desktop {
+        display: none;
+    }
+
+    .detail-content {
+        padding: 1rem;
+    }
+
+    /* Menghapus style tabel lama untuk fase */
+    .fase-table {
+        display: none;
     }
 }
+

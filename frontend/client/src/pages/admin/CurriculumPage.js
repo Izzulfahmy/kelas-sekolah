@@ -1,24 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import api from '../../api';
 import toast from 'react-hot-toast';
-import { FaPen, FaTrash } from 'react-icons/fa';
+import { FaPen, FaTrash, FaPlus, FaBook, FaLayerGroup, FaArrowLeft } from 'react-icons/fa';
 import './CurriculumPage.css';
 
 const CurriculumPage = () => {
+    // State utama
     const [curriculums, setCurriculums] = useState([]);
+    const [selectedCurriculum, setSelectedCurriculum] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [isFormModalOpen, setIsFormModalOpen] = useState(false);
+
+    // State untuk Modal Kurikulum
+    const [isCurriculumModalOpen, setIsCurriculumModalOpen] = useState(false);
+    const [editingCurriculum, setEditingCurriculum] = useState(null);
+    const [curriculumFormData, setCurriculumFormData] = useState({ nama_kurikulum: '', deskripsi: '' });
+
+    // State untuk Modal Fase
+    const [isFaseModalOpen, setIsFaseModalOpen] = useState(false);
+    const [editingFase, setEditingFase] = useState(null);
+    const [faseFormData, setFaseFormData] = useState({ nama_fase: '', deskripsi: '' });
+
+    // State untuk Modal Konfirmasi Hapus
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [editingData, setEditingData] = useState(null);
-    const [deletingData, setDeletingData] = useState(null);
-    const [formData, setFormData] = useState({ nama_kurikulum: '', deskripsi: '' });
+    const [deletingData, setDeletingData] = useState(null); // { type: 'kurikulum' | 'fase', data: {} }
 
-    // --- Ambil data
-    useEffect(() => {
-        fetchCurriculums();
-    }, []);
-
-    const fetchCurriculums = async () => {
+    // --- Ambil Data Awal ---
+    const fetchCurriculums = useCallback(async () => {
         setIsLoading(true);
         try {
             const token = localStorage.getItem('token');
@@ -26,218 +33,308 @@ const CurriculumPage = () => {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setCurriculums(response.data || []);
-        } catch {
+        } catch (error) {
             toast.error('Gagal mengambil data kurikulum.');
+            console.error(error);
         } finally {
             setIsLoading(false);
         }
+    }, []);
+
+    useEffect(() => {
+        fetchCurriculums();
+    }, [fetchCurriculums]);
+
+    useEffect(() => {
+        if (selectedCurriculum) {
+            const updatedSelection = curriculums.find(c => c.id === selectedCurriculum.id);
+            setSelectedCurriculum(updatedSelection || null);
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [curriculums]);
+
+
+    // --- Handler untuk memilih kurikulum ---
+    const handleSelectCurriculum = (curriculum) => {
+        setSelectedCurriculum(curriculum);
     };
 
-    // --- Modal Tambah/Edit
-    const openFormModal = (data = null) => {
-        setEditingData(data);
-        setFormData(
-            data
-                ? { nama_kurikulum: data.nama_kurikulum, deskripsi: data.deskripsi || '' }
-                : { nama_kurikulum: '', deskripsi: '' }
-        );
-        setIsFormModalOpen(true);
+    // --- Handler untuk Modal Kurikulum ---
+    const openCurriculumModal = (data = null) => {
+        setEditingCurriculum(data);
+        setCurriculumFormData(data ? { nama_kurikulum: data.nama_kurikulum, deskripsi: data.deskripsi || '' } : { nama_kurikulum: '', deskripsi: '' });
+        setIsCurriculumModalOpen(true);
     };
-    const closeFormModal = () => {
-        setIsFormModalOpen(false);
-        setEditingData(null);
-        setFormData({ nama_kurikulum: '', deskripsi: '' });
+    const closeCurriculumModal = () => {
+        setIsCurriculumModalOpen(false);
+        setEditingCurriculum(null);
+    };
+    const handleCurriculumSubmit = async (e) => {
+        e.preventDefault();
+        const token = localStorage.getItem('token');
+        const config = { headers: { Authorization: `Bearer ${token}` } };
+        const promise = editingCurriculum
+            ? api.put(`/api/curriculums/${editingCurriculum.id}`, curriculumFormData, config)
+            : api.post('/api/curriculums', { ...curriculumFormData, sekolah_id: 1 }, config);
+        
+        toast.promise(promise, {
+            loading: 'Menyimpan kurikulum...',
+            success: `Kurikulum berhasil ${editingCurriculum ? 'diperbarui' : 'ditambahkan'}.`,
+            error: 'Gagal menyimpan kurikulum.',
+        });
+
+        try {
+            await promise;
+            fetchCurriculums();
+            closeCurriculumModal();
+        } catch (error) {
+            console.error(error);
+        }
     };
 
-    // --- Modal Hapus
-    const openDeleteModal = (data) => {
-        setDeletingData(data);
+    // --- Handler untuk Modal Fase ---
+    const openFaseModal = (data = null) => {
+        setEditingFase(data);
+        setFaseFormData(data ? { nama_fase: data.nama_fase, deskripsi: data.deskripsi || '' } : { nama_fase: '', deskripsi: '' });
+        setIsFaseModalOpen(true);
+    };
+    const closeFaseModal = () => {
+        setIsFaseModalOpen(false);
+        setEditingFase(null);
+    };
+    const handleFaseSubmit = async (e) => {
+        e.preventDefault();
+        if (!selectedCurriculum) return;
+        const token = localStorage.getItem('token');
+        const config = { headers: { Authorization: `Bearer ${token}` } };
+        
+        const payload = { ...faseFormData, kurikulum_id: selectedCurriculum.id };
+
+        const promise = editingFase
+            ? api.put(`/api/fases/${editingFase.id}`, payload, config)
+            : api.post('/api/fases', payload, config);
+
+        toast.promise(promise, {
+            loading: 'Menyimpan fase...',
+            success: `Fase berhasil ${editingFase ? 'diperbarui' : 'ditambahkan'}.`,
+            error: 'Gagal menyimpan fase.',
+        });
+
+        try {
+            await promise;
+            fetchCurriculums();
+            closeFaseModal();
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    // --- Handler untuk Modal Hapus ---
+    const openDeleteModal = (type, data) => {
+        setDeletingData({ type, data });
         setIsDeleteModalOpen(true);
     };
-    const closeDeleteModal = () => {
-        setDeletingData(null);
-        setIsDeleteModalOpen(false);
-    };
-
-    // --- Simpan
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const token = localStorage.getItem('token');
-            const config = { headers: { Authorization: `Bearer ${token}` } };
-
-            const promise = editingData
-                ? api.put(`/api/curriculums/${editingData.id}`, formData, config)
-                : api.post('/api/curriculums', { ...formData, sekolah_id: 1 }, config);
-
-            await toast.promise(promise.then(() => fetchCurriculums()), {
-                loading: 'Menyimpan data...',
-                success: `Kurikulum berhasil ${editingData ? 'diperbarui' : 'ditambahkan'}!`,
-                error: 'Terjadi kesalahan saat menyimpan.',
-            });
-            closeFormModal();
-        } catch {
-            toast.error('Terjadi kesalahan saat menyimpan.');
-        }
-    };
-
-    // --- Hapus
+    const closeDeleteModal = () => setIsDeleteModalOpen(false);
     const confirmDelete = async () => {
         if (!deletingData) return;
-        try {
-            const token = localStorage.getItem('token');
-            const promise = api
-                .delete(`/api/curriculums/${deletingData.id}`, {
-                    headers: { Authorization: `Bearer ${token}` }
-                })
-                .then(() => fetchCurriculums());
+        
+        const { type, data } = deletingData;
+        const token = localStorage.getItem('token');
+        const config = { headers: { Authorization: `Bearer ${token}` } };
+        const url = type === 'kurikulum' ? `/api/curriculums/${data.id}` : `/api/fases/${data.id}`;
+        const name = type === 'kurikulum' ? data.nama_kurikulum : data.nama_fase;
 
-            await toast.promise(promise, {
-                loading: `Menghapus ${deletingData.nama_kurikulum}...`,
-                success: 'Kurikulum berhasil dihapus!',
-                error: 'Gagal menghapus data.',
-            });
+        const promise = api.delete(url, config);
+        
+        toast.promise(promise, {
+            loading: `Menghapus ${name}...`,
+            success: `${type.charAt(0).toUpperCase() + type.slice(1)} berhasil dihapus.`,
+            error: `Gagal menghapus ${name}.`,
+        });
+
+        try {
+            await promise;
+            if (type === 'kurikulum' && selectedCurriculum?.id === data.id) {
+                setSelectedCurriculum(null);
+            }
+            fetchCurriculums();
             closeDeleteModal();
-        } catch {
-            toast.error('Gagal menghapus data.');
+        } catch (error) {
+            console.error(error);
         }
     };
 
+    const isDetailVisible = selectedCurriculum !== null;
+
     return (
-        <div className="curriculum-page data-page-container">
+        <div className="curriculum-page">
             <div className="page-header">
-                <h1>Manajemen Kurikulum</h1>
-                <button className="btn-add" onClick={() => openFormModal()}>
-                    + Tambah Kurikulum
-                </button>
+                <h1>Manajemen Kurikulum & Fase</h1>
             </div>
 
-            <div className="table-responsive">
-                <table className="data-table">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Nama Kurikulum</th>
-                            <th>Deskripsi</th>
-                            <th className="aksi-header">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {isLoading ? (
-                            <tr>
-                                <td colSpan="4" style={{ textAlign: 'center' }}>
-                                    Memuat data...
-                                </td>
-                            </tr>
-                        ) : curriculums.length > 0 ? (
-                            curriculums.map((item, index) => (
-                                <tr key={item.id}>
-                                    <td data-label="No">{index + 1}</td>
-                                    <td data-label="Nama Kurikulum">{item.nama_kurikulum}</td>
-                                    <td data-label="Deskripsi">{item.deskripsi || '-'}</td>
-                                    <td data-label="Aksi" className="actions-cell">
-                                        <div className="action-buttons">
-                                            <button
-                                                type="button"
-                                                className="btn-edit btn-icon"
-                                                title="Edit"
-                                                onClick={() => openFormModal(item)}
-                                            >
-                                                <FaPen />
-                                            </button>
-                                            <button
-                                                type="button"
-                                                className="btn-delete btn-icon"
-                                                title="Hapus"
-                                                onClick={() => openDeleteModal(item)}
-                                            >
-                                                <FaTrash />
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))
-                        ) : (
-                            <tr>
-                                <td colSpan="4" style={{ textAlign: 'center' }}>
-                                    Tidak ada data.
-                                </td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
-            </div>
-
-            {/* Modal Form */}
-            {isFormModalOpen && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <button className="modal-close-button" onClick={closeFormModal}>
-                            &times;
+            <div className={`master-detail-layout ${isDetailVisible ? 'detail-visible' : ''}`}>
+                {/* Kolom Kiri: Daftar Kurikulum */}
+                <aside className="master-panel">
+                    <div className="panel-header">
+                        <h2>Daftar Kurikulum</h2>
+                        <button className="btn-add-master" onClick={() => openCurriculumModal()}>
+                            <FaPlus /> Tambah
                         </button>
-                        <h2>{editingData ? 'Edit Kurikulum' : 'Tambah Kurikulum Baru'}</h2>
-                        <form onSubmit={handleSubmit} className="data-form">
+                    </div>
+                    <div className="master-list">
+                        {isLoading ? <p className="loading-text">Memuat...</p> : (
+                            curriculums.map(curr => (
+                                <div
+                                    key={curr.id}
+                                    className={`master-item ${selectedCurriculum?.id === curr.id ? 'active' : ''}`}
+                                    onClick={() => handleSelectCurriculum(curr)}
+                                >
+                                    <div className="item-icon"><FaBook /></div>
+                                    <div className="item-content">
+                                        <span className="item-title">{curr.nama_kurikulum}</span>
+                                        <span className="item-subtitle">{curr.deskripsi || 'Tidak ada deskripsi'}</span>
+                                    </div>
+                                    <div className="item-actions">
+                                        <button className="btn-action-icon" onClick={(e) => { e.stopPropagation(); openCurriculumModal(curr); }}><FaPen /></button>
+                                        <button className="btn-action-icon" onClick={(e) => { e.stopPropagation(); openDeleteModal('kurikulum', curr); }}><FaTrash /></button>
+                                    </div>
+                                </div>
+                            ))
+                        )}
+                    </div>
+                </aside>
+
+                {/* Kolom Kanan: Detail & Manajemen Fase */}
+                <main className="detail-panel">
+                    {selectedCurriculum ? (
+                        <>
+                            {/* Header khusus untuk mobile, berisi tombol kembali dan tambah */}
+                            <div className="detail-panel-header-mobile">
+                                <button className="btn-back-mobile" onClick={() => setSelectedCurriculum(null)}>
+                                    <FaArrowLeft />
+                                </button>
+                                <h2>{selectedCurriculum.nama_kurikulum}</h2>
+                                <button className="btn-add-fase-header-mobile" onClick={() => openFaseModal()}>
+                                    <FaPlus />
+                                </button>
+                            </div>
+
+                            {/* Header untuk desktop */}
+                            <div className="panel-header panel-header-desktop">
+                                <h2>Detail: {selectedCurriculum.nama_kurikulum}</h2>
+                                <button className="btn-add-detail" onClick={() => openFaseModal()}>
+                                    <FaPlus /> Tambah Fase
+                                </button>
+                            </div>
+                            
+                            <div className="detail-content">
+                                <h4>Deskripsi Kurikulum</h4>
+                                <p>{selectedCurriculum.deskripsi || 'Tidak ada deskripsi.'}</p>
+                                <hr />
+                                <h4>Daftar Fase</h4>
+                                {selectedCurriculum.fases && selectedCurriculum.fases.length > 0 ? (
+                                    <div className="master-list"> {/* Menggunakan style yang sama dengan daftar kurikulum */}
+                                        {selectedCurriculum.fases.map(fase => (
+                                            <div key={fase.id} className="master-item"> {/* Menggunakan style item yang sama */}
+                                                <div className="item-icon"><FaLayerGroup /></div>
+                                                <div className="item-content">
+                                                    <span className="item-title">{fase.nama_fase}</span>
+                                                    <span className="item-subtitle">{fase.deskripsi || 'Tidak ada deskripsi'}</span>
+                                                </div>
+                                                <div className="item-actions">
+                                                    <button className="btn-action-icon" onClick={() => openFaseModal(fase)}><FaPen /></button>
+                                                    <button className="btn-action-icon" onClick={() => openDeleteModal('fase', fase)}><FaTrash /></button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className="empty-state">
+                                        <FaLayerGroup size={32} />
+                                        <p>Belum ada fase untuk kurikulum ini.</p>
+                                    </div>
+                                )}
+                            </div>
+                        </>
+                    ) : (
+                        <div className="empty-state-full">
+                            <FaBook size={50} />
+                            <h2>Pilih Kurikulum</h2>
+                            <p>Silakan pilih kurikulum dari daftar di sebelah kiri untuk melihat detailnya.</p>
+                        </div>
+                    )}
+                </main>
+            </div>
+
+            {/* MODALS */}
+            {isCurriculumModalOpen && (
+                <div className="modal-overlay" onClick={closeCurriculumModal}>
+                    <div className="modal-content" onClick={e => e.stopPropagation()}>
+                        <button className="modal-close-button" onClick={closeCurriculumModal}>&times;</button>
+                        <h2>{editingCurriculum ? 'Edit Kurikulum' : 'Tambah Kurikulum'}</h2>
+                        <form onSubmit={handleCurriculumSubmit} className="data-form">
                             <div className="form-group">
-                                <label>
-                                    Nama Kurikulum<span className="required-asterisk">*</span>
-                                </label>
-                                <input
-                                    name="nama_kurikulum"
-                                    value={formData.nama_kurikulum}
-                                    onChange={(e) =>
-                                        setFormData({ ...formData, nama_kurikulum: e.target.value })
-                                    }
-                                    required
-                                />
+                                <label>Nama Kurikulum <span className="required-asterisk">*</span></label>
+                                <input value={curriculumFormData.nama_kurikulum} onChange={e => setCurriculumFormData({...curriculumFormData, nama_kurikulum: e.target.value})} required />
                             </div>
                             <div className="form-group">
                                 <label>Deskripsi</label>
-                                <textarea
-                                    name="deskripsi"
-                                    value={formData.deskripsi}
-                                    onChange={(e) =>
-                                        setFormData({ ...formData, deskripsi: e.target.value })
-                                    }
-                                />
+                                <textarea value={curriculumFormData.deskripsi} onChange={e => setCurriculumFormData({...curriculumFormData, deskripsi: e.target.value})} />
                             </div>
                             <div className="modal-actions">
-                                <button type="button" className="btn-cancel" onClick={closeFormModal}>
-                                    Batal
-                                </button>
-                                <button type="submit" className="btn-save">
-                                    Simpan
-                                </button>
+                                <button type="button" className="btn-cancel" onClick={closeCurriculumModal}>Batal</button>
+                                <button type="submit" className="btn-save">Simpan</button>
                             </div>
                         </form>
                     </div>
                 </div>
             )}
 
-            {/* Modal Hapus */}
+            {isFaseModalOpen && (
+                 <div className="modal-overlay" onClick={closeFaseModal}>
+                    <div className="modal-content" onClick={e => e.stopPropagation()}>
+                        <button className="modal-close-button" onClick={closeFaseModal}>&times;</button>
+                        <h2>{editingFase ? 'Edit Fase' : 'Tambah Fase Baru'}</h2>
+                        <p className="modal-subtitle">Untuk Kurikulum: <strong>{selectedCurriculum?.nama_kurikulum}</strong></p>
+                        <form onSubmit={handleFaseSubmit} className="data-form">
+                            <div className="form-group">
+                                <label>Nama Fase <span className="required-asterisk">*</span></label>
+                                <input value={faseFormData.nama_fase} onChange={e => setFaseFormData({...faseFormData, nama_fase: e.target.value})} required />
+                            </div>
+                            <div className="form-group">
+                                <label>Deskripsi</label>
+                                <textarea value={faseFormData.deskripsi} onChange={e => setFaseFormData({...faseFormData, deskripsi: e.target.value})} />
+                            </div>
+                            <div className="modal-actions">
+                                <button type="button" className="btn-cancel" onClick={closeFaseModal}>Batal</button>
+                                <button type="submit" className="btn-save">Simpan</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
             {isDeleteModalOpen && (
-                <div className="modal-overlay">
-                    <div className="modal-content modal-confirm">
-                        <button className="modal-close-button" onClick={closeDeleteModal}>
-                            &times;
-                        </button>
+                 <div className="modal-overlay" onClick={closeDeleteModal}>
+                    <div className="modal-content modal-confirm" onClick={e => e.stopPropagation()}>
+                        <button className="modal-close-button" onClick={closeDeleteModal}>&times;</button>
                         <h2>Konfirmasi Hapus</h2>
                         <p>
-                            Apakah Anda yakin ingin menghapus:{' '}
-                            <strong>{deletingData?.nama_kurikulum}</strong>?
+                            Apakah Anda yakin ingin menghapus {deletingData?.type}:{' '}
+                            <strong>{deletingData?.type === 'kurikulum' ? deletingData?.data.nama_kurikulum : deletingData?.data.nama_fase}</strong>?
                         </p>
+                        {deletingData?.type === 'kurikulum' && <p className="warning-text">Menghapus kurikulum juga akan menghapus semua fase di dalamnya.</p>}
                         <div className="modal-actions">
-                            <button type="button" className="btn-cancel" onClick={closeDeleteModal}>
-                                Batal
-                            </button>
-                            <button type="button" className="btn-confirm-delete" onClick={confirmDelete}>
-                                Ya, Hapus
-                            </button>
+                            <button type="button" className="btn-cancel" onClick={closeDeleteModal}>Batal</button>
+                            <button type="button" className="btn-confirm-delete" onClick={confirmDelete}>Ya, Hapus</button>
                         </div>
                     </div>
                 </div>
             )}
+
         </div>
     );
 };
 
 export default CurriculumPage;
+

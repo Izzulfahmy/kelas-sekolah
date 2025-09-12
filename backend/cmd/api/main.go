@@ -8,6 +8,7 @@ import (
 	"kelas-sekolah/backend/internal/curriculum"
 	"kelas-sekolah/backend/internal/educationlevel"
 	"kelas-sekolah/backend/internal/extracurricular"
+	"kelas-sekolah/backend/internal/fase" // <-- IMPORT BARU
 	"kelas-sekolah/backend/internal/matapelajaran"
 	"kelas-sekolah/backend/internal/middleware"
 	"kelas-sekolah/backend/internal/position"
@@ -33,9 +34,10 @@ func main() {
 	educationLevelRepository := educationlevel.NewRepository(db)
 	positionRepository := position.NewRepository(db)
 	curriculumRepository := curriculum.NewRepository(db)
+	faseRepository := fase.NewRepository(db) // <-- REPO BARU
 	matapelajaranRepository := matapelajaran.NewRepository(db)
 	extracurricularRepository := extracurricular.NewRepository(db)
-	academicYearRepository := academicyear.NewRepository(db) // <-- Repo baru
+	academicYearRepository := academicyear.NewRepository(db)
 
 	// Inisialisasi Service
 	authService := auth.NewService(userRepository, teacherRepository, studentRepository)
@@ -47,16 +49,16 @@ func main() {
 	educationLevelHandler := educationlevel.NewHandler(educationLevelRepository)
 	positionHandler := position.NewHandler(positionRepository)
 	curriculumHandler := curriculum.NewHandler(curriculumRepository)
+	faseHandler := fase.NewHandler(faseRepository) // <-- HANDLER BARU
 	matapelajaranHandler := matapelajaran.NewHandler(matapelajaranRepository)
 	extracurricularHandler := extracurricular.NewHandler(extracurricularRepository)
-	academicYearHandler := academicyear.NewHandler(academicYearRepository) // <-- Handler baru
+	academicYearHandler := academicyear.NewHandler(academicYearRepository)
 	authHandler := auth.NewHandler(authService)
 	profileHandler := profile.NewHandler(userRepository)
 	schoolHandler := school.NewHandler(schoolRepository)
 
 	r := gin.Default()
 
-	// ✅ Perbaikan CORS: izinkan semua origin selama development
 	corsConfig := cors.DefaultConfig()
 	corsConfig.AllowAllOrigins = true
 	corsConfig.AllowMethods = []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"}
@@ -116,12 +118,18 @@ func main() {
 		adminApi.PUT("/positions/:id", positionHandler.UpdatePosition)
 		adminApi.DELETE("/positions/:id", positionHandler.DeletePosition)
 
-		// --- RUTE BARU UNTUK MANAJEMEN AKADEMIK ---
+		// --- RUTE MANAJEMEN AKADEMIK ---
 		// Kurikulum
 		adminApi.GET("/curriculums", curriculumHandler.GetAllCurriculums)
 		adminApi.POST("/curriculums", curriculumHandler.CreateCurriculum)
 		adminApi.PUT("/curriculums/:id", curriculumHandler.UpdateCurriculum)
 		adminApi.DELETE("/curriculums/:id", curriculumHandler.DeleteCurriculum)
+
+		// Fase (terikat pada kurikulum) <-- RUTE BARU
+		adminApi.GET("/curriculums/:kurikulumID/fases", faseHandler.GetFasesByCurriculumID)
+		adminApi.POST("/fases", faseHandler.CreateFase)
+		adminApi.PUT("/fases/:id", faseHandler.UpdateFase)
+		adminApi.DELETE("/fases/:id", faseHandler.DeleteFase)
 
 		// Mata Pelajaran
 		adminApi.GET("/mata-pelajaran", matapelajaranHandler.GetAllMataPelajaran)
@@ -135,7 +143,7 @@ func main() {
 		adminApi.PUT("/extracurriculars/:id", extracurricularHandler.UpdateExtracurricular)
 		adminApi.DELETE("/extracurriculars/:id", extracurricularHandler.DeleteExtracurricular)
 
-		// Tahun Ajaran (Academic Year) <-- Rute baru
+		// Tahun Ajaran (Academic Year)
 		adminApi.GET("/academic-years", academicYearHandler.GetAllAcademicYears)
 		adminApi.POST("/academic-years", academicYearHandler.CreateAcademicYear)
 		adminApi.PUT("/academic-years/:id", academicYearHandler.UpdateAcademicYear)
