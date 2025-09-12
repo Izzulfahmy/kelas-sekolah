@@ -223,7 +223,7 @@ const CurriculumPage = () => {
                             <div className="panel-header panel-header-desktop">
                                 <h2>Detail: {selectedCurriculum.nama_kurikulum}</h2>
                                 <button className="btn-add-detail" onClick={() => openFaseModal()}>
-                                    <FaPlus /> Tambah Fase
+                                    <FaPlus /> Tambah
                                 </button>
                             </div>
                             
@@ -337,4 +337,3 @@ const CurriculumPage = () => {
 };
 
 export default CurriculumPage;
-

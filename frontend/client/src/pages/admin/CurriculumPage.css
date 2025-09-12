@@ -50,14 +50,16 @@
     flex-direction: column;
     overflow: hidden;
     transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+    flex-basis: 50%; /* Ditambahkan: Memberi basis lebar yang sama */
+    flex-grow: 1; /* Ditambahkan: Memungkinkan keduanya membesar */
 }
 
 .master-panel {
-    flex: 0 0 340px;
+    /* flex: 0 0 340px; Dihapus */
 }
 
 .detail-panel {
-    flex-grow: 1;
+    /* flex-grow: 1; Dihapus */
 }
 
 /* === PANEL HEADER === */
@@ -134,7 +136,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 150px; /* Disesuaikan agar pas */
+    max-width: 250px; /* Diperpanjang agar lebih banyak teks termuat */
 }
 .item-actions { display: flex; gap: 0.5rem; } /* Tombol selalu terlihat */
 .btn-action-icon { background: none; border: none; color: var(--text-light); cursor: pointer; padding: 0.25rem; font-size: 0.9rem; }
@@ -190,6 +192,7 @@
         box-shadow: none;
         flex: 1 1 100%;
         will-change: transform;
+        flex-basis: 100%; /* Memastikan lebar penuh di mobile */
     }
 
     .master-detail-layout.detail-visible .master-panel {
