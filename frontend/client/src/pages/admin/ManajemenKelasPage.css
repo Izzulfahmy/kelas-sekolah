@@ -14,7 +14,7 @@
 
 .manajemen-kelas-page {
     font-family: 'Inter', sans-serif;
-    padding: 1.5rem;
+    padding: 0rem;
     background-color: var(--bg-light);
     height: 100%;
     display: flex;
@@ -72,9 +72,12 @@
 }
 .panel-controls select {
     width: 100%;
-    padding: 0.6rem;
+    padding: 0.6rem 2rem 0.6rem 0.8rem; /* top/bottom 0.6, right 2rem, left 0.8rem */
     border-radius: 6px;
     border: 1px solid var(--border-color);
+    appearance: none;      /* hilangkan default arrow */
+    background: #fff url("data:image/svg+xml;utf8,<svg fill='%23566573' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 0.8rem center;
+    background-size: 16px;
 }
 .btn-add-master {
     background-color: var(--primary-color);
@@ -202,10 +205,96 @@
 /* --- Tabel Guru Pengajar --- */
 .panel-header-alt { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
 .panel-header-alt h3 { margin: 0; font-size: 1rem; }
-.btn-add-detail { background-color: #566573; color: white; padding: 0.4rem 0.8rem; font-size: 0.85rem; }
+.btn-add-detail {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: background-color 0.2s ease;
+}
+.btn-add-detail:hover {
+    background-color: var(--primary-hover);
+}
 .data-table .btn-icon.btn-delete {
     background-color: var(--danger-color);
 }
+
+/* New styles for teacher list */
+.teacher-list-card {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.teacher-card {
+    background-color: var(--bg-white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.teacher-card h4 {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--text-dark);
+}
+
+.teacher-card p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+.teacher-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.teacher-card .btn-action-icon.btn-edit {
+    background: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    padding: 0.5rem;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.teacher-card .btn-action-icon.btn-edit:hover {
+    background: var(--primary-hover);
+}
+
+.teacher-card .btn-action-icon.btn-delete {
+    background: var(--danger-color);
+    color: white;
+    border-radius: 50%;
+    padding: 0.5rem;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.teacher-card .btn-action-icon.btn-delete:hover {
+    background: #c0392b;
+}
+
 
 /* --- Empty State --- */
 .empty-state-full { text-align: center; padding: 2rem; color: var(--text-light); height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
@@ -213,8 +302,122 @@
 .empty-state-full svg { margin-bottom: 1rem; }
 
 /* --- Modal Styles (Copy from other CSS) --- */
-.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background-color:rgba(0,0,0,.6);display:flex;justify-content:center;align-items:center;z-index:1000;padding:1rem}.modal-content{background-color:#fff;padding:1.8rem;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.2);width:100%;max-width:480px;max-height:90vh;overflow-y:auto;position:relative;animation:slide-down .3s ease-out}@keyframes slide-down{from{transform:translateY(-30px);opacity:0}to{transform:translateY(0);opacity:1}}.modal-close-button{position:absolute;top:10px;right:10px;background:0 0;border:none;font-size:1.8rem;color:#adb5bd;cursor:pointer;transition:color .2s}.modal-close-button:hover{color:#495057}.modal-content h2{margin-top:0;margin-bottom:.5rem;font-size:1.5rem;color:#343a40;text-align:center}.modal-actions{display:flex;justify-content:flex-end;gap:.8rem;margin-top:1.8rem}.btn-cancel,.btn-confirm-delete,.btn-save{padding:.6rem 1.2rem;border-radius:6px;border:none;cursor:pointer;font-weight:500;font-size:.9rem}.btn-cancel{background-color:#6c757d;color:#fff}.btn-save{background-color:var(--primary-color);color:#fff}.btn-confirm-delete{background-color:var(--danger-color);color:#fff}.data-form .form-group{margin-bottom:1rem}.data-form .form-group label{display:block;margin-bottom:.5rem}.data-form .form-group input, .data-form .form-group select{width:100%;padding:.6rem .8rem;border-radius:6px;border:1px solid #ccc}
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 1rem;
+}
 
+.modal-content {
+    background-color: #fff;
+    padding: 1.8rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.2);
+    width: 100%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    animation: slide-down .3s ease-out;
+}
+
+@keyframes slide-down {
+    from {
+        transform: translateY(-30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: #adb5bd;
+    cursor: pointer;
+    transition: color .2s;
+}
+
+.modal-close-button:hover {
+    color: #495057;
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    margin-bottom: .5rem;
+    font-size: 1.5rem;
+    color: #343a40;
+    text-align: center;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: .8rem;
+    margin-top: 1.8rem;
+}
+
+.btn-cancel,
+.btn-confirm-delete,
+.btn-save {
+    padding: .6rem 1.2rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: .9rem;
+}
+
+.btn-cancel {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+.btn-save {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+.btn-confirm-delete {
+    background-color: var(--danger-color);
+    color: #fff;
+}
+
+.data-form .form-group {
+    margin-bottom: 1rem;
+}
+
+.data-form .form-group label {
+    display: block;
+    margin-bottom: .5rem;
+}
+
+.data-form .form-group input,
+.data-form .form-group select {
+    width: 100%;
+    padding: 0.6rem 2rem 0.6rem 0.8rem; /* kasih ruang kanan lebih longgar */
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    appearance: none; /* hilangkan default arrow */
+    background: #fff url("data:image/svg+xml;utf8,<svg fill='%23566573' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") 
+        no-repeat right 0.8rem center;
+    background-size: 16px;
+    cursor: pointer;
+}
 /* --- Responsive --- */
 @media (max-width: 768px) {
     .manajemen-kelas-page { padding: 0; }
@@ -227,4 +430,3 @@
     .dual-list-box { flex-direction: column; }
     .list-items { height: 200px; }
 }
-

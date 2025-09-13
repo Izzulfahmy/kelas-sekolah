@@ -52,12 +52,11 @@ func (r *repository) FindAllByTahunAjaran(tahunAjaranID int) ([]Kelas, error) {
 // FindByID mengambil satu kelas dengan semua relasi detailnya
 func (r *repository) FindByID(ID int) (Kelas, error) {
 	var k Kelas
-	// PERBAIKAN: Memastikan semua relasi yang diperlukan untuk panel detail dimuat
 	err := r.db.
 		Preload("TahunAjaran").
 		Preload("Tingkatan").
 		Preload("WaliKelas").
-		Preload("AnggotaKelas.Siswa").
+		Preload("AnggotaKelas.Siswa"). // ✅ sekarang valid, karena AnggotaKelas punya field Siswa
 		Preload("PengajarKelas.Guru").
 		Preload("PengajarKelas.MataPelajaran").
 		First(&k, ID).Error

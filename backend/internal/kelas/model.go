@@ -4,7 +4,7 @@ import (
 	"kelas-sekolah/backend/internal/academicyear"
 	"kelas-sekolah/backend/internal/matapelajaran"
 	"kelas-sekolah/backend/internal/student"
-	"kelas-sekolah/backend/internal/teacher" // PERBAIKAN: Mengganti "guru" menjadi "teacher"
+	"kelas-sekolah/backend/internal/teacher"
 	"kelas-sekolah/backend/internal/tingkatan"
 )
 
@@ -20,8 +20,8 @@ type Kelas struct {
 	// Relasi
 	TahunAjaran   academicyear.AcademicYear `gorm:"foreignKey:TahunAjaranID" json:"tahun_ajaran"`
 	Tingkatan     tingkatan.Tingkatan       `gorm:"foreignKey:TingkatanID" json:"tingkatan"`
-	WaliKelas     *teacher.Teacher          `gorm:"foreignKey:WaliKelasID" json:"wali_kelas"` // PERBAIKAN: Menggunakan teacher.Teacher
-	AnggotaKelas  []student.Student         `gorm:"many2many:anggota_kelas;" json:"anggota_kelas"`
+	WaliKelas     *teacher.Teacher          `gorm:"foreignKey:WaliKelasID" json:"wali_kelas"`
+	AnggotaKelas  []AnggotaKelas            `gorm:"foreignKey:KelasID" json:"anggota_kelas"`
 	PengajarKelas []PengajarKelas           `gorm:"foreignKey:KelasID" json:"pengajar_kelas"`
 
 	JumlahSiswa uint `gorm:"-" json:"jumlah_siswa"`
@@ -31,6 +31,9 @@ type Kelas struct {
 type AnggotaKelas struct {
 	KelasID uint `gorm:"primaryKey" json:"kelas_id"`
 	SiswaID uint `gorm:"primaryKey" json:"siswa_id"`
+
+	// Relasi ke student
+	Siswa student.Student `gorm:"foreignKey:SiswaID" json:"siswa"`
 }
 
 // Definisikan struct untuk tabel `pengajar_kelas`
@@ -41,11 +44,11 @@ type PengajarKelas struct {
 	MataPelajaranID int  `gorm:"column:mata_pelajaran_id" json:"mata_pelajaran_id"`
 
 	// Relasi
-	Guru          teacher.Teacher             `gorm:"foreignKey:GuruID" json:"guru"` // PERBAIKAN: Menggunakan teacher.Teacher
+	Guru          teacher.Teacher             `gorm:"foreignKey:GuruID" json:"guru"`
 	MataPelajaran matapelajaran.MataPelajaran `gorm:"foreignKey:MataPelajaranID" json:"mata_pelajaran"`
 }
 
-// Menentukan nama tabel
+// Nama tabel
 func (Kelas) TableName() string         { return "kelas" }
 func (AnggotaKelas) TableName() string  { return "anggota_kelas" }
 func (PengajarKelas) TableName() string { return "pengajar_kelas" }
