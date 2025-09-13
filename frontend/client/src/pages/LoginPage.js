@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-// ✅ Ganti axios dengan api.js
+import { useNavigate } from 'react-router-dom';
 import api from '../api';
 
 const LoginPage = () => {
@@ -16,18 +15,15 @@ const LoginPage = () => {
         setLoading(true);
 
         try {
-            // ✅ Ganti axios.post jadi api.post dan hapus baseURL manual
             const response = await api.post('/api/login', {
                 username,
                 password
             });
 
             if (response.data.token) {
-                // Simpan token dan role
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('role', response.data.role);
 
-                // Pengalihan berdasarkan role
                 const role = response.data.role;
                 if (role === 'admin') {
                     navigate('/admin');
@@ -37,7 +33,7 @@ const LoginPage = () => {
             }
         } catch (err) {
             if (err.response) {
-                setError(err.response.data.error || 'Username atau password salah.');
+                setError('Username atau password salah.'); 
             } else {
                 setError('Tidak dapat terhubung ke server.');
             }
@@ -47,40 +43,36 @@ const LoginPage = () => {
     };
 
     return (
-        <div className="auth-container">
-            <form className="auth-form" onSubmit={handleLogin}>
-                <h2>Login</h2>
-                {error && <p style={{ color: 'red' }}>{error}</p>}
-                <div className="form-group">
-                    <label htmlFor="username">Username</label>
-                    <input
-                        type="text"
-                        id="username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                        disabled={loading}
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="password">Password</label>
-                    <input
-                        type="password"
-                        id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        disabled={loading}
-                    />
-                </div>
-                <button type="submit" disabled={loading}>
-                    {loading ? 'Logging in...' : 'Login'}
-                </button>
-                <p>
-                    Belum punya akun? <Link to="/register">Register di sini</Link>
-                </p>
-            </form>
-        </div>
+        <form className="auth-form" onSubmit={handleLogin}>
+            <h2>Selamat Datang</h2>
+            <div className="form-group">
+                <label htmlFor="username">Username</label>
+                <input
+                    type="text"
+                    id="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                    disabled={loading}
+                />
+            </div>
+            <div className="form-group">
+                <label htmlFor="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    disabled={loading}
+                />
+            </div>
+            {/* Memindahkan pesan error ke sini */}
+            {error && <p className="error-message">{error}</p>}
+            <button type="submit" disabled={loading}>
+                {loading ? 'Logging in...' : 'Login'}
+            </button>
+        </form>
     );
 };
 
