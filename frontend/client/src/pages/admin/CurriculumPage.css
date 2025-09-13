@@ -288,15 +288,6 @@
         transform: translateX(-50%);
     }
     
-    .btn-add-fase-header-mobile {
-        background: none;
-        border: none;
-        font-size: 1.2rem;
-        color: var(--primary-color);
-        cursor: pointer;
-        padding: 0.5rem;
-    }
-
     .panel-header-desktop {
         display: none;
     }

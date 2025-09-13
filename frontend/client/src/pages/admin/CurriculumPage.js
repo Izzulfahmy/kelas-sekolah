@@ -288,9 +288,6 @@ const CurriculumPage = () => {
                                     <FaArrowLeft />
                                 </button>
                                 <h2>{selectedCurriculum.nama_kurikulum}</h2>
-                                <button className="btn-add-fase-header-mobile" onClick={() => openFaseModal()}>
-                                    <FaPlus />
-                                </button>
                             </div>
 
                             <div className="panel-header panel-header-desktop">
