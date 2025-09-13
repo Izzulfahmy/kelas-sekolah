@@ -138,6 +138,8 @@
     color: #212529;
     text-align: center;
 }
+
+/* --- Form --- */
 .academic-year-page .data-form .form-group {
     display: flex;
     flex-direction: column;
@@ -149,15 +151,41 @@
     color: #495057;
     font-size: 0.9rem;
 }
+
+/* input & textarea TANPA panah */
 .academic-year-page .data-form .form-group input,
-.academic-year-page .data-form .form-group textarea,
-.academic-year-page .data-form .form-group select {
+.academic-year-page .data-form .form-group textarea {
     padding: 0.6rem 0.9rem;
     border: 1px solid #ced4da;
     border-radius: 6px;
     font-size: 0.9rem;
     background-color: #fff;
+    background-image: none;
+
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
 }
+
+/* select DENGAN panah custom */
+.academic-year-page .data-form .form-group select {
+    padding: 0.6rem 2.2rem 0.6rem 0.9rem;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    background-color: #fff;
+
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='14' height='14' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 7L10 12L15 7' stroke='%236c757d' stroke-width='2'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 14px;
+    cursor: pointer;
+}
+
 .academic-year-page .modal-actions {
     display: flex;
     justify-content: flex-end;
@@ -198,7 +226,7 @@
     .academic-year-page .page-header { flex-direction: column; align-items: flex-start; }
     .academic-year-page .btn-add { width: 100%; text-align: center; }
 
-    /* Perbaikan: hilangkan background putih & shadow di wrapper */
+    /* hilangkan background putih & shadow di wrapper agar tidak double layer */
     .academic-year-page .table-responsive {
         background-color: transparent;
         box-shadow: none;
