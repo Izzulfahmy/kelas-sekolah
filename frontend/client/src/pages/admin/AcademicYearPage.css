@@ -198,6 +198,12 @@
     .academic-year-page .page-header { flex-direction: column; align-items: flex-start; }
     .academic-year-page .btn-add { width: 100%; text-align: center; }
 
+    /* Perbaikan: hilangkan background putih & shadow di wrapper */
+    .academic-year-page .table-responsive {
+        background-color: transparent;
+        box-shadow: none;
+    }
+
     .academic-year-page .data-table,
     .academic-year-page .data-table tbody,
     .academic-year-page .data-table tr,

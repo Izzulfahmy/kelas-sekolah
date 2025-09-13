@@ -213,6 +213,12 @@
     .matapelajaran-page .page-header { flex-direction: column; align-items: flex-start; }
     .matapelajaran-page .btn-add { width: 100%; text-align: center; }
 
+    /* Perbaikan: hilangkan background putih dan shadow di wrapper */
+    .matapelajaran-page .table-responsive {
+        background-color: transparent;
+        box-shadow: none;
+    }
+
     .matapelajaran-page .data-table,
     .matapelajaran-page .data-table tbody,
     .matapelajaran-page .data-table tr,
