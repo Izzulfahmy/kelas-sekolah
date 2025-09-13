@@ -9,6 +9,7 @@ import (
 	"kelas-sekolah/backend/internal/educationlevel"
 	"kelas-sekolah/backend/internal/extracurricular"
 	"kelas-sekolah/backend/internal/fase"
+	"kelas-sekolah/backend/internal/kelas" // <-- Import package baru
 	"kelas-sekolah/backend/internal/matapelajaran"
 	"kelas-sekolah/backend/internal/middleware"
 	"kelas-sekolah/backend/internal/pemetaan_fase"
@@ -42,6 +43,7 @@ func main() {
 	matapelajaranRepository := matapelajaran.NewRepository(db)
 	extracurricularRepository := extracurricular.NewRepository(db)
 	academicYearRepository := academicyear.NewRepository(db)
+	kelasRepository := kelas.NewRepository(db) // <-- Inisialisasi repo baru
 
 	// Inisialisasi Service
 	authService := auth.NewService(userRepository, teacherRepository, studentRepository)
@@ -62,6 +64,7 @@ func main() {
 	extracurricularHandler := extracurricular.NewHandler(extracurricularRepository)
 	academicYearHandler := academicyear.NewHandler(academicYearRepository)
 	profileHandler := profile.NewHandler(userRepository)
+	kelasHandler := kelas.NewHandler(kelasRepository) // <-- Inisialisasi handler baru
 
 	r := gin.Default()
 	corsConfig := cors.DefaultConfig()
@@ -129,8 +132,17 @@ func main() {
 		adminApi.PUT("/tingkatans/:id", tingkatanHandler.UpdateTingkatan)
 		adminApi.DELETE("/tingkatans/:id", tingkatanHandler.DeleteTingkatan)
 
-		// Rute Pemetaan Fase diperbaiki di sini
 		adminApi.PUT("/fases/:id/mappings", pemetaanFaseHandler.UpdateMappingsByFaseID)
+
+		// --- Rute Baru untuk Manajemen Kelas ---
+		adminApi.GET("/kelas", kelasHandler.GetAllKelas)
+		adminApi.GET("/kelas/:id", kelasHandler.GetKelasByID)
+		adminApi.POST("/kelas", kelasHandler.CreateKelas)
+		adminApi.PUT("/kelas/:id", kelasHandler.UpdateKelas)
+		adminApi.DELETE("/kelas/:id", kelasHandler.DeleteKelas)
+		adminApi.PUT("/kelas/:id/anggota", kelasHandler.UpdateAnggotaKelas)
+		adminApi.POST("/kelas/:id/pengajar", kelasHandler.AddPengajarKelas)
+		adminApi.DELETE("/kelas/:id/pengajar/:pengajarId", kelasHandler.RemovePengajarKelas)
 	}
 
 	CreateAdminIfNeeded(userRepository, teacherRepository, studentRepository)

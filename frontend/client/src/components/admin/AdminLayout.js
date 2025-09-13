@@ -21,10 +21,12 @@ import CurriculumPage from '../../pages/admin/CurriculumPage';
 import MataPelajaranPage from '../../pages/admin/MataPelajaranPage';
 import ExtracurricularPage from '../../pages/admin/ExtracurricularPage';
 import AcademicYearPage from '../../pages/admin/AcademicYearPage';
+import ManajemenKelasPage from '../../pages/admin/ManajemenKelasPage';
+
 
 const AdminLayout = () => {
     const navigate = useNavigate();
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [openSubmenus, setOpenSubmenus] = useState({});
     const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
     const accountMenuRef = useRef(null);
@@ -65,7 +67,7 @@ const AdminLayout = () => {
             </div>
 
             <div className="content-wrapper">
-                {isSidebarOpen && <div className="overlay" onClick={toggleSidebar}></div>}
+                {isSidebarOpen && window.innerWidth <= 768 && <div className="overlay open" onClick={toggleSidebar}></div>}
 
                 <aside className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
                     <div className="sidebar-header"><h2>Menu Admin</h2></div>
@@ -198,9 +200,9 @@ const AdminLayout = () => {
                             
                             <Route path="kurikulum" element={<CurriculumPage />} />
                             <Route path="mata-pelajaran" element={<MataPelajaranPage />} />
+                            <Route path="manajemen-kelas" element={<ManajemenKelasPage />} />
                             <Route path="ekstrakurikuler" element={<ExtracurricularPage />} />
 
-                            <Route path="manajemen-kelas" element={<PlaceholderPage title="Manajemen Kelas" />} />
                             <Route path="skema-penilaian" element={<PlaceholderPage title="Skema Penilaian" />} />
                             <Route path="data-guru" element={<TeacherDataPage />} />
                             <Route path="data-siswa" element={<StudentDataPage />} />
