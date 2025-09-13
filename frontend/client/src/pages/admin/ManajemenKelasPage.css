@@ -9,22 +9,22 @@
     --bg-white: #ffffff;
     --border-color: #e9ecef;
     --border-radius: 8px;
-    --shadow: 0 4px 12px rgba(0,0,0,0.05);
+    --shadow: 0 4px 10px rgba(0,0,0,0.04);
 }
 
 .manajemen-kelas-page {
     font-family: 'Inter', sans-serif;
-    padding: 0rem;
+    padding: 1.25rem; /* Mengurangi padding halaman */
     background-color: var(--bg-light);
     height: 100%;
     display: flex;
     flex-direction: column;
 }
 
-/* --- Layout Utama (Sama seperti CurriculumPage) --- */
+/* --- Layout Utama --- */
 .master-detail-layout {
     display: flex;
-    gap: 1.5rem;
+    gap: 1rem; /* Mengurangi jarak antar panel */
     flex-grow: 1;
     overflow: hidden;
     position: relative;
@@ -41,7 +41,7 @@
 }
 
 .master-panel {
-    flex-basis: 35%; /* Master panel sedikit lebih kecil */
+    flex-basis: 35%;
     flex-shrink: 0;
 }
 
@@ -49,10 +49,9 @@
     flex-basis: 65%;
 }
 
-
-/* --- Panel Header & Controls (Mirip CurriculumPage) --- */
+/* --- Panel Header & Controls --- */
 .panel-header {
-    padding: 0.8rem 1.25rem;
+    padding: 0.75rem 1rem; /* Mengurangi padding header */
     border-bottom: 1px solid var(--border-color);
     display: flex;
     justify-content: space-between;
@@ -61,22 +60,22 @@
 }
 .panel-header h2 {
     margin: 0;
-    font-size: 1.15rem;
+    font-size: 1.1rem; /* Mengurangi ukuran font judul */
     font-weight: 600;
     color: #34495e;
 }
 .panel-controls {
-    padding: 0.8rem 1.25rem;
+    padding: 0.75rem 1rem; /* Mengurangi padding kontrol */
     border-bottom: 1px solid var(--border-color);
     flex-shrink: 0;
 }
 .panel-controls select {
     width: 100%;
-    padding: 0.6rem 2rem 0.6rem 0.8rem; /* top/bottom 0.6, right 2rem, left 0.8rem */
+    padding: 0.5rem 1.8rem 0.5rem 0.7rem; /* Mengurangi padding select */
     border-radius: 6px;
     border: 1px solid var(--border-color);
-    appearance: none;      /* hilangkan default arrow */
-    background: #fff url("data:image/svg+xml;utf8,<svg fill='%23566573' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 0.8rem center;
+    appearance: none;
+    background: #fff url("data:image/svg+xml;utf8,<svg fill='%23566573' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 0.7rem center;
     background-size: 16px;
 }
 .btn-add-master {
@@ -84,8 +83,8 @@
     color: white;
     border: none;
     border-radius: 6px;
-    padding: 0.4rem 0.8rem;
-    font-size: 0.85rem;
+    padding: 0.35rem 0.7rem; /* Mengurangi padding tombol */
+    font-size: 0.8rem; /* Mengurangi ukuran font tombol */
     font-weight: 500;
     cursor: pointer;
     display: flex;
@@ -107,8 +106,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.8rem;
-    margin: 0.5rem;
+    padding: 0.7rem; /* Mengurangi padding item */
+    margin: 0.4rem; /* Mengurangi margin */
     border-radius: var(--border-radius);
     cursor: pointer;
     transition: background-color 0.2s ease, box-shadow 0.2s ease;
@@ -126,14 +125,14 @@
 .item-content { flex-grow: 1; }
 .item-title { font-weight: 500; color: var(--text-dark); }
 .master-item.active .item-title { font-weight: 700; }
-.item-subtitle { font-size: 0.8rem; color: var(--text-light); }
+.item-subtitle { font-size: 0.75rem; /* Mengurangi ukuran font */ color: var(--text-light); }
 .item-actions .btn-action-icon {
     background: none;
     border: none;
     color: var(--text-light);
     cursor: pointer;
-    padding: 0.25rem;
-    font-size: 0.9rem;
+    padding: 0.2rem; /* Mengurangi padding */
+    font-size: 0.8rem; /* Mengurangi ukuran font ikon */
 }
 .item-actions .btn-action-icon:hover {
     color: var(--text-dark);
@@ -141,13 +140,13 @@
 
 /* --- Detail Panel --- */
 .detail-panel-header {
-    padding: 0.8rem 1.25rem;
+    padding: 0.75rem 1rem; /* Mengurangi padding */
     border-bottom: 1px solid var(--border-color);
     display: flex;
     align-items: center;
     flex-shrink: 0;
 }
-.detail-panel-header h2 { margin: 0; font-size: 1.15rem; }
+.detail-panel-header h2 { margin: 0; font-size: 1.1rem; }
 .btn-back-mobile { display: none; }
 
 .detail-tabs {
@@ -156,11 +155,11 @@
     flex-shrink: 0;
 }
 .detail-tabs button {
-    padding: 0.8rem 1.25rem;
+    padding: 0.75rem 1.25rem; /* Mengurangi padding */
     border: none;
     background: none;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 0.85rem; /* Mengurangi ukuran font */
     color: var(--text-medium);
     border-bottom: 3px solid transparent;
     margin-bottom: -1px;
@@ -173,45 +172,45 @@
     border-bottom-color: var(--primary-color);
     font-weight: 600;
 }
-.detail-content { padding: 1.5rem; overflow-y: auto; flex-grow: 1; }
+.detail-content { padding: 1.25rem; /* Mengurangi padding konten */ overflow-y: auto; flex-grow: 1; }
 .tab-content-info .info-grid {
     display: grid;
-    grid-template-columns: 150px 1fr;
-    gap: 0.8rem;
+    grid-template-columns: 120px 1fr; /* Mengurangi lebar kolom label */
+    gap: 0.6rem; /* Mengurangi jarak antar item */
     align-items: center;
 }
 .tab-content-info .info-grid strong {
     font-weight: 600;
 }
-.tab-content-info p { margin: 0; font-size: 1rem; }
-.tab-content-info .action-buttons { margin-top: 1.5rem; display: flex; gap: 1rem; }
+.tab-content-info p { margin: 0; font-size: 0.95rem; }
+.tab-content-info .action-buttons { margin-top: 1.25rem; display: flex; gap: 0.8rem; }
 .tab-content-info .btn-edit, .tab-content-info .btn-delete {
-    padding: 0.6rem 1rem; border: none; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.5rem 0.9rem; /* Mengurangi padding tombol */ border: none; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 0.5rem;
 }
 .tab-content-info .btn-edit { background-color: var(--primary-color); color: white; }
 .tab-content-info .btn-delete { background-color: var(--danger-color); color: white; }
 
-/* --- Dual List Box (Sama seperti CurriculumPage) --- */
-.dual-list-box { display: flex; gap: 1.5rem; margin-top: 1rem; }
+/* --- Dual List Box --- */
+.dual-list-box { display: flex; gap: 1rem; /* Mengurangi jarak */ margin-top: 0.8rem; }
 .list-box { flex: 1; border: 1px solid var(--border-color); border-radius: var(--border-radius); display: flex; flex-direction: column; }
-.list-box h3 { padding: 0.8rem 1rem; margin: 0; font-size: 0.9rem; font-weight: 600; color: var(--text-medium); border-bottom: 1px solid var(--border-color); background-color: var(--bg-light); }
-.list-items { padding: 0.5rem; overflow-y: auto; height: 350px; }
-.list-item { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; margin-bottom: 0.25rem; }
+.list-box h3 { padding: 0.7rem 0.9rem; /* Mengurangi padding */ margin: 0; font-size: 0.85rem; /* Mengurangi ukuran font */ font-weight: 600; color: var(--text-medium); border-bottom: 1px solid var(--border-color); background-color: var(--bg-light); }
+.list-items { padding: 0.4rem; overflow-y: auto; height: 300px; /* Mengurangi tinggi default */ }
+.list-item { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0.7rem; /* Mengurangi padding */ border-radius: 6px; cursor: pointer; font-size: 0.85rem; /* Mengurangi ukuran font */ margin-bottom: 0.2rem; }
 .list-item:hover { background-color: #f1f3f5; }
-.list-item svg { color: var(--text-light); font-size: 0.8rem; }
-.panel-footer-actions { margin-top: 1.5rem; text-align: right; }
-.btn-save-mapping { background-color: #28a745; color: white; padding: 0.7rem 1.5rem; border: none; border-radius: 6px; font-weight: 500; cursor: pointer; }
+.list-item svg { color: var(--text-light); font-size: 0.75rem; }
+.panel-footer-actions { margin-top: 1.25rem; text-align: right; }
+.btn-save-mapping { background-color: #28a745; color: white; padding: 0.6rem 1.25rem; /* Mengurangi padding */ border: none; border-radius: 6px; font-weight: 500; cursor: pointer; }
 
 /* --- Tabel Guru Pengajar --- */
-.panel-header-alt { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-.panel-header-alt h3 { margin: 0; font-size: 1rem; }
+.panel-header-alt { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; }
+.panel-header-alt h3 { margin: 0; font-size: 0.95rem; }
 .btn-add-detail {
     background-color: var(--primary-color);
     color: white;
     border: none;
     border-radius: 6px;
-    padding: 0.4rem 0.8rem;
-    font-size: 0.85rem;
+    padding: 0.35rem 0.7rem;
+    font-size: 0.8rem;
     font-weight: 500;
     cursor: pointer;
     display: flex;
@@ -229,15 +228,15 @@
 /* New styles for teacher list */
 .teacher-list-card {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Mengurangi lebar minimal kartu */
+    gap: 1.25rem; /* Mengurangi jarak antar kartu */
 }
 
 .teacher-card {
     background-color: var(--bg-white);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
-    padding: 1rem;
+    padding: 0.8rem; /* Mengurangi padding kartu */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -245,29 +244,29 @@
 
 .teacher-card h4 {
     margin: 0;
-    font-size: 1rem;
+    font-size: 0.95rem; /* Mengurangi ukuran font */
     color: var(--text-dark);
 }
 
 .teacher-card p {
     margin: 0;
-    font-size: 0.85rem;
+    font-size: 0.8rem; /* Mengurangi ukuran font */
     color: var(--text-light);
     font-weight: 500;
 }
 
 .teacher-actions {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.4rem; /* Mengurangi jarak antar tombol */
 }
 
 .teacher-card .btn-action-icon.btn-edit {
     background: var(--primary-color);
     color: white;
     border-radius: 50%;
-    padding: 0.5rem;
-    width: 2rem;
-    height: 2rem;
+    padding: 0.4rem; /* Mengurangi padding */
+    width: 1.8rem; /* Mengurangi ukuran */
+    height: 1.8rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -282,9 +281,9 @@
     background: var(--danger-color);
     color: white;
     border-radius: 50%;
-    padding: 0.5rem;
-    width: 2rem;
-    height: 2rem;
+    padding: 0.4rem;
+    width: 1.8rem;
+    height: 1.8rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -295,13 +294,12 @@
     background: #c0392b;
 }
 
-
 /* --- Empty State --- */
-.empty-state-full { text-align: center; padding: 2rem; color: var(--text-light); height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.empty-state-full h2 { color: #34495e; font-size: 1.3rem; }
-.empty-state-full svg { margin-bottom: 1rem; }
+.empty-state-full { text-align: center; padding: 1.5rem; /* Mengurangi padding */ color: var(--text-light); height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.empty-state-full h2 { color: #34495e; font-size: 1.2rem; /* Mengurangi ukuran font */ }
+.empty-state-full svg { margin-bottom: 0.8rem; }
 
-/* --- Modal Styles (Copy from other CSS) --- */
+/* --- Modal Styles --- */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -318,48 +316,33 @@
 
 .modal-content {
     background-color: #fff;
-    padding: 1.8rem;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,.2);
+    padding: 1.5rem; /* Mengurangi padding */
+    border-radius: 10px; /* Mengurangi radius */
+    box-shadow: 0 8px 20px rgba(0,0,0,.15); /* Mengurangi bayangan */
     width: 100%;
-    max-width: 480px;
+    max-width: 420px; /* Mengurangi lebar maksimal modal */
     max-height: 90vh;
     overflow-y: auto;
     position: relative;
     animation: slide-down .3s ease-out;
 }
 
-@keyframes slide-down {
-    from {
-        transform: translateY(-30px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
 .modal-close-button {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 8px; /* Menyesuaikan posisi */
+    right: 8px;
     background: none;
     border: none;
-    font-size: 1.8rem;
+    font-size: 1.6rem; /* Mengurangi ukuran font ikon */
     color: #adb5bd;
     cursor: pointer;
     transition: color .2s;
 }
 
-.modal-close-button:hover {
-    color: #495057;
-}
-
 .modal-content h2 {
     margin-top: 0;
-    margin-bottom: .5rem;
-    font-size: 1.5rem;
+    margin-bottom: 0.4rem; /* Mengurangi margin */
+    font-size: 1.4rem; /* Mengurangi ukuran font judul modal */
     color: #343a40;
     text-align: center;
 }
@@ -367,19 +350,19 @@
 .modal-actions {
     display: flex;
     justify-content: flex-end;
-    gap: .8rem;
-    margin-top: 1.8rem;
+    gap: 0.6rem; /* Mengurangi jarak antar tombol */
+    margin-top: 1.5rem; /* Mengurangi margin */
 }
 
 .btn-cancel,
 .btn-confirm-delete,
 .btn-save {
-    padding: .6rem 1.2rem;
+    padding: 0.5rem 1rem; /* Mengurangi padding */
     border-radius: 6px;
     border: none;
     cursor: pointer;
     font-weight: 500;
-    font-size: .9rem;
+    font-size: 0.85rem; /* Mengurangi ukuran font */
 }
 
 .btn-cancel {
@@ -398,23 +381,24 @@
 }
 
 .data-form .form-group {
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem; /* Mengurangi margin */
 }
 
 .data-form .form-group label {
     display: block;
-    margin-bottom: .5rem;
+    margin-bottom: 0.4rem; /* Mengurangi margin */
+    font-size: 0.9rem;
 }
 
 .data-form .form-group input,
 .data-form .form-group select {
     width: 100%;
-    padding: 0.6rem 2rem 0.6rem 0.8rem; /* kasih ruang kanan lebih longgar */
+    padding: 0.5rem 1.8rem 0.5rem 0.7rem; /* Mengurangi padding */
     border-radius: 6px;
     border: 1px solid var(--border-color);
-    appearance: none; /* hilangkan default arrow */
+    appearance: none;
     background: #fff url("data:image/svg+xml;utf8,<svg fill='%23566573' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") 
-        no-repeat right 0.8rem center;
+        no-repeat right 0.7rem center;
     background-size: 16px;
     cursor: pointer;
 }
@@ -428,5 +412,5 @@
     .master-detail-layout.detail-visible .detail-panel { transform: translateX(0); }
     .btn-back-mobile { display: block; background: none; border: none; font-size: 1.2rem; margin-right: 1rem; cursor: pointer; }
     .dual-list-box { flex-direction: column; }
-    .list-items { height: 200px; }
+    .list-items { height: 180px; /* Mengurangi tinggi lebih lanjut */ }
 }

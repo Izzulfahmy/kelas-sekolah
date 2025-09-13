@@ -1,5 +1,5 @@
 .teacher-page {
-  padding: 1.5rem;
+  padding: 1.25rem; /* Mengurangi padding halaman */
 }
 
 /* --- HEADER --- */
@@ -7,12 +7,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem; /* Mengurangi margin bawah */
   gap: 1rem;
 }
 .teacher-page .page-header h1 {
   margin: 0;
-  font-size: 1.8rem;
+  font-size: 1.6rem; /* Mengurangi ukuran font judul */
   color: #343a40;
 }
 
@@ -22,7 +22,7 @@
   overflow-x: auto;
   background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06); /* Mengurangi efek bayangan */
 }
 .teacher-page .data-table {
   width: 100%;
@@ -30,9 +30,10 @@
 }
 .teacher-page .data-table th,
 .teacher-page .data-table td {
-  padding: 1rem 1.2rem;
+  padding: 0.8rem 1rem; /* Mengurangi padding sel */
   text-align: left;
   border-bottom: 1px solid #e0e0e0;
+  font-size: 0.95rem; /* Menyesuaikan ukuran font sel */
 }
 .teacher-page .data-table tbody tr:last-child td {
   border-bottom: none;
@@ -42,7 +43,7 @@
   font-weight: 600;
   color: #6c757d;
   text-transform: uppercase;
-  font-size: 0.8rem;
+  font-size: 0.75rem; /* Mengurangi ukuran font header tabel */
   letter-spacing: 0.5px;
 }
 .teacher-page .data-table tbody tr:hover {
@@ -51,9 +52,9 @@
 
 /* --- STATUS BADGE --- */
 .teacher-page .data-table .status {
-  padding: 5px 12px;
+  padding: 4px 10px; /* Mengurangi padding badge */
   border-radius: 999px;
-  font-size: 0.8rem;
+  font-size: 0.75rem; /* Mengurangi ukuran font badge */
   font-weight: bold;
   text-transform: capitalize;
 }
@@ -68,29 +69,29 @@
 
 /* --- ACTION BUTTONS --- */
 .teacher-page .actions-cell {
-  text-align: right; /* rata kanan untuk desktop */
+  text-align: right;
 }
 .teacher-page .action-buttons {
   display: flex;
-  gap: 0.5rem;
-  justify-content: flex-end; /* selalu rata kanan */
+  gap: 0.4rem; /* Mengurangi jarak antar tombol aksi */
+  justify-content: flex-end;
 }
 .teacher-page .btn-icon {
-  width: 34px;
-  height: 34px;
+  width: 32px; /* Mengurangi ukuran tombol ikon */
+  height: 32px;
   padding: 0;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  color: #fff; /* ikon putih */
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 0.9rem; /* Mengurangi ukuran font ikon */
   transition: background-color 0.2s ease, transform 0.1s ease;
 }
 .teacher-page .btn-icon:hover {
-  transform: translateY(-2px);
+  transform: translateY(-1px); /* Mengurangi efek hover */
 }
 .teacher-page .btn-edit {
   background-color: #007bff;
@@ -116,25 +117,25 @@
 }
 .teacher-page .modal-content {
   background-color: white;
-  padding: 2.5rem;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  padding: 2rem; /* Mengurangi padding modal */
+  border-radius: 10px; /* Mengurangi radius */
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15); /* Mengurangi bayangan */
   width: 100%;
-  max-width: 650px;
+  max-width: 600px; /* Mengurangi lebar maksimal */
   animation: fadeIn 0.3s ease-out;
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
 }
 .teacher-page .modal-content.large {
-  max-width: 900px;
+  max-width: 800px; /* Mengurangi lebar maksimal modal besar */
 }
 .teacher-page .modal-close-button {
   position: absolute;
-  top: 15px; right: 15px;
+  top: 12px; right: 12px;
   background: none;
   border: none;
-  font-size: 1.8rem;
+  font-size: 1.6rem; /* Mengurangi ukuran ikon */
   color: #adb5bd;
   cursor: pointer;
   transition: color 0.2s;
@@ -144,8 +145,9 @@
 }
 .teacher-page .modal-content h2 {
   margin-top: 0;
-  margin-bottom: 1.5rem;
-  font-size: 1.8rem; color: #343a40;
+  margin-bottom: 1.25rem; /* Mengurangi margin */
+  font-size: 1.6rem; /* Mengurangi ukuran font judul modal */
+  color: #343a40;
   text-align: center;
 }
 
@@ -153,53 +155,70 @@
 .teacher-page .data-form fieldset {
   border: 1px solid #e0e0e0;
   border-radius: 8px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
+  padding: 1.25rem; /* Mengurangi padding fieldset */
+  margin-bottom: 1.25rem; /* Mengurangi margin bawah */
   background-color: #fcfcfc;
 }
 .teacher-page .data-form legend {
   font-weight: 700;
-  padding: 0 0.75rem;
+  padding: 0 0.6rem; /* Mengurangi padding legend */
   color: #007bff;
-  font-size: 1.2rem;
+  font-size: 1.1rem; /* Mengurangi ukuran font legend */
   background-color: #fff;
   border-radius: 5px;
 }
 .teacher-page .data-form .form-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Menyesuaikan lebar minimal */
+  gap: 1.25rem; /* Mengurangi jarak antar elemen form */
 }
 .teacher-page .data-form .form-group {
   display: flex;
   flex-direction: column;
 }
 .teacher-page .data-form .form-group label {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem; /* Mengurangi margin */
   font-weight: 500;
   color: #495057;
   display: flex;
   align-items: center;
+  font-size: 0.95rem; /* Menyesuaikan ukuran font label */
 }
 .teacher-page .data-form .form-group input,
-.teacher-page .data-form .form-group select,
 .teacher-page .data-form .form-group textarea {
-  padding: 0.8rem 1rem;
+  padding: 0.7rem 0.9rem; /* Mengurangi padding input */
   border: 1px solid #ced4da;
   border-radius: 6px;
-  font-size: 1rem;
+  font-size: 0.95rem; /* Mengurangi ukuran font input */
   width: 100%;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
+
+.teacher-page .data-form .form-group select {
+  padding: 0.7rem 0.9rem;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  width: 100%;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  
+  /* HANYA SELECT YANG MENDAPATKAN PANAH INI */
+  appearance: none;
+  background: #fff url("data:image/svg+xml;utf8,<svg fill='%23566573' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") 
+      no-repeat right 0.7rem center;
+  background-size: 16px;
+  cursor: pointer;
+}
+
 .teacher-page .data-form .form-group input:focus,
 .teacher-page .data-form .form-group select:focus,
 .teacher-page .data-form .form-group textarea:focus {
   border-color: #80bdff;
   outline: 0;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  box-shadow: 0 0 0 0.15rem rgba(0, 123, 255, 0.25); /* Mengurangi efek bayangan focus */
 }
 .teacher-page .data-form .form-group textarea {
-  min-height: 80px;
+  min-height: 70px; /* Mengurangi tinggi minimal textarea */
   resize: vertical;
 }
 .teacher-page .data-form .form-group.full-width {
@@ -214,13 +233,13 @@
 .teacher-page .modal-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 15px;
-  margin-top: 2rem;
+  gap: 12px; /* Mengurangi jarak antar tombol */
+  margin-top: 1.5rem; /* Mengurangi margin atas */
 }
 .teacher-page .modal-actions button {
-  padding: 12px 25px;
+  padding: 10px 22px;
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 600;
 }
 .teacher-page .btn-confirm-delete {
@@ -231,8 +250,8 @@
   background-color: #c82333;
 }
 .teacher-page .modal-content p {
-  font-size: 1.1rem;
-  line-height: 1.6;
+  font-size: 1rem; /* Mengurangi ukuran font */
+  line-height: 1.5; /* Mengurangi line height */
   color: #555;
   text-align: center;
 }
@@ -242,7 +261,7 @@
 
 /* --- RESPONSIVE --- */
 @media (max-width: 768px) {
-  .teacher-page { padding: 1rem; }
+  .teacher-page { padding: 0.75rem; } /* Mengurangi padding mobile */
   .teacher-page .page-header { flex-direction: column; align-items: flex-start; }
   .teacher-page .btn-add { width: 100%; text-align: center; }
   .teacher-page .table-responsive { box-shadow: none; background-color: transparent; }
@@ -255,20 +274,21 @@
   }
   .teacher-page .data-table thead { display: none; }
   .teacher-page .data-table tr {
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem; /* Mengurangi margin */
     border-radius: 8px;
     background-color: #fff;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    padding: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06); /* Mengurangi bayangan */
+    padding: 0.8rem; /* Mengurangi padding */
     border-bottom: none;
   }
   .teacher-page .data-table td {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.75rem 0.5rem;
+    padding: 0.6rem 0.5rem; /* Mengurangi padding */
     border-bottom: 1px solid #f0f0f0;
     text-align: right;
+    font-size: 0.95rem; /* Menyesuaikan ukuran font sel */
   }
   .teacher-page .data-table td:last-child { border-bottom: none; }
   .teacher-page .data-table td::before {
@@ -276,14 +296,15 @@
     font-weight: 600;
     color: #6c757d;
     text-align: left;
-    margin-right: 1rem;
+    margin-right: 0.75rem; /* Mengurangi margin */
+    font-size: 0.95rem; /* Menyesuaikan ukuran font label */
   }
   .teacher-page .aksi-header { display: none; }
   .teacher-page .actions-cell::before { display: none; }
   .teacher-page .actions-cell { padding: 0.5rem; }
   .teacher-page .actions-cell .action-buttons {
     width: 100%;
-    justify-content: flex-end; /* rata kanan mobile */
+    justify-content: flex-end;
   }
   .teacher-page .data-form .form-grid { grid-template-columns: 1fr; }
 }

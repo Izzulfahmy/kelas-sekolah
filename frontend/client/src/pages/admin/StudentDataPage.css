@@ -1,5 +1,5 @@
 .student-page {
-    padding: 1.5rem;
+    padding: 1.25rem;
 }
 
 /* --- Header --- */
@@ -7,29 +7,29 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
     gap: 1rem;
 }
 .student-page .page-header h1 {
     margin: 0;
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     color: #343a40;
 }
 .student-page .btn-add {
-    background-color: #28a745;
+    background-color: #007bff; /* Warna tombol diubah menjadi biru */
     color: white;
-    padding: 0.75rem 1.5rem;
+    padding: 0.6rem 1.25rem;
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 500;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.2);
+    box-shadow: 0 3px 6px rgba(0, 123, 255, 0.2); /* Bayangan diubah agar sesuai dengan warna baru */
 }
 .student-page .btn-add:hover {
-    background-color: #218838;
-    transform: translateY(-2px);
+    background-color: #0056b3; /* Warna hover diubah menjadi biru yang lebih gelap */
+    transform: translateY(-1px);
 }
 
 /* --- Table --- */
@@ -38,7 +38,7 @@
     overflow-x: auto;
     background-color: #fff;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
 }
 .student-page .data-table {
     width: 100%;
@@ -46,25 +46,26 @@
 }
 .student-page .data-table th,
 .student-page .data-table td {
-    padding: 1rem 1.2rem;
+    padding: 0.8rem 1rem;
     text-align: left;
     border-bottom: 1px solid #e0e0e0;
+    font-size: 0.95rem;
 }
 .student-page .data-table th {
     background-color: #f8f9fa;
     font-weight: 600;
     color: #6c757d;
     text-transform: uppercase;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     letter-spacing: 0.5px;
 }
 .student-page .data-table tbody tr:hover {
     background-color: #f8f9fa;
 }
 .student-page .status {
-    padding: 5px 12px;
+    padding: 4px 10px;
     border-radius: 999px;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: bold;
     text-transform: capitalize;
 }
@@ -82,11 +83,11 @@
 /* --- Tombol Aksi (Edit & Delete) --- */
 .student-page .action-buttons {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.4rem;
 }
 .student-page .btn-icon {
-    width: 34px;
-    height: 34px;
+    width: 32px;
+    height: 32px;
     padding: 0;
     border: none;
     border-radius: 4px;
@@ -95,7 +96,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     transition: background-color 0.2s ease, transform 0.1s ease;
 }
 .student-page .btn-edit {
@@ -103,14 +104,14 @@
 }
 .student-page .btn-edit:hover {
     background-color: #0056b3;
-    transform: translateY(-2px);
+    transform: translateY(-1px);
 }
 .student-page .btn-delete {
     background-color: #dc3545;
 }
 .student-page .btn-delete:hover {
     background-color: #c82333;
-    transform: translateY(-2px);
+    transform: translateY(-1px);
 }
 
 /* --- Modal --- */
@@ -123,66 +124,72 @@
 }
 .student-page .modal-content {
     background-color: white;
-    padding: 2.5rem;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    width: 100%; max-width: 650px;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    width: 100%; max-width: 600px;
     animation: fadeIn 0.3s ease-out;
     max-height: 90vh; overflow-y: auto;
     position: relative;
 }
 .student-page .modal-content.large {
-    max-width: 900px;
+    max-width: 800px;
 }
 .student-page .modal-close-button {
-    position: absolute; top: 15px; right: 15px;
+    position: absolute; top: 12px; right: 12px;
     background: none; border: none;
-    font-size: 1.8rem; color: #adb5bd; cursor: pointer;
+    font-size: 1.6rem;
+    color: #adb5bd;
+    cursor: pointer;
     transition: color 0.2s;
 }
 .student-page .modal-close-button:hover {
     color: #495057;
 }
 .student-page .modal-content h2 {
-    margin-top: 0; margin-bottom: 1.5rem;
-    font-size: 1.8rem; color: #343a40; text-align: center;
+    margin-top: 0; margin-bottom: 1.25rem;
+    font-size: 1.6rem;
+    color: #343a40; text-align: center;
 }
 
 /* --- Form dalam Modal --- */
 .student-page .data-form fieldset {
     border: 1px solid #e0e0e0;
     border-radius: 8px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
     background-color: #fcfcfc;
 }
 .student-page .data-form legend {
     font-weight: 700;
-    padding: 0 0.75rem;
+    padding: 0 0.6rem;
     color: #007bff;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     background-color: #fff;
     border-radius: 5px;
 }
 .student-page .data-form .form-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.25rem;
 }
 .student-page .data-form .form-group {
     display: flex; flex-direction: column;
 }
 .student-page .data-form .form-group label {
-    margin-bottom: 0.5rem; font-weight: 500; color: #495057;
+    margin-bottom: 0.4rem;
+    font-weight: 500; color: #495057;
     display: flex; align-items: center;
+    font-size: 0.95rem;
 }
 .student-page .data-form .form-group input,
 .student-page .data-form .form-group select,
 .student-page .data-form .form-group textarea {
-    padding: 0.8rem 1rem;
+    padding: 0.7rem 0.9rem;
     border: 1px solid #ced4da;
     border-radius: 6px;
-    font-size: 1rem; width: 100%;
+    font-size: 0.95rem;
+    width: 100%;
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 .student-page .data-form .form-group input:focus,
@@ -190,10 +197,11 @@
 .student-page .data-form .form-group textarea:focus {
     border-color: #80bdff;
     outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    box-shadow: 0 0 0 0.15rem rgba(0, 123, 255, 0.25);
 }
 .student-page .data-form .form-group textarea {
-    min-height: 80px; resize: vertical;
+    min-height: 70px;
+    resize: vertical;
 }
 .student-page .data-form .form-group.full-width {
     grid-column: 1 / -1;
@@ -204,12 +212,12 @@
 
 /* --- Modal Actions --- */
 .student-page .modal-actions {
-    display: flex; justify-content: flex-end; gap: 15px; margin-top: 2rem;
+    display: flex; justify-content: flex-end; gap: 12px; margin-top: 1.5rem;
 }
 .student-page .modal-actions button {
-    padding: 12px 25px;
+    padding: 10px 22px;
     border-radius: 8px;
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 600;
 }
 .student-page .btn-cancel {
@@ -229,10 +237,10 @@
 
 /* --- Modal Konfirmasi Delete --- */
 .student-page .modal-content.modal-confirm {
-    max-width: 450px; text-align: center;
+    max-width: 400px; text-align: center;
 }
 .student-page .modal-content.modal-confirm p {
-    font-size: 1.1rem; margin: 1rem 0; color: #555;
+    font-size: 1rem; margin: 0.8rem 0; color: #555;
 }
 .student-page .modal-content.modal-confirm p strong {
     color: #34495e;
@@ -240,7 +248,7 @@
 
 /* --- Responsive --- */
 @media (max-width: 768px) {
-    .student-page { padding: 1rem; }
+    .student-page { padding: 0.75rem; }
     .student-page .page-header { flex-direction: column; align-items: flex-start; }
     .student-page .btn-add { width: 100%; text-align: center; }
     .student-page .table-responsive { box-shadow: none; background-color: transparent; }
@@ -251,17 +259,17 @@
     .student-page .data-table td { display: block; width: 100%; }
     .student-page .data-table thead { display: none; }
     .student-page .data-table tr {
-        margin-bottom: 1rem; border-radius: 8px; background-color: #fff;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); padding: 1rem; border-bottom: none;
+        margin-bottom: 0.8rem; border-radius: 8px; background-color: #fff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06); padding: 0.8rem; border-bottom: none;
     }
     .student-page .data-table td {
         display: flex; justify-content: space-between; align-items: center;
-        padding: 0.75rem 0.5rem; border-bottom: 1px solid #f0f0f0; text-align: right;
+        padding: 0.6rem 0.5rem; border-bottom: 1px solid #f0f0f0; text-align: right;
     }
     .student-page .data-table td:last-child { border-bottom: none; }
     .student-page .data-table td::before {
         content: attr(data-label); font-weight: 600; color: #6c757d;
-        text-align: left; margin-right: 1rem;
+        text-align: left; margin-right: 0.75rem;
     }
     .student-page .aksi-header { display: none; }
     .student-page .actions-cell::before { display: none; }

@@ -26,7 +26,7 @@ import ManajemenKelasPage from '../../pages/admin/ManajemenKelasPage';
 
 const AdminLayout = () => {
     const navigate = useNavigate();
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [openSubmenus, setOpenSubmenus] = useState({});
     const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
     const accountMenuRef = useRef(null);

@@ -133,7 +133,7 @@ const ExtracurricularPage = () => {
                             extracurriculars.map((item, index) => (
                                 <tr key={item.id}>
                                     <td data-label="No">{index + 1}</td>
-                                    <td data-label="Nama Ekstrakurikuler" className="nama-cell">
+                                    <td data-label="Ekstrakurikuler" className="nama-cell">
                                         {item.nama_eskul}
                                     </td>
                                     <td data-label="Deskripsi">{item.deskripsi || '-'}</td>

@@ -1,5 +1,5 @@
 .extracurricular-page {
-    padding: 1.5rem;
+    padding: 1.25rem; /* Mengurangi padding halaman */
 }
 
 /* --- Header --- */
@@ -7,29 +7,29 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem; /* Mengurangi margin bawah */
     gap: 1rem;
 }
 .extracurricular-page .page-header h1 {
     margin: 0;
-    font-size: 1.8rem;
+    font-size: 1.6rem; /* Mengurangi ukuran font judul */
     color: #343a40;
 }
 .extracurricular-page .btn-add {
     background-color: #007bff;
     color: white;
-    padding: 0.75rem 1.5rem;
+    padding: 0.6rem 1.25rem; /* Mengurangi padding tombol */
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 0.9rem; /* Mengurangi ukuran font tombol */
     font-weight: 500;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+    box-shadow: 0 3px 6px rgba(0, 123, 255, 0.2); /* Mengurangi efek bayangan */
 }
 .extracurricular-page .btn-add:hover {
     background-color: #0056b3;
-    transform: translateY(-2px);
+    transform: translateY(-1px); /* Mengurangi efek hover */
 }
 
 /* --- Table --- */
@@ -38,7 +38,7 @@
     overflow-x: auto;
     background-color: #fff;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06); /* Mengurangi efek bayangan */
 }
 .extracurricular-page .data-table {
     width: 100%;
@@ -46,7 +46,7 @@
 }
 .extracurricular-page .data-table th,
 .extracurricular-page .data-table td {
-    padding: 1rem 1.2rem;
+    padding: 0.8rem 1rem; /* Mengurangi padding sel */
     text-align: left;
     border-bottom: 1px solid #e0e0e0;
 }
@@ -55,7 +55,7 @@
     font-weight: 600;
     color: #6c757d;
     text-transform: uppercase;
-    font-size: 0.8rem;
+    font-size: 0.75rem; /* Mengurangi ukuran font header tabel */
     letter-spacing: 0.5px;
 }
 .extracurricular-page .data-table tbody tr:hover {
@@ -65,11 +65,11 @@
 /* --- Tombol Aksi (Edit & Delete) --- */
 .extracurricular-page .action-buttons {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.4rem; /* Mengurangi jarak antar tombol aksi */
 }
 .extracurricular-page .btn-icon {
-    width: 34px;
-    height: 34px;
+    width: 32px; /* Mengurangi ukuran tombol ikon */
+    height: 32px;
     padding: 0;
     border: none;
     border-radius: 4px;
@@ -78,7 +78,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.95rem;
+    font-size: 0.9rem; /* Mengurangi ukuran font ikon */
     transition: background-color 0.2s ease, transform 0.1s ease;
 }
 .extracurricular-page .btn-edit {
@@ -86,14 +86,14 @@
 }
 .extracurricular-page .btn-edit:hover {
     background-color: #0056b3;
-    transform: translateY(-2px);
+    transform: translateY(-1px);
 }
 .extracurricular-page .btn-delete {
     background-color: #dc3545;
 }
 .extracurricular-page .btn-delete:hover {
     background-color: #c82333;
-    transform: translateY(-2px);
+    transform: translateY(-1px);
 }
 
 /* --- Modal --- */
@@ -106,66 +106,69 @@
 }
 .extracurricular-page .modal-content {
     background-color: white;
-    padding: 2.5rem;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    width: 100%; max-width: 650px;
+    padding: 2rem; /* Mengurangi padding modal */
+    border-radius: 10px; /* Mengurangi radius */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15); /* Mengurangi bayangan */
+    width: 100%; max-width: 600px; /* Mengurangi lebar maksimal modal */
     animation: fadeIn 0.3s ease-out;
     max-height: 90vh; overflow-y: auto;
     position: relative;
 }
 .extracurricular-page .modal-content.large {
-    max-width: 900px;
+    max-width: 800px; /* Mengurangi lebar maksimal modal besar */
 }
 .extracurricular-page .modal-close-button {
-    position: absolute; top: 15px; right: 15px;
+    position: absolute; top: 12px; right: 12px; /* Menyesuaikan posisi tombol tutup */
     background: none; border: none;
-    font-size: 1.8rem; color: #adb5bd; cursor: pointer;
+    font-size: 1.6rem; color: #adb5bd; cursor: pointer;
     transition: color 0.2s;
 }
 .extracurricular-page .modal-close-button:hover {
     color: #495057;
 }
 .extracurricular-page .modal-content h2 {
-    margin-top: 0; margin-bottom: 1.5rem;
-    font-size: 1.8rem; color: #343a40; text-align: center;
+    margin-top: 0; margin-bottom: 1.25rem; /* Mengurangi margin */
+    font-size: 1.6rem; /* Mengurangi ukuran font judul modal */
+    color: #343a40; text-align: center;
 }
 
 /* --- Form dalam Modal --- */
 .extracurricular-page .data-form fieldset {
     border: 1px solid #e0e0e0;
     border-radius: 8px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
+    padding: 1.25rem; /* Mengurangi padding fieldset */
+    margin-bottom: 1.25rem; /* Mengurangi margin bawah */
     background-color: #fcfcfc;
 }
 .extracurricular-page .data-form legend {
     font-weight: 700;
-    padding: 0 0.75rem;
+    padding: 0 0.6rem; /* Mengurangi padding legend */
     color: #007bff;
-    font-size: 1.2rem;
+    font-size: 1.1rem; /* Mengurangi ukuran font legend */
     background-color: #fff;
     border-radius: 5px;
 }
 .extracurricular-page .data-form .form-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Menyesuaikan lebar minimal */
+    gap: 1.25rem; /* Mengurangi jarak antar elemen form */
 }
 .extracurricular-page .data-form .form-group {
     display: flex; flex-direction: column;
 }
 .extracurricular-page .data-form .form-group label {
-    margin-bottom: 0.5rem; font-weight: 500; color: #495057;
+    margin-bottom: 0.4rem; /* Mengurangi margin */
+    font-weight: 500; color: #495057;
     display: flex; align-items: center;
 }
 .extracurricular-page .data-form .form-group input,
 .extracurricular-page .data-form .form-group select,
 .extracurricular-page .data-form .form-group textarea {
-    padding: 0.8rem 1rem;
+    padding: 0.7rem 0.9rem; /* Mengurangi padding input */
     border: 1px solid #ced4da;
     border-radius: 6px;
-    font-size: 1rem; width: 100%;
+    font-size: 0.95rem; /* Mengurangi ukuran font input */
+    width: 100%;
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 .extracurricular-page .data-form .form-group input:focus,
@@ -173,10 +176,11 @@
 .extracurricular-page .data-form .form-group textarea:focus {
     border-color: #80bdff;
     outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    box-shadow: 0 0 0 0.15rem rgba(0, 123, 255, 0.25); /* Mengurangi efek bayangan focus */
 }
 .extracurricular-page .data-form .form-group textarea {
-    min-height: 80px; resize: vertical;
+    min-height: 70px; /* Mengurangi tinggi minimal textarea */
+    resize: vertical;
 }
 .extracurricular-page .data-form .form-group.full-width {
     grid-column: 1 / -1;
@@ -187,12 +191,13 @@
 
 /* --- Modal Actions --- */
 .extracurricular-page .modal-actions {
-    display: flex; justify-content: flex-end; gap: 15px; margin-top: 2rem;
+    display: flex; justify-content: flex-end; gap: 12px; /* Mengurangi jarak antar tombol */
+    margin-top: 1.5rem; /* Mengurangi margin atas */
 }
 .extracurricular-page .modal-actions button {
-    padding: 12px 25px;
-    border-radius: 8px;
-    font-size: 1rem;
+    padding: 10px 22px; /* Mengurangi padding tombol aksi */
+    border-radius: 6px;
+    font-size: 0.95rem;
     font-weight: 600;
 }
 .extracurricular-page .btn-cancel {
@@ -212,10 +217,12 @@
 
 /* --- Modal Konfirmasi Delete --- */
 .extracurricular-page .modal-content.modal-confirm {
-    max-width: 450px; text-align: center;
+    max-width: 400px; /* Mengurangi lebar maksimal */
+    text-align: center;
 }
 .extracurricular-page .modal-content.modal-confirm p {
-    font-size: 1.1rem; margin: 1rem 0; color: #555;
+    font-size: 1rem; /* Mengurangi ukuran font */
+    margin: 0.8rem 0; color: #555;
 }
 .extracurricular-page .modal-content.modal-confirm p strong {
     color: #34495e;
@@ -223,7 +230,7 @@
 
 /* --- Responsive --- */
 @media (max-width: 768px) {
-    .extracurricular-page { padding: 1rem; }
+    .extracurricular-page { padding: 0.75rem; } /* Mengurangi padding mobile */
     .extracurricular-page .page-header { flex-direction: column; align-items: flex-start; }
     .extracurricular-page .btn-add { width: 100%; text-align: center; }
     .extracurricular-page .table-responsive { box-shadow: none; background-color: transparent; }
@@ -234,17 +241,19 @@
     .extracurricular-page .data-table td { display: block; width: 100%; }
     .extracurricular-page .data-table thead { display: none; }
     .extracurricular-page .data-table tr {
-        margin-bottom: 1rem; border-radius: 8px; background-color: #fff;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); padding: 1rem; border-bottom: none;
+        margin-bottom: 0.8rem; border-radius: 8px; background-color: #fff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06); padding: 0.8rem; border-bottom: none;
     }
     .extracurricular-page .data-table td {
         display: flex; justify-content: space-between; align-items: center;
-        padding: 0.75rem 0.5rem; border-bottom: 1px solid #f0f0f0; text-align: right;
+        padding: 0.6rem 0.5rem; border-bottom: 1px solid #f0f0f0; text-align: right;
+        font-size: 0.95rem; /* Menyesuaikan ukuran font sel */
     }
     .extracurricular-page .data-table td:last-child { border-bottom: none; }
     .extracurricular-page .data-table td::before {
         content: attr(data-label); font-weight: 600; color: #6c757d;
-        text-align: left; margin-right: 1rem;
+        text-align: left; margin-right: 0.75rem; /* Mengurangi margin */
+        font-size: 0.95rem; /* Menyesuaikan ukuran font label */
     }
     .extracurricular-page .aksi-header { display: none; }
     .extracurricular-page .actions-cell::before { display: none; }

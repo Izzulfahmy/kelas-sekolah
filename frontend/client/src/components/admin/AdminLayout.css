@@ -76,6 +76,9 @@
     flex-grow: 1;
     overflow-y: auto;
 }
+.admin-layout .sidebar-menu::-webkit-scrollbar {
+    display: none;
+}
 .admin-layout .sidebar-menu li {
     margin-bottom: 0.25rem; 
 }
