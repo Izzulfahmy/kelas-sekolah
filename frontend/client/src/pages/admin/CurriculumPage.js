@@ -20,7 +20,7 @@ const CurriculumPage = () => {
     const [editingFase, setEditingFase] = useState(null);
     const [faseFormData, setFaseFormData] = useState({ nama_fase: '', deskripsi: '' });
 
-    // State untuk Modal Pemetaan Tingkatan (BARU)
+    // State untuk Modal Pemetaan Tingkatan
     const [isMappingModalOpen, setIsMappingModalOpen] = useState(false);
     const [mappingFase, setMappingFase] = useState(null);
     const [allTingkatans, setAllTingkatans] = useState([]);
@@ -29,7 +29,7 @@ const CurriculumPage = () => {
 
     // State untuk Modal Konfirmasi Hapus
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [deletingData, setDeletingData] = useState(null); // { type: 'kurikulum' | 'fase', data: {} }
+    const [deletingData, setDeletingData] = useState(null);
 
     // --- Ambil Data Awal ---
     const fetchCurriculums = useCallback(async () => {
@@ -48,13 +48,13 @@ const CurriculumPage = () => {
         }
     }, []);
 
-    // (BARU) Fungsi untuk mengambil semua tingkatan
     const fetchAllTingkatans = useCallback(async () => {
         try {
             const token = localStorage.getItem('token');
             const res = await api.get('/api/tingkatans', { headers: { Authorization: `Bearer ${token}` } });
             setAllTingkatans(res.data || []);
-        } catch (error) {
+        } catch (error)
+        {
             toast.error('Gagal mengambil data tingkatan.');
             console.error(error);
         }
@@ -63,10 +63,9 @@ const CurriculumPage = () => {
 
     useEffect(() => {
         fetchCurriculums();
-        fetchAllTingkatans(); // (DITAMBAHKAN) Panggil fungsi fetch tingkatan
+        fetchAllTingkatans();
     }, [fetchCurriculums, fetchAllTingkatans]);
 
-    // (DIPERBARUI) Sinkronisasi data saat daftar kurikulum berubah
     useEffect(() => {
         if (selectedCurriculum) {
             const updatedSelection = curriculums.find(c => c.id === selectedCurriculum.id);
@@ -75,12 +74,11 @@ const CurriculumPage = () => {
     }, [curriculums, selectedCurriculum]);
 
 
-    // --- Handler untuk memilih kurikulum ---
+    // --- Handlers ---
     const handleSelectCurriculum = (curriculum) => {
         setSelectedCurriculum(curriculum);
     };
 
-    // --- Handler untuk Modal Kurikulum ---
     const openCurriculumModal = (data = null) => {
         setEditingCurriculum(data);
         setCurriculumFormData(data ? { nama_kurikulum: data.nama_kurikulum, deskripsi: data.deskripsi || '' } : { nama_kurikulum: '', deskripsi: '' });
@@ -113,7 +111,6 @@ const CurriculumPage = () => {
         }
     };
 
-    // --- Handler untuk Modal Fase ---
     const openFaseModal = (data = null) => {
         setEditingFase(data);
         setFaseFormData(data ? { nama_fase: data.nama_fase, deskripsi: data.deskripsi || '' } : { nama_fase: '', deskripsi: '' });
@@ -150,7 +147,6 @@ const CurriculumPage = () => {
         }
     };
 
-    // --- (BARU) Handler untuk Modal Pemetaan Tingkatan ---
     const openMappingModal = (fase) => {
         setMappingFase(fase);
         const currentMappedIds = fase.tingkatans ? fase.tingkatans.map(t => t.id) : [];
@@ -177,7 +173,7 @@ const CurriculumPage = () => {
                 headers: { Authorization: `Bearer ${token}` }
             });
             toast.success(`Pemetaan untuk ${mappingFase.nama_fase} berhasil disimpan.`);
-            fetchCurriculums(); // Refresh data
+            fetchCurriculums();
             closeMappingModal();
         } catch (error) {
             toast.error('Gagal menyimpan pemetaan.');
@@ -186,8 +182,6 @@ const CurriculumPage = () => {
         }
     };
 
-
-    // --- Handler untuk Modal Hapus ---
     const openDeleteModal = (type, data) => {
         setDeletingData({ type, data });
         setIsDeleteModalOpen(true);
@@ -224,8 +218,20 @@ const CurriculumPage = () => {
 
     const isDetailVisible = selectedCurriculum !== null;
 
-    // (BARU) Logika untuk memisahkan tingkatan yang tersedia dan yang sudah dipetakan
-    const { availableTingkatans, mappedTingkatans } = allTingkatans.reduce(
+    // [LOGIKA BARU] Filter tingkatan yang tersedia untuk kurikulum yang dipilih
+    // Pertama, kumpulkan semua ID tingkatan yang sudah digunakan oleh fase LAIN dalam kurikulum ini.
+    const usedTingkatanIdsInOtherFases = selectedCurriculum?.fases
+        .filter(f => f.id !== mappingFase?.id) // Abaikan fase yang sedang diedit
+        .flatMap(f => f.tingkatans || []) // Ambil semua tingkatan dari fase lain
+        .map(t => t.id) || []; // Ambil ID-nya saja
+    
+    // Kedua, buat daftar tingkatan yang "benar-benar" tersedia untuk kurikulum ini.
+    const availableTingkatansForThisCurriculum = allTingkatans.filter(
+        t => !usedTingkatanIdsInOtherFases.includes(t.id)
+    );
+
+    // Ketiga, bagi daftar yang sudah difilter menjadi "tersedia" dan "terpetakan" untuk fase saat ini
+    const { availableTingkatans, mappedTingkatans } = availableTingkatansForThisCurriculum.reduce(
         (acc, tingkatan) => {
             if (mappedTingkatanIds.includes(tingkatan.id)) {
                 acc.mappedTingkatans.push(tingkatan);
@@ -244,7 +250,6 @@ const CurriculumPage = () => {
             </div>
 
             <div className={`master-detail-layout ${isDetailVisible ? 'detail-visible' : ''}`}>
-                {/* Kolom Kiri: Daftar Kurikulum */}
                 <aside className="master-panel">
                     <div className="panel-header">
                         <h2>Daftar Kurikulum</h2>
@@ -274,12 +279,10 @@ const CurriculumPage = () => {
                         )}
                     </div>
                 </aside>
-
-                {/* Kolom Kanan: Detail & Manajemen Fase */}
+                
                 <main className="detail-panel">
                     {selectedCurriculum ? (
                         <>
-                            {/* Header khusus untuk mobile, berisi tombol kembali dan tambah */}
                             <div className="detail-panel-header-mobile">
                                 <button className="btn-back-mobile" onClick={() => setSelectedCurriculum(null)}>
                                     <FaArrowLeft />
@@ -290,11 +293,10 @@ const CurriculumPage = () => {
                                 </button>
                             </div>
 
-                            {/* Header untuk desktop */}
                             <div className="panel-header panel-header-desktop">
                                 <h2>Detail: {selectedCurriculum.nama_kurikulum}</h2>
                                 <button className="btn-add-detail" onClick={() => openFaseModal()}>
-                                    <FaPlus /> Tambah
+                                    <FaPlus /> Tambah Fase
                                 </button>
                             </div>
                             
@@ -310,13 +312,11 @@ const CurriculumPage = () => {
                                                 <div className="item-icon"><FaLayerGroup /></div>
                                                 <div className="item-content">
                                                     <span className="item-title">{fase.nama_fase}</span>
-                                                    {/* (DIPERBARUI) Tampilkan tingkatan yang terhubung */}
                                                     <span className="item-subtitle">
                                                         Tingkatan: {fase.tingkatans && fase.tingkatans.length > 0 ? fase.tingkatans.map(t => t.nama_tingkatan).join(', ') : 'Belum diatur'}
                                                     </span>
                                                 </div>
                                                 <div className="item-actions">
-                                                    {/* (BARU) Tombol untuk membuka modal pemetaan */}
                                                     <button title="Atur Tingkatan" className="btn-action-icon" onClick={() => openMappingModal(fase)}><FaCogs /></button>
                                                     <button title="Edit Fase" className="btn-action-icon" onClick={() => openFaseModal(fase)}><FaPen /></button>
                                                     <button title="Hapus Fase" className="btn-action-icon" onClick={() => openDeleteModal('fase', fase)}><FaTrash /></button>
@@ -408,7 +408,6 @@ const CurriculumPage = () => {
                 </div>
             )}
             
-            {/* (BARU) Modal Pemetaan Tingkatan */}
             {isMappingModalOpen && (
                 <div className="modal-overlay" onClick={closeMappingModal}>
                     <div className="modal-content modal-mapping" onClick={e => e.stopPropagation()}>
