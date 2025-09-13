@@ -14,7 +14,7 @@
 
 .manajemen-kelas-page {
     font-family: 'Inter', sans-serif;
-    padding: 1.25rem; /* Mengurangi padding halaman */
+    padding: 1.25rem;
     background-color: var(--bg-light);
     height: 100%;
     display: flex;
@@ -24,7 +24,7 @@
 /* --- Layout Utama --- */
 .master-detail-layout {
     display: flex;
-    gap: 1rem; /* Mengurangi jarak antar panel */
+    gap: 1rem;
     flex-grow: 1;
     overflow: hidden;
     position: relative;
@@ -37,7 +37,6 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
 }
 
 .master-panel {
@@ -51,7 +50,7 @@
 
 /* --- Panel Header & Controls --- */
 .panel-header {
-    padding: 0.75rem 1rem; /* Mengurangi padding header */
+    padding: 0.75rem 1rem;
     border-bottom: 1px solid var(--border-color);
     display: flex;
     justify-content: space-between;
@@ -60,18 +59,18 @@
 }
 .panel-header h2 {
     margin: 0;
-    font-size: 1.1rem; /* Mengurangi ukuran font judul */
+    font-size: 1.1rem;
     font-weight: 600;
     color: #34495e;
 }
 .panel-controls {
-    padding: 0.75rem 1rem; /* Mengurangi padding kontrol */
+    padding: 0.75rem 1rem;
     border-bottom: 1px solid var(--border-color);
     flex-shrink: 0;
 }
 .panel-controls select {
     width: 100%;
-    padding: 0.5rem 1.8rem 0.5rem 0.7rem; /* Mengurangi padding select */
+    padding: 0.5rem 1.8rem 0.5rem 0.7rem;
     border-radius: 6px;
     border: 1px solid var(--border-color);
     appearance: none;
@@ -83,8 +82,8 @@
     color: white;
     border: none;
     border-radius: 6px;
-    padding: 0.35rem 0.7rem; /* Mengurangi padding tombol */
-    font-size: 0.8rem; /* Mengurangi ukuran font tombol */
+    padding: 0.35rem 0.7rem;
+    font-size: 0.8rem;
     font-weight: 500;
     cursor: pointer;
     display: flex;
@@ -106,8 +105,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.7rem; /* Mengurangi padding item */
-    margin: 0.4rem; /* Mengurangi margin */
+    padding: 0.7rem;
+    margin: 0.4rem;
     border-radius: var(--border-radius);
     cursor: pointer;
     transition: background-color 0.2s ease, box-shadow 0.2s ease;
@@ -125,29 +124,38 @@
 .item-content { flex-grow: 1; }
 .item-title { font-weight: 500; color: var(--text-dark); }
 .master-item.active .item-title { font-weight: 700; }
-.item-subtitle { font-size: 0.75rem; /* Mengurangi ukuran font */ color: var(--text-light); }
+.item-subtitle { font-size: 0.75rem; color: var(--text-light); }
 .item-actions .btn-action-icon {
     background: none;
     border: none;
     color: var(--text-light);
     cursor: pointer;
-    padding: 0.2rem; /* Mengurangi padding */
-    font-size: 0.8rem; /* Mengurangi ukuran font ikon */
+    padding: 0.2rem;
+    font-size: 0.8rem;
 }
 .item-actions .btn-action-icon:hover {
     color: var(--text-dark);
 }
 
 /* --- Detail Panel --- */
-.detail-panel-header {
-    padding: 0.75rem 1rem; /* Mengurangi padding */
-    border-bottom: 1px solid var(--border-color);
-    display: flex;
-    align-items: center;
-    flex-shrink: 0;
+.detail-panel-header-mobile, .detail-panel-header-desktop {
+    display: none;
 }
-.detail-panel-header h2 { margin: 0; font-size: 1.1rem; }
-.btn-back-mobile { display: none; }
+@media (min-width: 769px) {
+    .detail-panel-header-desktop {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+    }
+    .detail-panel-header-desktop h2 { 
+        margin: 0; 
+        font-size: 1.1rem; 
+        font-weight: 600;
+        color: #34495e;
+    }
+}
 
 .detail-tabs {
     display: flex;
@@ -155,11 +163,11 @@
     flex-shrink: 0;
 }
 .detail-tabs button {
-    padding: 0.75rem 1.25rem; /* Mengurangi padding */
+    padding: 0.75rem 1.25rem;
     border: none;
     background: none;
     cursor: pointer;
-    font-size: 0.85rem; /* Mengurangi ukuran font */
+    font-size: 0.85rem;
     color: var(--text-medium);
     border-bottom: 3px solid transparent;
     margin-bottom: -1px;
@@ -172,11 +180,11 @@
     border-bottom-color: var(--primary-color);
     font-weight: 600;
 }
-.detail-content { padding: 1.25rem; /* Mengurangi padding konten */ overflow-y: auto; flex-grow: 1; }
+.detail-content { padding: 1.25rem; overflow-y: auto; flex-grow: 1; }
 .tab-content-info .info-grid {
     display: grid;
-    grid-template-columns: 120px 1fr; /* Mengurangi lebar kolom label */
-    gap: 0.6rem; /* Mengurangi jarak antar item */
+    grid-template-columns: 120px 1fr;
+    gap: 0.6rem;
     align-items: center;
 }
 .tab-content-info .info-grid strong {
@@ -185,21 +193,21 @@
 .tab-content-info p { margin: 0; font-size: 0.95rem; }
 .tab-content-info .action-buttons { margin-top: 1.25rem; display: flex; gap: 0.8rem; }
 .tab-content-info .btn-edit, .tab-content-info .btn-delete {
-    padding: 0.5rem 0.9rem; /* Mengurangi padding tombol */ border: none; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.5rem 0.9rem; border: none; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 0.5rem;
 }
 .tab-content-info .btn-edit { background-color: var(--primary-color); color: white; }
 .tab-content-info .btn-delete { background-color: var(--danger-color); color: white; }
 
 /* --- Dual List Box --- */
-.dual-list-box { display: flex; gap: 1rem; /* Mengurangi jarak */ margin-top: 0.8rem; }
+.dual-list-box { display: flex; gap: 1rem; margin-top: 0.8rem; }
 .list-box { flex: 1; border: 1px solid var(--border-color); border-radius: var(--border-radius); display: flex; flex-direction: column; }
-.list-box h3 { padding: 0.7rem 0.9rem; /* Mengurangi padding */ margin: 0; font-size: 0.85rem; /* Mengurangi ukuran font */ font-weight: 600; color: var(--text-medium); border-bottom: 1px solid var(--border-color); background-color: var(--bg-light); }
-.list-items { padding: 0.4rem; overflow-y: auto; height: 300px; /* Mengurangi tinggi default */ }
-.list-item { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0.7rem; /* Mengurangi padding */ border-radius: 6px; cursor: pointer; font-size: 0.85rem; /* Mengurangi ukuran font */ margin-bottom: 0.2rem; }
+.list-box h3 { padding: 0.7rem 0.9rem; margin: 0; font-size: 0.85rem; font-weight: 600; color: var(--text-medium); border-bottom: 1px solid var(--border-color); background-color: var(--bg-light); }
+.list-items { padding: 0.4rem; overflow-y: auto; height: 300px; }
+.list-item { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0.7rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; margin-bottom: 0.2rem; }
 .list-item:hover { background-color: #f1f3f5; }
 .list-item svg { color: var(--text-light); font-size: 0.75rem; }
 .panel-footer-actions { margin-top: 1.25rem; text-align: right; }
-.btn-save-mapping { background-color: #28a745; color: white; padding: 0.6rem 1.25rem; /* Mengurangi padding */ border: none; border-radius: 6px; font-weight: 500; cursor: pointer; }
+.btn-save-mapping { background-color: #28a745; color: white; padding: 0.6rem 1.25rem; border: none; border-radius: 6px; font-weight: 500; cursor: pointer; }
 
 /* --- Tabel Guru Pengajar --- */
 .panel-header-alt { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; }
@@ -228,15 +236,15 @@
 /* New styles for teacher list */
 .teacher-list-card {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Mengurangi lebar minimal kartu */
-    gap: 1.25rem; /* Mengurangi jarak antar kartu */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.25rem;
 }
 
 .teacher-card {
     background-color: var(--bg-white);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
-    padding: 0.8rem; /* Mengurangi padding kartu */
+    padding: 0.8rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -244,28 +252,28 @@
 
 .teacher-card h4 {
     margin: 0;
-    font-size: 0.95rem; /* Mengurangi ukuran font */
+    font-size: 0.95rem;
     color: var(--text-dark);
 }
 
 .teacher-card p {
     margin: 0;
-    font-size: 0.8rem; /* Mengurangi ukuran font */
+    font-size: 0.8rem;
     color: var(--text-light);
     font-weight: 500;
 }
 
 .teacher-actions {
     display: flex;
-    gap: 0.4rem; /* Mengurangi jarak antar tombol */
+    gap: 0.4rem;
 }
 
 .teacher-card .btn-action-icon.btn-edit {
     background: var(--primary-color);
     color: white;
     border-radius: 50%;
-    padding: 0.4rem; /* Mengurangi padding */
-    width: 1.8rem; /* Mengurangi ukuran */
+    padding: 0.4rem;
+    width: 1.8rem;
     height: 1.8rem;
     display: flex;
     align-items: center;
@@ -295,8 +303,8 @@
 }
 
 /* --- Empty State --- */
-.empty-state-full { text-align: center; padding: 1.5rem; /* Mengurangi padding */ color: var(--text-light); height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.empty-state-full h2 { color: #34495e; font-size: 1.2rem; /* Mengurangi ukuran font */ }
+.empty-state-full { text-align: center; padding: 1.5rem; color: var(--text-light); height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.empty-state-full h2 { color: #34495e; font-size: 1.2rem; }
 .empty-state-full svg { margin-bottom: 0.8rem; }
 
 /* --- Modal Styles --- */
@@ -316,11 +324,11 @@
 
 .modal-content {
     background-color: #fff;
-    padding: 1.5rem; /* Mengurangi padding */
-    border-radius: 10px; /* Mengurangi radius */
-    box-shadow: 0 8px 20px rgba(0,0,0,.15); /* Mengurangi bayangan */
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,.15);
     width: 100%;
-    max-width: 420px; /* Mengurangi lebar maksimal modal */
+    max-width: 420px;
     max-height: 90vh;
     overflow-y: auto;
     position: relative;
@@ -329,11 +337,11 @@
 
 .modal-close-button {
     position: absolute;
-    top: 8px; /* Menyesuaikan posisi */
+    top: 8px;
     right: 8px;
     background: none;
     border: none;
-    font-size: 1.6rem; /* Mengurangi ukuran font ikon */
+    font-size: 1.6rem;
     color: #adb5bd;
     cursor: pointer;
     transition: color .2s;
@@ -341,8 +349,8 @@
 
 .modal-content h2 {
     margin-top: 0;
-    margin-bottom: 0.4rem; /* Mengurangi margin */
-    font-size: 1.4rem; /* Mengurangi ukuran font judul modal */
+    margin-bottom: 0.4rem;
+    font-size: 1.4rem;
     color: #343a40;
     text-align: center;
 }
@@ -350,19 +358,19 @@
 .modal-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 0.6rem; /* Mengurangi jarak antar tombol */
-    margin-top: 1.5rem; /* Mengurangi margin */
+    gap: 0.6rem;
+    margin-top: 1.5rem;
 }
 
 .btn-cancel,
 .btn-confirm-delete,
 .btn-save {
-    padding: 0.5rem 1rem; /* Mengurangi padding */
+    padding: 0.5rem 1rem;
     border-radius: 6px;
     border: none;
     cursor: pointer;
     font-weight: 500;
-    font-size: 0.85rem; /* Mengurangi ukuran font */
+    font-size: 0.85rem;
 }
 
 .btn-cancel {
@@ -381,19 +389,19 @@
 }
 
 .data-form .form-group {
-    margin-bottom: 0.8rem; /* Mengurangi margin */
+    margin-bottom: 0.8rem;
 }
 
 .data-form .form-group label {
     display: block;
-    margin-bottom: 0.4rem; /* Mengurangi margin */
+    margin-bottom: 0.4rem;
     font-size: 0.9rem;
 }
 
 .data-form .form-group input,
 .data-form .form-group select {
     width: 100%;
-    padding: 0.5rem 1.8rem 0.5rem 0.7rem; /* Mengurangi padding */
+    padding: 0.5rem 1.8rem 0.5rem 0.7rem;
     border-radius: 6px;
     border: 1px solid var(--border-color);
     appearance: none;
@@ -402,15 +410,120 @@
     background-size: 16px;
     cursor: pointer;
 }
+.detail-panel-header-mobile-right-spacer {
+    width: 20px;
+}
+
 /* --- Responsive --- */
 @media (max-width: 768px) {
-    .manajemen-kelas-page { padding: 0; }
-    .master-detail-layout { gap: 0; }
-    .master-panel, .detail-panel { width: 100%; height: 100%; position: absolute; top: 0; left: 0; border-radius: 0; box-shadow: none; }
-    .master-detail-layout.detail-visible .master-panel { transform: translateX(-100%); }
-    .detail-panel { transform: translateX(100%); }
-    .master-detail-layout.detail-visible .detail-panel { transform: translateX(0); }
-    .btn-back-mobile { display: block; background: none; border: none; font-size: 1.2rem; margin-right: 1rem; cursor: pointer; }
-    .dual-list-box { flex-direction: column; }
-    .list-items { height: 180px; /* Mengurangi tinggi lebih lanjut */ }
+    .manajemen-kelas-page { 
+        padding: 0; 
+    }
+    
+    .master-detail-layout {
+        gap: 0;
+        overflow-x: hidden;
+        position: relative;
+    }
+    
+    .master-panel, .detail-panel {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        border-radius: 0;
+        box-shadow: none;
+        flex: 1 1 100%;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 1;
+    }
+
+    /* Status default: master panel terlihat, detail panel tersembunyi */
+    .master-panel {
+        transform: translateX(0);
+        z-index: 2;
+    }
+    
+    .detail-panel {
+        transform: translateX(100%);
+        z-index: 3;
+    }
+
+    /* Status saat detail visible: master tetap di tempat, detail panel masuk dari kanan */
+    .master-detail-layout.detail-visible .master-panel {
+        transform: translateX(0);
+    }
+    
+    .master-detail-layout.detail-visible .detail-panel {
+        transform: translateX(0);
+    }
+
+    .detail-panel-header-mobile {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid var(--border-color);
+        flex-shrink: 0;
+        background: var(--bg-white);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+    
+    .detail-panel-header-mobile h2 {
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #34495e;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .btn-back-mobile { 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none; 
+        border: none; 
+        font-size: 1.2rem; 
+        margin-right: 1rem; 
+        cursor: pointer; 
+        padding: 0.5rem;
+        color: var(--primary-color);
+        border-radius: 50%;
+        transition: background-color 0.2s ease;
+    }
+    
+    .btn-back-mobile:hover {
+        background-color: #f8f9fa;
+    }
+    
+    .dual-list-box { 
+        flex-direction: column; 
+    }
+    
+    .list-items { 
+        height: 180px; 
+    }
+    
+    /* Pastikan panel tidak bisa di-scroll secara horizontal */
+    .master-panel, .detail-panel {
+        min-width: 100%;
+        max-width: 100%;
+    }
+}
+
+/* Animasi untuk modal */
+@keyframes slide-down {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

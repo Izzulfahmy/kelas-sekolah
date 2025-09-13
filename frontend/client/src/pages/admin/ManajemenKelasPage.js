@@ -41,8 +41,8 @@ const ManajemenKelasPage = () => {
   const [kelasFormData, setKelasFormData] = useState({ nama_kelas: '', tingkatan_id: '', wali_kelas_id: '' });
   const [pengajarFormData, setPengajarFormData] = useState({ guru_id: '', mata_pelajaran_id: '' });
 
-  // Anggota state (ids)
-  const [anggotaKelasIds, setAnggotaKelasIds] = useState(new Set());
+  // Anggota state (ids) - dengan stable initial state
+  const [anggotaKelasIds, setAnggotaKelasIds] = useState(() => new Set());
   const [isSavingAnggota, setIsSavingAnggota] = useState(false);
 
   // ---------- Fetch initial data ----------
@@ -114,29 +114,40 @@ const ManajemenKelasPage = () => {
           newMap[k.id] = k; // fallback
         }
       }
-      setKelasDetailsMap(prev => ({ ...prev, ...newMap }));
+      
+      // Update map tanpa merge dengan previous state untuk menghindari stale data
+      setKelasDetailsMap(newMap);
 
-      if (kelasList.length > 0 && !selectedKelas) {
-        const first = kelasList[0];
-        const detail = newMap[first.id] || first;
-        setSelectedKelas(detail);
-        const ids = (detail.anggota_kelas || []).map(a => Number(a.siswa?.id)).filter(Boolean);
-        setAnggotaKelasIds(new Set(ids));
-      }
+      // Hapus selectedKelas jika sudah tidak ada di daftar kelas yang baru
+      // Menggunakan callback untuk mengakses selectedKelas terbaru tanpa dependency
+      setSelectedKelas(currentSelected => {
+        if (currentSelected && !kelasList.some(k => k.id === currentSelected.id)) {
+          setAnggotaKelasIds(new Set());
+          return null;
+        }
+        return currentSelected;
+      });
+
     } catch (err) {
       console.error(err);
       setListKelas([]);
       toast.error('Gagal mengambil daftar kelas.');
     }
-  }, [selectedTahunAjaran, fetchKelasDetail, selectedKelas]);
+  }, [selectedTahunAjaran, fetchKelasDetail]);
 
   useEffect(() => {
     fetchKelas();
   }, [fetchKelas]);
 
   // ---------- Pilih kelas ----------
-  const handleSelectKelas = useCallback(async (kelas) => {
+  const handleSelectKelas = useCallback((kelas) => {
     const kelasId = Number(kelas.id);
+    
+    // Cek apakah ini kelas yang sama dengan yang sudah dipilih
+    if (selectedKelas && selectedKelas.id === kelasId) {
+      return; // Jangan lakukan apa-apa jika kelas yang sama diklik lagi
+    }
+
     const cached = kelasDetailsMap[kelasId];
     if (cached && cached.id) {
       setSelectedKelas(cached);
@@ -145,36 +156,51 @@ const ManajemenKelasPage = () => {
       setActiveTab('info');
       return;
     }
-    try {
-      const detail = await fetchKelasDetail(kelasId);
-      if (detail) {
-        setKelasDetailsMap(prev => ({ ...prev, [kelasId]: detail }));
-        setSelectedKelas(detail);
-        const ids = (detail.anggota_kelas || []).map(a => Number(a.siswa?.id)).filter(Boolean);
-        setAnggotaKelasIds(new Set(ids));
-        setActiveTab('info');
-      } else {
+
+    // Jika tidak ada cache, fetch detail
+    const fetchAndSetDetail = async () => {
+      try {
+        const detail = await fetchKelasDetail(kelasId);
+        if (detail) {
+          // Update cache
+          setKelasDetailsMap(prev => ({ ...prev, [kelasId]: detail }));
+          setSelectedKelas(detail);
+          const ids = (detail.anggota_kelas || []).map(a => Number(a.siswa?.id)).filter(Boolean);
+          setAnggotaKelasIds(new Set(ids));
+          setActiveTab('info');
+        } else {
+          toast.error('Gagal memuat detail kelas.');
+        }
+      } catch (err) {
+        console.error(err);
         toast.error('Gagal memuat detail kelas.');
       }
-    } catch (err) {
-      console.error(err);
-      toast.error('Gagal memuat detail kelas.');
-    }
-  }, [kelasDetailsMap, fetchKelasDetail]);
+    };
+
+    fetchAndSetDetail();
+  }, [kelasDetailsMap, fetchKelasDetail, selectedKelas]);
+
+  // ---------- Handle back to master (mobile) ----------
+  const handleBackToMaster = useCallback(() => {
+    setSelectedKelas(null);
+  }, []);
 
   // ---------- Toggle siswa ----------
-  const handleToggleSiswa = (siswaId) => {
+  const handleToggleSiswa = useCallback((siswaId) => {
     const idNum = Number(siswaId);
     setAnggotaKelasIds(prev => {
       const newSet = new Set(prev);
-      if (newSet.has(idNum)) newSet.delete(idNum);
-      else newSet.add(idNum);
+      if (newSet.has(idNum)) {
+        newSet.delete(idNum);
+      } else {
+        newSet.add(idNum);
+      }
       return newSet;
     });
-  };
+  }, []);
 
   // ---------- Simpan anggota ----------
-  const handleSaveAnggota = async () => {
+  const handleSaveAnggota = useCallback(async () => {
     if (!selectedKelas) return;
     setIsSavingAnggota(true);
     try {
@@ -206,7 +232,7 @@ const ManajemenKelasPage = () => {
     } finally {
       setIsSavingAnggota(false);
     }
-  };
+  }, [selectedKelas, anggotaKelasIds, fetchKelas, fetchKelasDetail]);
 
   // ---------- Siswa sudah terpakai ----------
   const siswaSudahTerpakai = useMemo(() => {
@@ -227,9 +253,6 @@ const ManajemenKelasPage = () => {
     const tersedia = allSiswa.filter(s => {
       const idNum = Number(s.id);
       if (diKelasSet.has(idNum)) return false;
-      // allow member of this class to still appear in its "di kelas ini" (handled above),
-      // but if a student is used in any class (including this one), exclude from available.
-      // to allow moving within same class, the diKelasSet check above already keeps members out of tersedia.
       if (siswaSudahTerpakai.has(idNum)) return false;
       return true;
     });
@@ -237,7 +260,7 @@ const ManajemenKelasPage = () => {
   }, [allSiswa, anggotaKelasIds, siswaSudahTerpakai]);
 
   // ---------- CRUD kelas ----------
-  const openKelasModal = (kelas = null) => {
+  const openKelasModal = useCallback((kelas = null) => {
     setEditingData(kelas);
     if (kelas) {
       setKelasFormData({
@@ -249,10 +272,13 @@ const ManajemenKelasPage = () => {
       setKelasFormData({ nama_kelas: '', tingkatan_id: '', wali_kelas_id: '' });
     }
     setIsKelasModalOpen(true);
-  };
-  const closeKelasModal = () => setIsKelasModalOpen(false);
+  }, []);
 
-  const handleKelasSubmit = async (e) => {
+  const closeKelasModal = useCallback(() => {
+    setIsKelasModalOpen(false);
+  }, []);
+
+  const handleKelasSubmit = useCallback(async (e) => {
     e.preventDefault();
     try {
       const tokenHeader = getTokenHeader();
@@ -278,10 +304,10 @@ const ManajemenKelasPage = () => {
       console.error(err);
       toast.error('Gagal menyimpan kelas.');
     }
-  };
+  }, [kelasFormData, selectedTahunAjaran, editingData, fetchKelas]);
 
   // ---------- Pengajar ----------
-  const openPengajarModal = (data = null) => {
+  const openPengajarModal = useCallback((data = null) => {
     setEditingData(data);
     if (data) {
       setPengajarFormData({
@@ -292,10 +318,13 @@ const ManajemenKelasPage = () => {
       setPengajarFormData({ guru_id: '', mata_pelajaran_id: '' });
     }
     setIsPengajarModalOpen(true);
-  };
-  const closePengajarModal = () => setIsPengajarModalOpen(false);
+  }, []);
 
-  const handlePengajarSubmit = async (e) => {
+  const closePengajarModal = useCallback(() => {
+    setIsPengajarModalOpen(false);
+  }, []);
+
+  const handlePengajarSubmit = useCallback(async (e) => {
     e.preventDefault();
     if (!selectedKelas) return;
     try {
@@ -315,26 +344,29 @@ const ManajemenKelasPage = () => {
       });
 
       await fetchKelas();
-      const updated = await fetchKelasDetail(selectedKelas.id);
-      if (updated) {
-        setKelasDetailsMap(prev => ({ ...prev, [selectedKelas.id]: updated }));
-        setSelectedKelas(updated);
+      const updatedDetail = await fetchKelasDetail(selectedKelas.id);
+      if (updatedDetail) {
+        setKelasDetailsMap(prev => ({ ...prev, [selectedKelas.id]: updatedDetail }));
+        setSelectedKelas(updatedDetail);
       }
       setIsPengajarModalOpen(false);
     } catch (err) {
       console.error(err);
       toast.error('Gagal menyimpan pengajar.');
     }
-  };
+  }, [selectedKelas, pengajarFormData, editingData, fetchKelas, fetchKelasDetail]);
 
   // ---------- Hapus ----------
-  const openDeleteModal = (type, data) => {
+  const openDeleteModal = useCallback((type, data) => {
     setDeletingData({ type, data });
     setIsDeleteModalOpen(true);
-  };
-  const closeDeleteModal = () => setIsDeleteModalOpen(false);
+  }, []);
 
-  const confirmDelete = async () => {
+  const closeDeleteModal = useCallback(() => {
+    setIsDeleteModalOpen(false);
+  }, []);
+
+  const confirmDelete = useCallback(async () => {
     if (!deletingData) return;
     const { type, data } = deletingData;
     try {
@@ -356,13 +388,23 @@ const ManajemenKelasPage = () => {
       });
 
       await fetchKelas();
-      if (type === 'kelas') setSelectedKelas(null);
+      if (type === 'kelas') {
+        setSelectedKelas(null);
+        setAnggotaKelasIds(new Set());
+      }
       setIsDeleteModalOpen(false);
     } catch (err) {
       console.error(err);
       toast.error('Gagal menghapus.');
     }
-  };
+  }, [deletingData, selectedKelas, fetchKelas]);
+
+  // Handle tahun ajaran change
+  const handleTahunAjaranChange = useCallback((e) => {
+    setSelectedTahunAjaran(e.target.value);
+    setSelectedKelas(null);
+    setAnggotaKelasIds(new Set());
+  }, []);
 
   // ---------- Render ----------
   const isDetailVisible = selectedKelas !== null;
@@ -388,10 +430,7 @@ const ManajemenKelasPage = () => {
           <div className="panel-controls">
             <select
               value={selectedTahunAjaran}
-              onChange={(e) => {
-                setSelectedTahunAjaran(e.target.value);
-                setSelectedKelas(null);
-              }}
+              onChange={handleTahunAjaranChange}
             >
               {allTahunAjaran.map(th => (
                 <option key={th.id} value={th.id}>
@@ -413,10 +452,24 @@ const ManajemenKelasPage = () => {
                   <span className="item-subtitle">Wali: {kelas.wali_kelas?.nama_lengkap || '-'} | {kelas.jumlah_siswa || 0} Siswa</span>
                 </div>
                 <div className="item-actions">
-                  <button className="btn-action-icon" title="Edit Kelas" onClick={(e) => { e.stopPropagation(); openKelasModal(kelas); }}>
+                  <button 
+                    className="btn-action-icon" 
+                    title="Edit Kelas" 
+                    onClick={(e) => { 
+                      e.stopPropagation(); 
+                      openKelasModal(kelas); 
+                    }}
+                  >
                     <FaPen />
                   </button>
-                  <button className="btn-action-icon" title="Hapus Kelas" onClick={(e) => { e.stopPropagation(); openDeleteModal('kelas', kelas); }}>
+                  <button 
+                    className="btn-action-icon" 
+                    title="Hapus Kelas" 
+                    onClick={(e) => { 
+                      e.stopPropagation(); 
+                      openDeleteModal('kelas', kelas); 
+                    }}
+                  >
                     <FaTrash />
                   </button>
                 </div>
@@ -428,15 +481,36 @@ const ManajemenKelasPage = () => {
         <main className="detail-panel">
           {selectedKelas ? (
             <>
-              <div className="detail-panel-header">
-                <button className="btn-back-mobile" onClick={() => setSelectedKelas(null)}><FaArrowLeft /></button>
+              <div className="detail-panel-header-mobile">
+                <button className="btn-back-mobile" onClick={handleBackToMaster}>
+                  <FaArrowLeft />
+                </button>
                 <h2>{selectedKelas.nama_kelas}</h2>
+                <div className="detail-panel-header-mobile-right-spacer" />
               </div>
-
+              <div className="detail-panel-header-desktop">
+                <h2>Detail Kelas: {selectedKelas.nama_kelas}</h2>
+              </div>
+              
               <div className="detail-tabs">
-                <button className={activeTab === 'info' ? 'active' : ''} onClick={() => setActiveTab('info')}><FaInfoCircle /> Info</button>
-                <button className={activeTab === 'anggota' ? 'active' : ''} onClick={() => setActiveTab('anggota')}><FaUsers /> Anggota</button>
-                <button className={activeTab === 'pengajar' ? 'active' : ''} onClick={() => setActiveTab('pengajar')}><FaChalkboardTeacher /> Pengajar</button>
+                <button 
+                  className={activeTab === 'info' ? 'active' : ''} 
+                  onClick={() => setActiveTab('info')}
+                >
+                  <FaInfoCircle /> Info
+                </button>
+                <button 
+                  className={activeTab === 'anggota' ? 'active' : ''} 
+                  onClick={() => setActiveTab('anggota')}
+                >
+                  <FaUsers /> Anggota
+                </button>
+                <button 
+                  className={activeTab === 'pengajar' ? 'active' : ''} 
+                  onClick={() => setActiveTab('pengajar')}
+                >
+                  <FaChalkboardTeacher /> Pengajar
+                </button>
               </div>
 
               <div className="detail-content">
@@ -478,7 +552,11 @@ const ManajemenKelasPage = () => {
                     </div>
 
                     <div className="panel-footer-actions">
-                      <button className="btn-save-mapping" onClick={handleSaveAnggota} disabled={isSavingAnggota}>
+                      <button 
+                        className="btn-save-mapping" 
+                        onClick={handleSaveAnggota} 
+                        disabled={isSavingAnggota}
+                      >
                         {isSavingAnggota ? 'Menyimpan...' : 'Simpan Anggota'}
                       </button>
                     </div>
@@ -488,7 +566,12 @@ const ManajemenKelasPage = () => {
                 {activeTab === 'pengajar' && (
                   <div>
                     <div className="panel-header-alt">
-                      <button className="btn-add-master btn-add-detail" onClick={() => openPengajarModal()}><FaPlus /> Tugaskan Guru</button>
+                      <button 
+                        className="btn-add-master btn-add-detail" 
+                        onClick={() => openPengajarModal()}
+                      >
+                        <FaPlus /> Tugaskan Guru
+                      </button>
                     </div>
                     <div className="teacher-list-card">
                       {selectedKelas.pengajar_kelas?.map(p => (
@@ -498,8 +581,18 @@ const ManajemenKelasPage = () => {
                             <p>{p.guru.nama_lengkap}</p>
                           </div>
                           <div className="teacher-actions">
-                            <button className="btn-action-icon btn-edit" onClick={() => openPengajarModal(p)}><FaPen /></button>
-                            <button className="btn-action-icon btn-delete" onClick={() => openDeleteModal('pengajar', p)}><FaTrash /></button>
+                            <button 
+                              className="btn-action-icon btn-edit" 
+                              onClick={() => openPengajarModal(p)}
+                            >
+                              <FaPen />
+                            </button>
+                            <button 
+                              className="btn-action-icon btn-delete" 
+                              onClick={() => openDeleteModal('pengajar', p)}
+                            >
+                              <FaTrash />
+                            </button>
                           </div>
                         </div>
                       ))}
@@ -520,25 +613,39 @@ const ManajemenKelasPage = () => {
 
       {/* Modal Kelas */}
       {isKelasModalOpen && (
-        <div className="modal-overlay">
+        <div className="modal-overlay" onClick={closeKelasModal}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>
             <button className="modal-close-button" onClick={closeKelasModal}>&times;</button>
             <h2>{editingData ? 'Edit Kelas' : 'Tambah Kelas Baru'}</h2>
             <form onSubmit={handleKelasSubmit} className="data-form">
               <div className="form-group">
                 <label>Nama Kelas</label>
-                <input name="nama_kelas" value={kelasFormData.nama_kelas} onChange={(e) => setKelasFormData({ ...kelasFormData, nama_kelas: e.target.value })} required />
+                <input 
+                  name="nama_kelas" 
+                  value={kelasFormData.nama_kelas} 
+                  onChange={(e) => setKelasFormData({ ...kelasFormData, nama_kelas: e.target.value })} 
+                  required 
+                />
               </div>
               <div className="form-group">
                 <label>Tingkatan</label>
-                <select name="tingkatan_id" value={kelasFormData.tingkatan_id} onChange={(e) => setKelasFormData({ ...kelasFormData, tingkatan_id: e.target.value })} required>
+                <select 
+                  name="tingkatan_id" 
+                  value={kelasFormData.tingkatan_id} 
+                  onChange={(e) => setKelasFormData({ ...kelasFormData, tingkatan_id: e.target.value })} 
+                  required
+                >
                   <option value="">-- Pilih Tingkatan --</option>
                   {allTingkatan.map(t => <option key={t.id} value={t.id}>{t.nama_tingkatan}</option>)}
                 </select>
               </div>
               <div className="form-group">
                 <label>Wali Kelas</label>
-                <select name="wali_kelas_id" value={kelasFormData.wali_kelas_id} onChange={(e) => setKelasFormData({ ...kelasFormData, wali_kelas_id: e.target.value })}>
+                <select 
+                  name="wali_kelas_id" 
+                  value={kelasFormData.wali_kelas_id} 
+                  onChange={(e) => setKelasFormData({ ...kelasFormData, wali_kelas_id: e.target.value })}
+                >
                   <option value="">-- Pilih Wali Kelas (Opsional) --</option>
                   {allGuru.map(g => <option key={g.id} value={g.id}>{g.nama_lengkap}</option>)}
                 </select>
@@ -554,21 +661,31 @@ const ManajemenKelasPage = () => {
 
       {/* Modal Pengajar */}
       {isPengajarModalOpen && (
-        <div className="modal-overlay">
+        <div className="modal-overlay" onClick={closePengajarModal}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>
             <button className="modal-close-button" onClick={closePengajarModal}>&times;</button>
             <h2>{editingData ? 'Edit Guru Pengajar' : 'Tugaskan Guru Pengajar'}</h2>
             <form onSubmit={handlePengajarSubmit} className="data-form">
               <div className="form-group">
                 <label>Mata Pelajaran</label>
-                <select name="mata_pelajaran_id" value={pengajarFormData.mata_pelajaran_id} onChange={(e) => setPengajarFormData({ ...pengajarFormData, mata_pelajaran_id: e.target.value })} required>
+                <select 
+                  name="mata_pelajaran_id" 
+                  value={pengajarFormData.mata_pelajaran_id} 
+                  onChange={(e) => setPengajarFormData({ ...pengajarFormData, mata_pelajaran_id: e.target.value })} 
+                  required
+                >
                   <option value="">-- Pilih Mapel --</option>
                   {allMapel.map(m => <option key={m.id} value={m.id}>{m.nama_mapel}</option>)}
                 </select>
               </div>
               <div className="form-group">
                 <label>Guru</label>
-                <select name="guru_id" value={pengajarFormData.guru_id} onChange={(e) => setPengajarFormData({ ...pengajarFormData, guru_id: e.target.value })} required>
+                <select 
+                  name="guru_id" 
+                  value={pengajarFormData.guru_id} 
+                  onChange={(e) => setPengajarFormData({ ...pengajarFormData, guru_id: e.target.value })} 
+                  required
+                >
                   <option value="">-- Pilih Guru --</option>
                   {allGuru.map(g => <option key={g.id} value={g.id}>{g.nama_lengkap}</option>)}
                 </select>
@@ -584,7 +701,7 @@ const ManajemenKelasPage = () => {
 
       {/* Modal Hapus */}
       {isDeleteModalOpen && (
-        <div className="modal-overlay">
+        <div className="modal-overlay" onClick={closeDeleteModal}>
           <div className="modal-content modal-confirm" onClick={e => e.stopPropagation()}>
             <button className="modal-close-button" onClick={closeDeleteModal}>&times;</button>
             <h2>Konfirmasi Hapus</h2>
