@@ -607,9 +607,6 @@
         justify-content: flex-end;
     }
 }
-/* =========================================== */
-/* Aturan Tambahan Untuk Memaksa Ikon Terlihat */
-/* =========================================== */
 
 .admin-layout .icon-bar .icon-bar-btn {
     display: flex !important;
