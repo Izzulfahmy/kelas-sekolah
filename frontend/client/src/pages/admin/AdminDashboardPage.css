@@ -1,5 +1,8 @@
-/* --- Global Styles & Variables --- */
-:root {
+/* --- Scoped Admin Dashboard Styles --- */
+/* All styles are now scoped to the .dashboard-container-revamped class to prevent global conflicts. */
+
+.dashboard-container-revamped {
+    /* --- Local Variables (moved from :root) --- */
     --bg-color: #f4f7fe;
     --card-bg-color: #ffffff;
     --text-primary: #1e293b;
@@ -10,25 +13,24 @@
     --orange-color: #f39c12;
     --red-color: #e74c3c;
     --purple-color: #9b59b6;
+    --teal-color: #1abc9c;
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     --border-radius: 12px;
-}
 
-body {
+    /* --- Base Styles (moved from body) --- */
     background-color: var(--bg-color);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-}
-
-.dashboard-container-revamped {
+    
+    /* --- Container Layout --- */
     padding: 24px;
     max-width: 1600px;
     margin: auto;
 }
 
 /* --- Header --- */
-.dashboard-header {
+.dashboard-container-revamped .dashboard-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -37,36 +39,36 @@ body {
     gap: 16px;
 }
 
-.dashboard-header h1 {
+.dashboard-container-revamped .dashboard-header h1 {
     font-size: 28px;
     font-weight: 700;
     color: var(--text-primary);
     margin: 0;
 }
 
-.dashboard-header p {
+.dashboard-container-revamped .dashboard-header p {
     font-size: 16px;
     color: var(--text-secondary);
     margin: 4px 0 0 0;
 }
 
-.header-actions {
+.dashboard-container-revamped .header-actions {
     display: flex;
     gap: 12px;
 }
-.header-actions .ant-btn {
+.dashboard-container-revamped .header-actions .ant-btn {
     border-radius: 8px;
     font-weight: 500;
 }
 
 /* --- Main Stats Grid --- */
-.main-stats-grid {
+.dashboard-container-revamped .main-stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 24px;
 }
 
-.stat-card-revamped {
+.dashboard-container-revamped .stat-card-revamped {
     background: var(--card-bg-color);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
@@ -74,22 +76,22 @@ body {
     transition: all 0.3s ease;
 }
 
-.stat-card-revamped:hover {
+.dashboard-container-revamped .stat-card-revamped:hover {
     transform: translateY(-5px);
     box-shadow: var(--shadow-md);
 }
 
-.stat-card-revamped .ant-card-body {
+.dashboard-container-revamped .stat-card-revamped .ant-card-body {
     padding: 20px !important;
 }
 
-.stat-card-inner {
+.dashboard-container-revamped .stat-card-inner {
     display: flex;
     align-items: center;
     gap: 16px;
 }
 
-.stat-icon {
+.dashboard-container-revamped .stat-icon {
     width: 48px;
     height: 48px;
     border-radius: 50%;
@@ -99,19 +101,19 @@ body {
     font-size: 22px;
 }
 
-.stat-info .ant-statistic-title {
+.dashboard-container-revamped .stat-info .ant-statistic-title {
     color: var(--text-secondary);
     font-size: 14px;
     margin-bottom: 4px;
 }
 
-.stat-info .ant-statistic-content {
+.dashboard-container-revamped .stat-info .ant-statistic-content {
     color: var(--text-primary);
     font-weight: 600;
     font-size: 24px;
 }
 
-.stat-trend {
+.dashboard-container-revamped .stat-trend {
     font-size: 12px;
     display: flex;
     align-items: center;
@@ -119,36 +121,36 @@ body {
     margin-top: 4px;
 }
 
-.stat-trend.positive { color: var(--green-color); }
-.stat-trend.negative { color: var(--red-color); }
+.dashboard-container-revamped .stat-trend.positive { color: var(--green-color); }
+.dashboard-container-revamped .stat-trend.negative { color: var(--red-color); }
 
 /* --- General Content Card --- */
-.content-card {
+.dashboard-container-revamped .content-card {
     background: var(--card-bg-color);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-sm);
 }
-.content-card .ant-card-head-title {
+.dashboard-container-revamped .content-card .ant-card-head-title {
     font-weight: 600;
     color: var(--text-primary);
 }
-.content-card .ant-card-body {
+.dashboard-container-revamped .content-card .ant-card-body {
     padding: 24px;
 }
 
 /* --- Chart Customizations --- */
-.recharts-pie-label .recharts-text {
+.dashboard-container-revamped .recharts-pie-label .recharts-text {
     fill: var(--text-primary);
     font-size: 14px;
     font-weight: 600;
 }
 
 /* --- Performance Table --- */
-.performance-table .ant-table {
+.dashboard-container-revamped .performance-table .ant-table {
     border-radius: 8px;
 }
-.student-info {
+.dashboard-container-revamped .student-info {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -156,7 +158,7 @@ body {
 }
 
 /* --- Gender Distribution --- */
-.gender-legend {
+.dashboard-container-revamped .gender-legend {
     display: flex;
     justify-content: center;
     gap: 20px;
@@ -164,19 +166,19 @@ body {
     font-size: 14px;
     color: var(--text-secondary);
 }
-.legend-item {
+.dashboard-container-revamped .legend-item {
     display: flex;
     align-items: center;
     gap: 8px;
 }
-.legend-item .dot {
+.dashboard-container-revamped .legend-item .dot {
     width: 10px;
     height: 10px;
     border-radius: 50%;
 }
 
 /* --- Recent Activities --- */
-.activity-icon {
+.dashboard-container-revamped .activity-icon {
     width: 36px;
     height: 36px;
     border-radius: 50%;
@@ -186,19 +188,19 @@ body {
     background-color: var(--bg-color);
     font-size: 18px;
 }
-.ant-list-item-meta-title a {
+.dashboard-container-revamped .ant-list-item-meta-title span {
     color: var(--text-primary);
     font-weight: 500;
 }
-.ant-list-item-meta-description {
+.dashboard-container-revamped .ant-list-item-meta-description {
     font-size: 12px;
 }
 
 /* --- Calendar --- */
-.ant-picker-calendar {
+.dashboard-container-revamped .ant-picker-calendar {
     border: none;
 }
-.ant-picker-calendar .ant-picker-panel {
+.dashboard-container-revamped .ant-picker-calendar .ant-picker-panel {
     border-top: 1px solid var(--border-color);
 }
 
@@ -208,10 +210,10 @@ body {
     .dashboard-container-revamped {
         padding: 16px;
     }
-    .dashboard-header h1 {
+    .dashboard-container-revamped .dashboard-header h1 {
         font-size: 22px;
     }
-    .header-actions {
+    .dashboard-container-revamped .header-actions {
         width: 100%;
         justify-content: flex-start;
     }
